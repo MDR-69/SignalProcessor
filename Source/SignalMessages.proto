@@ -1,0 +1,13 @@
+// See README.txt for information and build instructions.
+
+option java_outer_classname = "SignalMessages";
+
+message SignalLevel {
+  required int32 signalID = 1 [default=1];
+  required float signalLevel = 2 [default=0];
+  //required int32 bufferSize = 3 [default=64];
+}
+
+message Impulse {
+  required int32 signalID = 1 [default=1];
+}

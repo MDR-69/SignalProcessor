@@ -1,0 +1,166 @@
+/*
+  ==============================================================================
+
+    This file was auto-generated!
+
+    It contains the basic startup code for a Juce application.
+
+  ==============================================================================
+*/
+
+#ifndef PLUGINPROCESSOR_H_INCLUDED
+#define PLUGINPROCESSOR_H_INCLUDED
+
+#include "../JuceLibraryCode/JuceHeader.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <boost/asio.hpp>
+#include "boost/bind.hpp" 
+#include "SignalMessages.pb.h"
+
+//==============================================================================
+/**
+*/
+class SignalProcessorAudioProcessor  : public AudioProcessor
+{
+public:
+    //==============================================================================
+    SignalProcessorAudioProcessor();
+    ~SignalProcessorAudioProcessor();
+    
+    //==============================================================================
+    void prepareToPlay (double sampleRate, int samplesPerBlock);
+    void releaseResources();
+
+    void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+
+    //==============================================================================
+    AudioProcessorEditor* createEditor();
+    bool hasEditor() const;
+
+    //==============================================================================
+    const String getName() const;
+
+    int getNumParameters();
+
+    float getParameter (int index);
+    float getParameterDefaultValue (int index);
+    void setParameter (int index, float newValue);
+
+    const String getParameterName (int index);
+    const String getParameterText (int index);
+
+    const String getInputChannelName (int channelIndex) const;
+    const String getOutputChannelName (int channelIndex) const;
+    bool isInputChannelStereoPair (int index) const;
+    bool isOutputChannelStereoPair (int index) const;
+
+    bool acceptsMidi() const;
+    bool producesMidi() const;
+    bool silenceInProducesSilenceOut() const;
+    double getTailLengthSeconds() const;
+
+    //==============================================================================
+    int getNumPrograms();
+    int getCurrentProgram();
+    void setCurrentProgram (int index);
+    const String getProgramName (int index);
+    void changeProgramName (int index, const String& newName);
+
+    //==============================================================================
+    void getStateInformation (MemoryBlock& destData);
+    void setStateInformation (const void* data, int sizeInBytes);
+    
+    void defineSignalMessagesChannel();
+    void defineSignalMessagesAveragingBuffer();
+    void sendSignalLevelMessage(std::string datastring);
+    void sendImpulseMessage(std::string datastring);
+    
+    float denormalize(float input);
+    
+    //==============================================================================    
+    // this is kept up to date with the midi messages that arrive, and the UI component
+    // registers with it so it can represent the incoming messages
+    MidiKeyboardState keyboardState;
+    
+    // this keeps a copy of the last set of time info that was acquired during an audio
+    // callback - the UI component will read this and display it.
+    AudioPlayHead::CurrentPositionInfo lastPosInfo;
+    
+    // these are used to persist the UI's size - the values are stored along with the
+    // filter's other parameters, and the UI component will update them when it gets
+    // resized.
+    int lastUIWidth, lastUIHeight;
+
+    
+    //==============================================================================
+    // Default parameter values
+    const int defaultAveragingBufferSize = 2048;
+    const int defaultMode = 0;
+    const float defaultInputSensitivity = 1.0;
+    const int defaultChannel = 1;
+    const int defaultMonoStereo = 1;        //Mono processing
+
+    
+    //==============================================================================
+    enum Parameters
+    {
+        averagingBufferSizeParam = 0,
+        inputSensitivityParam,
+        modeParam,
+        channelParam,
+        monoStereoParam,
+        totalNumParams
+    };
+
+    int channel;
+    int averagingBufferSize;
+    float inputSensitivity;
+    int mode;
+
+    int monoStereo;         //0 -> mono
+    
+    
+    //==============================================================================
+    // Variables used by the audio algorithm
+    int nbBufValProcessed = 0;
+    float signalSum = 0;
+    // Used for beat detection
+    float signalAverageEnergy = 0;
+    float signalInstantEnergy = 0;
+    const int thresholdFactor = 4;
+    const int averageEnergyBufferSize = 20;                         //16 times the size of the buffer set by the DAW
+    const int averageSignalWeight = averageEnergyBufferSize - 1;    //Just a const variable to gain a substraction operation
+    
+    //==============================================================================
+    // Socket used to forward data to the Processing application, and the variables associated with it
+    const int portNumberSignalLevel = 8000;
+    const int portNumberImpulse     = 9000;
+    const int nbOfSamplesToSkip = 6;
+    bool connectionEstablished_signalLevel = false;
+    bool connectionEstablished_impulse = false;
+    boost::asio::io_service myIO_service;
+    boost::asio::ip::tcp::socket signalLevelSocket;
+    boost::asio::ip::tcp::socket impulseSocket;
+    boost::asio::ip::tcp::endpoint signalLevelEndpoint;
+    boost::asio::ip::tcp::endpoint impulseEndpoint;
+    boost::system::error_code ignored_error;
+    std::string datastringLevel;
+    std::string datastringImpulse;
+    
+    //==============================================================================
+    // Small optimisation : always use the same SignalMessages objects, it saves creating a new one every time
+    Impulse impulse;
+    SignalLevel signal;
+    
+    
+private:
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SignalProcessorAudioProcessor)
+    
+};
+
+#endif  // PLUGINPROCESSOR_H_INCLUDED
