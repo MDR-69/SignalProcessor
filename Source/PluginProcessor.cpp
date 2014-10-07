@@ -20,21 +20,20 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
   averagingBufferSize(defaultAveragingBufferSize),
   inputSensitivity(defaultInputSensitivity),
-  mode(defaultMode),
   monoStereo(defaultMonoStereo),
+  timeInfoSocket(myIO_service),
   signalLevelSocket(myIO_service),
   impulseSocket(myIO_service),
+  timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
   signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel),
   impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse),
   datastringLevel(""),
   datastringImpulse("")
 {
     lastPosInfo.resetToDefault();
-//    averagingBufferSize             = defaultAveragingBufferSize;
-//    inputSensitivity                = defaultInputSensitivity;
-//    mode                            = defaultMode;
-//    monoStereo                      = defaultMonoStereo;
-//    channel                         = defaultChannel;
+
+    
+
     
     try {
         std::cout << "SignalLevel Initial connection\n";
@@ -58,7 +57,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
 {
     signalLevelSocket.close();
-    //impulseSocket.close();
+    impulseSocket.close();
     std::cout << "PlayMeSignalProcessor socket closed\n";
 }
 
@@ -86,7 +85,9 @@ float SignalProcessorAudioProcessor::getParameter (int index)
     {
         case averagingBufferSizeParam:      return averagingBufferSize;
         case inputSensitivityParam:         return inputSensitivity;
-        case modeParam:                     return mode;
+        case sendTimeInfoParam:             return sendTimeInfo;
+        case sendSignalLevelParam:          return sendSignalLevel;
+        case sendImpulseParam:              return sendImpulse;
         case channelParam:                  return channel;
         case monoStereoParam:               return monoStereo;
         default:                            return 0.0f;
@@ -99,7 +100,9 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
     {
         case averagingBufferSizeParam:      return defaultAveragingBufferSize;
         case inputSensitivityParam:         return defaultInputSensitivity;
-        case modeParam:                     return defaultMode;
+        case sendTimeInfoParam:             return defaultSendTimeInfo;
+        case sendSignalLevelParam:          return defaultSendSignalLevel;
+        case sendImpulseParam:              return defaultSendImpulse;
         case channelParam:                  return defaultChannel;
         case monoStereoParam:               return defaultMonoStereo;
         default:                            break;
@@ -117,7 +120,9 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     {
         case averagingBufferSizeParam:      averagingBufferSize = newValue;  defineSignalMessagesAveragingBuffer(); break;
         case inputSensitivityParam:         inputSensitivity    = newValue;  break;
-        case modeParam:                     mode                = newValue;  break;
+        case sendTimeInfoParam:             sendTimeInfo        = newValue;  break;
+        case sendSignalLevelParam:          sendSignalLevel     = newValue;  break;
+        case sendImpulseParam:              sendImpulse         = newValue;  break;
         case channelParam:                  channel             = newValue;  defineSignalMessagesChannel();  break;
         case monoStereoParam:               monoStereo          = newValue;  break;
         default:                            break;
@@ -128,11 +133,13 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
 {
     switch (index)
     {
-        case averagingBufferSizeParam:     return "Averaging Buffer Size";
-        case inputSensitivityParam:        return "Input Sensitivity";
-        case modeParam:                    return "Mode";
-        case channelParam:                 return "Channel Number";
-        case monoStereoParam:              return "Mono / Stereo";
+        case averagingBufferSizeParam:     return "Averaging Buffer Size"; break;
+        case inputSensitivityParam:        return "Input Sensitivity";     break;
+        case sendTimeInfoParam:            return "Send Time Info";        break;
+        case sendSignalLevelParam:         return "Send Signal Level";     break;
+        case sendImpulseParam:             return "Send Impulses";         break;
+        case channelParam:                 return "Channel Number";        break;
+        case monoStereoParam:              return "Mono / Stereo";         break;
         default:                           break;
     }
     return String::empty;
@@ -430,7 +437,9 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("uiHeight", lastUIHeight);
     xml.setAttribute ("averagingBufferSize", averagingBufferSize);
     xml.setAttribute ("inputSensitivity", inputSensitivity);
-    xml.setAttribute ("mode", mode);
+    xml.setAttribute ("sendTimeInfo", sendTimeInfo);
+    xml.setAttribute ("sendSignalLevel", sendSignalLevel);
+    xml.setAttribute ("sendImpulse", sendImpulse);
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
 
@@ -457,7 +466,9 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             lastUIHeight        = xmlState->getIntAttribute ("uiHeight", lastUIHeight);
             averagingBufferSize = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
             inputSensitivity    = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
-            mode                = xmlState->getIntAttribute ("mode", mode);
+            sendTimeInfo        = xmlState->getIntAttribute ("sendTimeInfo", sendTimeInfo);
+            sendSignalLevel     = xmlState->getIntAttribute ("sendSignalLevel", sendSignalLevel);
+            sendImpulse         = xmlState->getIntAttribute ("sendImpulse", sendImpulse);
             channel             = xmlState->getIntAttribute ("channel", channel);
             monoStereo          = xmlState->getIntAttribute ("monoStereo", monoStereo);
             std::cout << "I just read channel : " << channel << "\n";

@@ -49,10 +49,10 @@ private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
     MidiKeyboardComponent midiKeyboard;
-    Label infoLabel, averagingBufferLabel, inputSensitivityLabel, modeLabel, channelLabel, monoStereoLabel, javaAppPathLabel;
+    Label infoLabel, averagingBufferLabel, inputSensitivityLabel, sendTimeInfoLabel, sendSignalLevelLabel, sendImpulseLabel, channelLabel, monoStereoLabel, javaAppPathLabel;
     Slider averagingBufferSlider, inputSensitivitySlider;
-    ToggleButton monoStereoButton;
-    ComboBox modeComboBox;
+    ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, monoStereoButton;
+    //ComboBox modeComboBox;
     ComboBox channelComboBox;
     ScopedPointer<ResizableCornerComponent> resizer;
     ComponentBoundsConstrainer resizeLimits;

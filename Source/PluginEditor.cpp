@@ -19,13 +19,17 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       infoLabel (String::empty),
       averagingBufferLabel ("", "Averaging Buffer (samples):"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
-      modeLabel ("", "Mode:"),
+      sendTimeInfoLabel("", "Send Time Info:"),
+      sendSignalLevelLabel("", "Send Signal Level:"),
+      sendImpulseLabel("", "Send Impulses:"),
       channelLabel ("", "Channel Number:"),
       monoStereoLabel ("", "Mono/Stereo Processing:"),
       averagingBufferSlider ("averagingBuffer"),
       inputSensitivitySlider ("inputSensitivity"),
+      sendTimeInfoButton("sendTimeInfo"),
+      sendSignalLevelButton("sendSignalLevel"),
+      sendImpulseButton("sendImpulse"),
       monoStereoButton ("Stereo"),
-      modeComboBox ("mode"),
       channelComboBox ("channel"),
       textEditorProcessingPath ("processingPath")
 {
@@ -43,26 +47,26 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.setSliderStyle (Slider::Rotary);
     inputSensitivitySlider.addListener (this);
     inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
+
+    addAndMakeVisible (sendTimeInfoButton);
+    sendTimeInfoButton.addListener (this);
+    sendTimeInfoButton.setBounds (300, 350, 100, 40);
+    addAndMakeVisible (sendSignalLevelButton);
+    sendSignalLevelButton.addListener (this);
+    sendSignalLevelButton.setBounds (300, 400, 100, 40);
+    addAndMakeVisible (sendImpulseButton);
+    sendImpulseButton.addListener (this);
+    sendImpulseButton.setBounds (300, 450, 100, 40);
     
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
     //monoStereoButton.changeWidthToFitText (22);
-    monoStereoButton.setBounds (300, 300, 40, 60);
+    monoStereoButton.setBounds (300, 300, 40, 40);
 
     addAndMakeVisible (textEditorProcessingPath);
     textEditorProcessingPath.setBounds (10, 200, 200, 24);
     textEditorProcessingPath.addListener (this);
     textEditorProcessingPath.setText ("Single-line text box");
-
-    addAndMakeVisible(modeComboBox);
-    modeComboBox.setBounds (10, 85, 200, 24);
-    modeComboBox.setEditableText (false);
-    modeComboBox.setJustificationType (Justification::centred);
-    String comboBoxElements[] = {"Average","Transient","Average+Transient","TimeInfo","TimeInfo+Average+Transient"};
-    for (int i = 1; i <= sizeof(comboBoxElements)/sizeof(comboBoxElements[0]); ++i)
-        modeComboBox.addItem (comboBoxElements[i-1], i);
-    modeComboBox.setSelectedId (1);
-    modeComboBox.addListener (this);
     
     addAndMakeVisible(channelComboBox);
     channelComboBox.setBounds (10, 185, 100, 24);
@@ -81,10 +85,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont (Font (11.0f));
-    
-    modeLabel.attachToComponent(&modeComboBox, false);
-    modeLabel.setFont (Font (11.0f));
 
+    sendTimeInfoLabel.attachToComponent(&sendTimeInfoButton, false);
+    sendTimeInfoLabel.setFont (Font (11.0f));
+    sendSignalLevelLabel.attachToComponent(&sendSignalLevelButton, false);
+    sendSignalLevelLabel.setFont (Font (11.0f));
+    sendImpulseLabel.attachToComponent(&sendImpulseButton, false);
+    sendImpulseLabel.setFont (Font (11.0f));
     monoStereoLabel.attachToComponent(&monoStereoButton, false);
     monoStereoLabel.setFont (Font (11.0f));
     
@@ -188,27 +195,30 @@ void SignalProcessorAudioProcessorEditor::buttonClicked (Button* button)
     
     if (button == &monoStereoButton)
     {
-        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::averagingBufferSizeParam,
-                                                  true);
-        bool state = button->getToggleState();
-        if (state == false) {
-            getProcessor().setParameterNotifyingHost(SignalProcessorAudioProcessor::monoStereoParam, 1);
-        }
-        else {
-            getProcessor().setParameterNotifyingHost(SignalProcessorAudioProcessor::monoStereoParam, 2);
-        }
-
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::monoStereoParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendTimeInfoButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendTimeInfoParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendSignalLevelButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendSignalLevelParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendImpulseButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendImpulseParam,
+                                                  button->getToggleState());
     }
 }
 
 void SignalProcessorAudioProcessorEditor::comboBoxChanged (ComboBox* comboBox)
 {
     
-    if (comboBox == &modeComboBox)
-    {
-        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::modeParam, comboBox->getSelectedId());
-    }
-    else if (comboBox == &channelComboBox)
+    if (comboBox == &channelComboBox)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::channelParam, comboBox-> getSelectedId());
     }

@@ -99,10 +99,13 @@ public:
     //==============================================================================
     // Default parameter values
     const int defaultAveragingBufferSize = 2048;
-    const int defaultMode = 0;
+    const bool defaultSendTimeInfo = false;
+    const bool defaultSendSignalLevel = true;
+    const bool defaultSendImpulse = true;
+    const bool defaultMonoStereo = false;        //Mono processing
     const float defaultInputSensitivity = 1.0;
     const int defaultChannel = 1;
-    const int defaultMonoStereo = 1;        //Mono processing
+
 
     
     //==============================================================================
@@ -110,7 +113,9 @@ public:
     {
         averagingBufferSizeParam = 0,
         inputSensitivityParam,
-        modeParam,
+        sendTimeInfoParam,
+        sendSignalLevelParam,
+        sendImpulseParam,
         channelParam,
         monoStereoParam,
         totalNumParams
@@ -119,9 +124,10 @@ public:
     int channel;
     int averagingBufferSize;
     float inputSensitivity;
-    int mode;
-
-    int monoStereo;         //0 -> mono
+    bool sendTimeInfo;
+    bool sendSignalLevel;
+    bool sendImpulse;
+    bool monoStereo;         //false -> mono
     
     
     //==============================================================================
@@ -137,14 +143,17 @@ public:
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it
+    const int portNumberTimeInfo    = 7000;
     const int portNumberSignalLevel = 8000;
     const int portNumberImpulse     = 9000;
     const int nbOfSamplesToSkip = 6;
     bool connectionEstablished_signalLevel = false;
     bool connectionEstablished_impulse = false;
     boost::asio::io_service myIO_service;
+    boost::asio::ip::tcp::socket timeInfoSocket;
     boost::asio::ip::tcp::socket signalLevelSocket;
     boost::asio::ip::tcp::socket impulseSocket;
+    boost::asio::ip::tcp::endpoint timeInfoEndpoint;
     boost::asio::ip::tcp::endpoint signalLevelEndpoint;
     boost::asio::ip::tcp::endpoint impulseEndpoint;
     boost::system::error_code ignored_error;
