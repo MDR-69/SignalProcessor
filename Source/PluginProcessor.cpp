@@ -257,7 +257,8 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     // Audio processing takes place here !
     
     // If the signal is defined by the user as mono, no need to check the second channel
-    for (int channel = 0; channel < std::min(monoStereo,getNumInputChannels()); ++channel)
+    int numberOfChannels = (monoStereo==false) ? 1 : getNumInputChannels();
+    for (int channel = 0; channel < numberOfChannels; ++channel)
     {
         const float* channelData = buffer.getReadPointer (channel);
         
