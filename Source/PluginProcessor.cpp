@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic startup code for a Juce application.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+   This file was auto-generated!
+ 
+   It contains the basic startup code for a Juce application.
+ 
+ ==============================================================================
+ */
 
 #include <cstdlib>
 #include <fstream>
@@ -18,22 +18,20 @@ using boost::asio::local::stream_protocol;
 //==============================================================================
 SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
-  averagingBufferSize(defaultAveragingBufferSize),
-  inputSensitivity(defaultInputSensitivity),
-  monoStereo(defaultMonoStereo),
-  timeInfoSocket(myIO_service),
-  signalLevelSocket(myIO_service),
-  impulseSocket(myIO_service),
-  timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
-  signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel),
-  impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse),
-  datastringLevel(""),
-  datastringImpulse("")
+averagingBufferSize(defaultAveragingBufferSize),
+inputSensitivity(defaultInputSensitivity),
+monoStereo(defaultMonoStereo),
+timeInfoSocket(myIO_service),
+signalLevelSocket(myIO_service),
+impulseSocket(myIO_service),
+timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
+signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel),
+impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse),
+datastringTimeInfo(""),
+datastringLevel(""),
+datastringImpulse("")
 {
     lastPosInfo.resetToDefault();
-
-    
-
     
     try {
         std::cout << "SignalLevel Initial connection\n";
@@ -43,7 +41,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     catch (std::exception e) {
         std::cout << "SignalLevel - Couldn't do the initial connection\n";
     }
-
+    
     try {
         std::cout << "Impulse Initial connection\n";
         impulseSocket.connect(impulseEndpoint);
@@ -172,20 +170,20 @@ bool SignalProcessorAudioProcessor::isOutputChannelStereoPair (int index) const
 
 bool SignalProcessorAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SignalProcessorAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SignalProcessorAudioProcessor::silenceInProducesSilenceOut() const
@@ -245,8 +243,8 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     // I've added this to avoid people getting screaming feedback
     // when they first compile the plugin, but obviously you don't need to
     // this code if your algorithm already fills all the output channels.
-//    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
-//        buffer.clear (i, 0, buffer.getNumSamples());
+    //    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
+    //        buffer.clear (i, 0, buffer.getNumSamples());
     
     // Now pass any incoming midi messages to our keyboard state object, and let it
     // add messages to the buffer if the user is clicking on the on-screen keys
@@ -270,15 +268,16 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     }
     
     nbBufValProcessed += buffer.getNumSamples();
+    samplesSinceLastTimeInfoTransmission += buffer.getNumSamples();
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
     signalAverageEnergy = denormalize(((signalAverageEnergy * averageSignalWeight) + signalInstantEnergy) / averageEnergyBufferSize);
     signalInstantEnergy = signalSum / (averagingBufferSize * monoStereo);
-
+    
     
     // If the instant signal energy is thresholdFactor times greater than the average energy, consider that a beat is detected
     if (signalInstantEnergy > signalAverageEnergy*thresholdFactor) {
-
+        
         //Set the new signal Average Energy to the value of the instant energy, to avoid having bursts of false beat detections
         signalAverageEnergy = signalInstantEnergy;
         
@@ -299,6 +298,22 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         signalSum = 0;
     }
     
+    if (samplesSinceLastTimeInfoTransmission >= timeInfoCycle) {
+        // ask the host for the current time
+        AudioPlayHead::CurrentPositionInfo currentTime;
+        if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
+        {
+            // Successfully got the current time from the host..
+            timeInfo.set_position(currentTime);
+            timeInfo.SerializeToString(&datastringTimeInfo);
+            
+            sendTimeInfoMessage(datastringTimeInfo);
+            samplesSinceLastTimeInfoTransmission = 0;
+        }
+        
+        
+    }
+    
     // ask the host for the current time so we can display it...
     AudioPlayHead::CurrentPositionInfo newTime;
     
@@ -312,7 +327,7 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         // If the host fails to fill-in the current time, we'll just clear it to a default..
         lastPosInfo.resetToDefault();
     }
-
+    
 }
 
 float SignalProcessorAudioProcessor::denormalize(float input) {
@@ -325,15 +340,15 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     
-//    boost::asio::ip::tcp::endpoint newSignalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel);
-//    boost::asio::ip::tcp::endpoint newImpulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse);
-//    
-//    signalLevelEndpoint = newSignalLevelEndpoint;
-//    impulseEndpoint = newImpulseEndpoint;
-//    connectionEstablished_impulse = false;
-//    connectionEstablished_signalLevel = false;
-//    signalLevelSocket.close();
-//    impulseSocket.close();
+    //    boost::asio::ip::tcp::endpoint newSignalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel);
+    //    boost::asio::ip::tcp::endpoint newImpulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse);
+    //
+    //    signalLevelEndpoint = newSignalLevelEndpoint;
+    //    impulseEndpoint = newImpulseEndpoint;
+    //    connectionEstablished_impulse = false;
+    //    connectionEstablished_signalLevel = false;
+    //    signalLevelSocket.close();
+    //    impulseSocket.close();
     
     signal.set_signalid(channel);
     
@@ -345,14 +360,51 @@ void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
 }
 
 void SignalProcessorAudioProcessor::defineSignalMessagesAveragingBuffer() {
-
+    
     //signal.set_buffersize(averagingBufferSize);
+    
+}
+
+void SignalProcessorAudioProcessor::defineSignalMessagesTimeInfo() {
+    // TBIL
+}
+
+
+void SignalProcessorAudioProcessor::sendTimeInfo(std::string datastring) {
+    
+    try {
+        
+        if (connectionEstablished_timeInfo == false) {
+            std::cout << "Trying to reconnect\n";
+            // Close the old, and try a new connection to the Java server - if impossible, an
+            // exception is raised and the following instructions are not executed
+            timeInfoSocket.close();
+            timeInfoSocket.connect(timeInfoEndpoint);
+            connectionEstablished_timeInfo = true;
+        }
+        
+        boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
+        // std::cout << "Wrote Impulse : " << testString << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
+        
+        
+        // If the returned errorcode is different from 0 ("no error"), reset the server connection
+        if (ignored_error.value() != 0) {
+            std::cout << "Set the connection to false\n";
+            connectionEstablished_timeInfo = false;
+            timeInfoSocket.close();
+        }
+        
+    } catch (const std::exception & e) {
+        std::cout << "Caught an error while trying to initialize the socket - the Java server might not be ready\n";
+        //std::cerr << e.what();
+    }
+    
     
 }
 
 
 void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastring) {
-
+    
     try {
         
         if (connectionEstablished_signalLevel == false) {
@@ -374,13 +426,13 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
             connectionEstablished_signalLevel = false;
             signalLevelSocket.close();
         }
-            
+        
     } catch (const std::exception & e) {
         std::cout << "Caught an error while trying to initialize the socket - the Java server might not be ready\n";
         //std::cerr << e.what();
     }
-
-
+    
+    
 }
 
 void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
@@ -395,10 +447,10 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
             impulseSocket.connect(impulseEndpoint);
             connectionEstablished_impulse = true;
         }
-
+        
         boost::asio::write(impulseSocket, boost::asio::buffer(datastring), ignored_error);
         // std::cout << "Wrote Impulse : " << testString << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
-
+        
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
@@ -443,7 +495,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("sendImpulse", sendImpulse);
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
-
+    
     std::cout << "I just wrote channel : " << channel << "\n";
     
     // then use this helper function to stuff it into the binary blob and return it..

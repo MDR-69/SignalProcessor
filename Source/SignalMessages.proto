@@ -11,3 +11,7 @@ message SignalLevel {
 message Impulse {
   required int32 signalID = 1 [default=1];
 }
+
+message TimeInfo {
+  required bool isPlaying = 1 [default=false];
+}

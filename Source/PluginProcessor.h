@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
+ ==============================================================================
+ 
     This file was auto-generated!
-
+ 
     It contains the basic startup code for a Juce application.
-
-  ==============================================================================
-*/
+ 
+ ==============================================================================
+ */
 
 #ifndef PLUGINPROCESSOR_H_INCLUDED
 #define PLUGINPROCESSOR_H_INCLUDED
@@ -18,12 +18,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <boost/asio.hpp>
-#include "boost/bind.hpp" 
+#include "boost/bind.hpp"
 #include "SignalMessages.pb.h"
 
 //==============================================================================
 /**
-*/
+ */
 class SignalProcessorAudioProcessor  : public AudioProcessor
 {
 public:
@@ -34,54 +34,56 @@ public:
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock);
     void releaseResources();
-
+    
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
-
+    
     //==============================================================================
     AudioProcessorEditor* createEditor();
     bool hasEditor() const;
-
+    
     //==============================================================================
     const String getName() const;
-
+    
     int getNumParameters();
-
+    
     float getParameter (int index);
     float getParameterDefaultValue (int index);
     void setParameter (int index, float newValue);
-
+    
     const String getParameterName (int index);
     const String getParameterText (int index);
-
+    
     const String getInputChannelName (int channelIndex) const;
     const String getOutputChannelName (int channelIndex) const;
     bool isInputChannelStereoPair (int index) const;
     bool isOutputChannelStereoPair (int index) const;
-
+    
     bool acceptsMidi() const;
     bool producesMidi() const;
     bool silenceInProducesSilenceOut() const;
     double getTailLengthSeconds() const;
-
+    
     //==============================================================================
     int getNumPrograms();
     int getCurrentProgram();
     void setCurrentProgram (int index);
     const String getProgramName (int index);
     void changeProgramName (int index, const String& newName);
-
+    
     //==============================================================================
     void getStateInformation (MemoryBlock& destData);
     void setStateInformation (const void* data, int sizeInBytes);
     
     void defineSignalMessagesChannel();
     void defineSignalMessagesAveragingBuffer();
+    void defineSignalMessagesTimeInfo();
     void sendSignalLevelMessage(std::string datastring);
     void sendImpulseMessage(std::string datastring);
+    void sendTimeInfo(std::string datastring);
     
     float denormalize(float input);
     
-    //==============================================================================    
+    //==============================================================================
     // this is kept up to date with the midi messages that arrive, and the UI component
     // registers with it so it can represent the incoming messages
     MidiKeyboardState keyboardState;
@@ -94,7 +96,7 @@ public:
     // filter's other parameters, and the UI component will update them when it gets
     // resized.
     int lastUIWidth, lastUIHeight;
-
+    
     
     //==============================================================================
     // Default parameter values
@@ -105,8 +107,8 @@ public:
     const bool defaultMonoStereo = false;        //Mono processing
     const float defaultInputSensitivity = 1.0;
     const int defaultChannel = 1;
-
-
+    
+    
     
     //==============================================================================
     enum Parameters
@@ -120,7 +122,7 @@ public:
         monoStereoParam,
         totalNumParams
     };
-
+    
     int channel;
     int averagingBufferSize;
     float inputSensitivity;
@@ -140,13 +142,16 @@ public:
     const int thresholdFactor = 4;
     const int averageEnergyBufferSize = 20;                         //16 times the size of the buffer set by the DAW
     const int averageSignalWeight = averageEnergyBufferSize - 1;    //Just a const variable to gain a substraction operation
+    int samplesSinceLastTimeInfoTransmission = 0;                   //The time message is to be sent every timeInfoCycle (if active)
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it
     const int portNumberTimeInfo    = 7000;
     const int portNumberSignalLevel = 8000;
     const int portNumberImpulse     = 9000;
-    const int nbOfSamplesToSkip = 6;
+    const int nbOfSamplesToSkip     = 6;
+    const int timeInfoCycle         = 4096;       //Send the time info message every 4096 samples, that's about 100ms
+    bool connectionEstablished_timeInfo = false;
     bool connectionEstablished_signalLevel = false;
     bool connectionEstablished_impulse = false;
     boost::asio::io_service myIO_service;
@@ -157,6 +162,7 @@ public:
     boost::asio::ip::tcp::endpoint signalLevelEndpoint;
     boost::asio::ip::tcp::endpoint impulseEndpoint;
     boost::system::error_code ignored_error;
+    std::string datastringTimeInfo;
     std::string datastringLevel;
     std::string datastringImpulse;
     
@@ -164,6 +170,7 @@ public:
     // Small optimisation : always use the same SignalMessages objects, it saves creating a new one every time
     Impulse impulse;
     SignalLevel signal;
+    TimeInfo timeInfo;
     
     
 private:
