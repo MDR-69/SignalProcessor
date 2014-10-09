@@ -56,6 +56,9 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
 {
     signalLevelSocket.close();
     impulseSocket.close();
+    if (connectionEstablished_timeInfo == true) {
+        timeInfoSocket.close();
+    }
     std::cout << "PlayMeSignalProcessor socket closed\n";
 }
 
@@ -281,37 +284,42 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         //Set the new signal Average Energy to the value of the instant energy, to avoid having bursts of false beat detections
         signalAverageEnergy = signalInstantEnergy;
         
-        //Send the impulse message (which was pre-generated earlier)
-        sendImpulseMessage(datastringImpulse);
-        
+        if (sendImpulse == true) {
+            //Send the impulse message (which was pre-generated earlier)
+            sendImpulseMessage(datastringImpulse);
+        }
     }
     
     
     if (nbBufValProcessed >= averagingBufferSize) {
         
-        signal.set_signallevel(inputSensitivity * signalInstantEnergy);
-        signal.SerializeToString(&datastringLevel);
-        
-        sendSignalLevelMessage(datastringLevel);
+        if (sendSignalLevel == true) {
+            signal.set_signallevel(inputSensitivity * signalInstantEnergy);
+            signal.SerializeToString(&datastringLevel);
+            sendSignalLevelMessage(datastringLevel);
+        }
         
         nbBufValProcessed = 0;
         signalSum = 0;
     }
     
+    
     if (samplesSinceLastTimeInfoTransmission >= timeInfoCycle) {
-        // ask the host for the current time
-        AudioPlayHead::CurrentPositionInfo currentTime;
-        if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
-        {
-            // Successfully got the current time from the host..
-            timeInfo.set_position(currentTime);
-            timeInfo.SerializeToString(&datastringTimeInfo);
+        // Ask the host for the current time
+        if (sendTimeInfo == true) {
+            AudioPlayHead::CurrentPositionInfo currentTime;
+            if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
+            {
+                // Successfully got the current time from the host, set the pulses-per-quarter-note value inside the timeInfo message
+                timeInfo.set_position((float)currentTime.ppqPosition);
+                timeInfo.set_isplaying(currentTime.isPlaying);
+                timeInfo.set_tempo((float)currentTime.bpm);
+                timeInfo.SerializeToString(&datastringTimeInfo);
             
-            sendTimeInfoMessage(datastringTimeInfo);
-            samplesSinceLastTimeInfoTransmission = 0;
+                sendTimeInfoMessage(datastringTimeInfo);
+            }
         }
-        
-        
+        samplesSinceLastTimeInfoTransmission = 0;
     }
     
     // ask the host for the current time so we can display it...
@@ -370,12 +378,12 @@ void SignalProcessorAudioProcessor::defineSignalMessagesTimeInfo() {
 }
 
 
-void SignalProcessorAudioProcessor::sendTimeInfo(std::string datastring) {
+void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) {
     
     try {
         
         if (connectionEstablished_timeInfo == false) {
-            std::cout << "Trying to reconnect\n";
+            std::cout << "Trying to reconnect - timeInfoSocket\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             timeInfoSocket.close();
@@ -383,19 +391,19 @@ void SignalProcessorAudioProcessor::sendTimeInfo(std::string datastring) {
             connectionEstablished_timeInfo = true;
         }
         
-        boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
-        // std::cout << "Wrote Impulse : " << testString << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
+        int writtensize = boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
+        std::cout << "Wrote TimeInfo : " << datastring << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
         
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false\n";
+            std::cout << "Set the connection to false - timeInfoSocket\n";
             connectionEstablished_timeInfo = false;
             timeInfoSocket.close();
         }
         
     } catch (const std::exception & e) {
-        std::cout << "Caught an error while trying to initialize the socket - the Java server might not be ready\n";
+        std::cout << "TimeInfoSocket - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
         //std::cerr << e.what();
     }
     
@@ -408,7 +416,7 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
     try {
         
         if (connectionEstablished_signalLevel == false) {
-            std::cout << "Trying to reconnect\n";
+            std::cout << "Trying to reconnect - signalLevelSocket ch " << channel << "\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             signalLevelSocket.close();
@@ -422,13 +430,13 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false\n";
+            std::cout << "Set the connection to false - signalLevelSocket ch " << channel << "\n";
             connectionEstablished_signalLevel = false;
             signalLevelSocket.close();
         }
         
     } catch (const std::exception & e) {
-        std::cout << "Caught an error while trying to initialize the socket - the Java server might not be ready\n";
+        std::cout << "SignalLevelSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
         //std::cerr << e.what();
     }
     
@@ -440,7 +448,7 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
     try {
         
         if (connectionEstablished_impulse == false) {
-            std::cout << "Trying to reconnect\n";
+            std::cout << "Trying to reconnect - impulseSocket ch " << channel << "\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             impulseSocket.close();
@@ -454,13 +462,13 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false\n";
+            std::cout << "Set the connection to false - impulseSocket ch " << channel << "\n";
             connectionEstablished_impulse = false;
             impulseSocket.close();
         }
         
     } catch (const std::exception & e) {
-        std::cout << "Caught an error while trying to initialize the socket - the Java server might not be ready\n";
+        std::cout << "ImpulseSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
         //std::cerr << e.what();
     }
     
@@ -496,7 +504,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
     
-    std::cout << "I just wrote channel : " << channel << "\n";
+    std::cout << "SignalProcessor - Successfully saved XML plugin info for channel : " << channel << "\n";
     
     // then use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);

@@ -935,6 +935,620 @@ public final class SignalMessages {
     // @@protoc_insertion_point(class_scope:Impulse)
   }
 
+  public interface TimeInfoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool isPlaying = 1 [default = false];
+    /**
+     * <code>required bool isPlaying = 1 [default = false];</code>
+     */
+    boolean hasIsPlaying();
+    /**
+     * <code>required bool isPlaying = 1 [default = false];</code>
+     */
+    boolean getIsPlaying();
+
+    // required float tempo = 2 [default = 0];
+    /**
+     * <code>required float tempo = 2 [default = 0];</code>
+     */
+    boolean hasTempo();
+    /**
+     * <code>required float tempo = 2 [default = 0];</code>
+     */
+    float getTempo();
+
+    // required float position = 3 [default = 0];
+    /**
+     * <code>required float position = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Current position, in pulses-per-quarter-note
+     * </pre>
+     */
+    boolean hasPosition();
+    /**
+     * <code>required float position = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Current position, in pulses-per-quarter-note
+     * </pre>
+     */
+    float getPosition();
+  }
+  /**
+   * Protobuf type {@code TimeInfo}
+   */
+  public static final class TimeInfo extends
+      com.google.protobuf.GeneratedMessage
+      implements TimeInfoOrBuilder {
+    // Use TimeInfo.newBuilder() to construct.
+    private TimeInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private TimeInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final TimeInfo defaultInstance;
+    public static TimeInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public TimeInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TimeInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              isPlaying_ = input.readBool();
+              break;
+            }
+            case 21: {
+              bitField0_ |= 0x00000002;
+              tempo_ = input.readFloat();
+              break;
+            }
+            case 29: {
+              bitField0_ |= 0x00000004;
+              position_ = input.readFloat();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return SignalMessages.internal_static_TimeInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return SignalMessages.internal_static_TimeInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              SignalMessages.TimeInfo.class, SignalMessages.TimeInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<TimeInfo> PARSER =
+        new com.google.protobuf.AbstractParser<TimeInfo>() {
+      public TimeInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TimeInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TimeInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool isPlaying = 1 [default = false];
+    public static final int ISPLAYING_FIELD_NUMBER = 1;
+    private boolean isPlaying_;
+    /**
+     * <code>required bool isPlaying = 1 [default = false];</code>
+     */
+    public boolean hasIsPlaying() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool isPlaying = 1 [default = false];</code>
+     */
+    public boolean getIsPlaying() {
+      return isPlaying_;
+    }
+
+    // required float tempo = 2 [default = 0];
+    public static final int TEMPO_FIELD_NUMBER = 2;
+    private float tempo_;
+    /**
+     * <code>required float tempo = 2 [default = 0];</code>
+     */
+    public boolean hasTempo() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required float tempo = 2 [default = 0];</code>
+     */
+    public float getTempo() {
+      return tempo_;
+    }
+
+    // required float position = 3 [default = 0];
+    public static final int POSITION_FIELD_NUMBER = 3;
+    private float position_;
+    /**
+     * <code>required float position = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Current position, in pulses-per-quarter-note
+     * </pre>
+     */
+    public boolean hasPosition() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required float position = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Current position, in pulses-per-quarter-note
+     * </pre>
+     */
+    public float getPosition() {
+      return position_;
+    }
+
+    private void initFields() {
+      isPlaying_ = false;
+      tempo_ = 0F;
+      position_ = 0F;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasIsPlaying()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTempo()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPosition()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, isPlaying_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeFloat(2, tempo_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeFloat(3, position_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isPlaying_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, tempo_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, position_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static SignalMessages.TimeInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.TimeInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.TimeInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.TimeInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.TimeInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.TimeInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.TimeInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static SignalMessages.TimeInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.TimeInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.TimeInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(SignalMessages.TimeInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TimeInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements SignalMessages.TimeInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return SignalMessages.internal_static_TimeInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return SignalMessages.internal_static_TimeInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                SignalMessages.TimeInfo.class, SignalMessages.TimeInfo.Builder.class);
+      }
+
+      // Construct using SignalMessages.TimeInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        isPlaying_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        tempo_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        position_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return SignalMessages.internal_static_TimeInfo_descriptor;
+      }
+
+      public SignalMessages.TimeInfo getDefaultInstanceForType() {
+        return SignalMessages.TimeInfo.getDefaultInstance();
+      }
+
+      public SignalMessages.TimeInfo build() {
+        SignalMessages.TimeInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public SignalMessages.TimeInfo buildPartial() {
+        SignalMessages.TimeInfo result = new SignalMessages.TimeInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.isPlaying_ = isPlaying_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.tempo_ = tempo_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.position_ = position_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof SignalMessages.TimeInfo) {
+          return mergeFrom((SignalMessages.TimeInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(SignalMessages.TimeInfo other) {
+        if (other == SignalMessages.TimeInfo.getDefaultInstance()) return this;
+        if (other.hasIsPlaying()) {
+          setIsPlaying(other.getIsPlaying());
+        }
+        if (other.hasTempo()) {
+          setTempo(other.getTempo());
+        }
+        if (other.hasPosition()) {
+          setPosition(other.getPosition());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasIsPlaying()) {
+          
+          return false;
+        }
+        if (!hasTempo()) {
+          
+          return false;
+        }
+        if (!hasPosition()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        SignalMessages.TimeInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (SignalMessages.TimeInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool isPlaying = 1 [default = false];
+      private boolean isPlaying_ ;
+      /**
+       * <code>required bool isPlaying = 1 [default = false];</code>
+       */
+      public boolean hasIsPlaying() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool isPlaying = 1 [default = false];</code>
+       */
+      public boolean getIsPlaying() {
+        return isPlaying_;
+      }
+      /**
+       * <code>required bool isPlaying = 1 [default = false];</code>
+       */
+      public Builder setIsPlaying(boolean value) {
+        bitField0_ |= 0x00000001;
+        isPlaying_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool isPlaying = 1 [default = false];</code>
+       */
+      public Builder clearIsPlaying() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        isPlaying_ = false;
+        onChanged();
+        return this;
+      }
+
+      // required float tempo = 2 [default = 0];
+      private float tempo_ ;
+      /**
+       * <code>required float tempo = 2 [default = 0];</code>
+       */
+      public boolean hasTempo() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required float tempo = 2 [default = 0];</code>
+       */
+      public float getTempo() {
+        return tempo_;
+      }
+      /**
+       * <code>required float tempo = 2 [default = 0];</code>
+       */
+      public Builder setTempo(float value) {
+        bitField0_ |= 0x00000002;
+        tempo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float tempo = 2 [default = 0];</code>
+       */
+      public Builder clearTempo() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        tempo_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // required float position = 3 [default = 0];
+      private float position_ ;
+      /**
+       * <code>required float position = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Current position, in pulses-per-quarter-note
+       * </pre>
+       */
+      public boolean hasPosition() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required float position = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Current position, in pulses-per-quarter-note
+       * </pre>
+       */
+      public float getPosition() {
+        return position_;
+      }
+      /**
+       * <code>required float position = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Current position, in pulses-per-quarter-note
+       * </pre>
+       */
+      public Builder setPosition(float value) {
+        bitField0_ |= 0x00000004;
+        position_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float position = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Current position, in pulses-per-quarter-note
+       * </pre>
+       */
+      public Builder clearPosition() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        position_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:TimeInfo)
+    }
+
+    static {
+      defaultInstance = new TimeInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:TimeInfo)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_SignalLevel_descriptor;
   private static
@@ -945,6 +1559,11 @@ public final class SignalMessages {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Impulse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_TimeInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_TimeInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -956,8 +1575,10 @@ public final class SignalMessages {
     java.lang.String[] descriptorData = {
       "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n" +
       "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:" +
-      "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011B\020B\016Si" +
-      "gnalMessages"
+      "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"K\n\010Ti" +
+      "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp" +
+      "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa" +
+      "lMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -976,6 +1597,12 @@ public final class SignalMessages {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Impulse_descriptor,
               new java.lang.String[] { "SignalID", });
+          internal_static_TimeInfo_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_TimeInfo_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_TimeInfo_descriptor,
+              new java.lang.String[] { "IsPlaying", "Tempo", "Position", });
           return null;
         }
       };

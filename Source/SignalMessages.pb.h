@@ -33,6 +33,7 @@ void protobuf_ShutdownFile_SignalMessages_2eproto();
 
 class SignalLevel;
 class Impulse;
+class TimeInfo;
 
 // ===================================================================
 
@@ -208,6 +209,108 @@ class Impulse : public ::google_public::protobuf::Message {
   void InitAsDefaultInstance();
   static Impulse* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class TimeInfo : public ::google_public::protobuf::Message {
+ public:
+  TimeInfo();
+  virtual ~TimeInfo();
+
+  TimeInfo(const TimeInfo& from);
+
+  inline TimeInfo& operator=(const TimeInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const TimeInfo& default_instance();
+
+  void Swap(TimeInfo* other);
+
+  // implements Message ----------------------------------------------
+
+  TimeInfo* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const TimeInfo& from);
+  void MergeFrom(const TimeInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required bool isPlaying = 1 [default = false];
+  inline bool has_isplaying() const;
+  inline void clear_isplaying();
+  static const int kIsPlayingFieldNumber = 1;
+  inline bool isplaying() const;
+  inline void set_isplaying(bool value);
+
+  // required float tempo = 2 [default = 0];
+  inline bool has_tempo() const;
+  inline void clear_tempo();
+  static const int kTempoFieldNumber = 2;
+  inline float tempo() const;
+  inline void set_tempo(float value);
+
+  // required float position = 3 [default = 0];
+  inline bool has_position() const;
+  inline void clear_position();
+  static const int kPositionFieldNumber = 3;
+  inline float position() const;
+  inline void set_position(float value);
+
+  // @@protoc_insertion_point(class_scope:TimeInfo)
+ private:
+  inline void set_has_isplaying();
+  inline void clear_has_isplaying();
+  inline void set_has_tempo();
+  inline void clear_has_tempo();
+  inline void set_has_position();
+  inline void clear_has_position();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  bool isplaying_;
+  float tempo_;
+  float position_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_SignalMessages_2eproto();
+  friend void protobuf_AssignDesc_SignalMessages_2eproto();
+  friend void protobuf_ShutdownFile_SignalMessages_2eproto();
+
+  void InitAsDefaultInstance();
+  static TimeInfo* default_instance_;
+};
 // ===================================================================
 
 
@@ -283,6 +386,76 @@ inline ::google_public::protobuf::int32 Impulse::signalid() const {
 inline void Impulse::set_signalid(::google_public::protobuf::int32 value) {
   set_has_signalid();
   signalid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TimeInfo
+
+// required bool isPlaying = 1 [default = false];
+inline bool TimeInfo::has_isplaying() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void TimeInfo::set_has_isplaying() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void TimeInfo::clear_has_isplaying() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void TimeInfo::clear_isplaying() {
+  isplaying_ = false;
+  clear_has_isplaying();
+}
+inline bool TimeInfo::isplaying() const {
+  return isplaying_;
+}
+inline void TimeInfo::set_isplaying(bool value) {
+  set_has_isplaying();
+  isplaying_ = value;
+}
+
+// required float tempo = 2 [default = 0];
+inline bool TimeInfo::has_tempo() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void TimeInfo::set_has_tempo() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void TimeInfo::clear_has_tempo() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void TimeInfo::clear_tempo() {
+  tempo_ = 0;
+  clear_has_tempo();
+}
+inline float TimeInfo::tempo() const {
+  return tempo_;
+}
+inline void TimeInfo::set_tempo(float value) {
+  set_has_tempo();
+  tempo_ = value;
+}
+
+// required float position = 3 [default = 0];
+inline bool TimeInfo::has_position() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void TimeInfo::set_has_position() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void TimeInfo::clear_has_position() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void TimeInfo::clear_position() {
+  position_ = 0;
+  clear_has_position();
+}
+inline float TimeInfo::position() const {
+  return position_;
+}
+inline void TimeInfo::set_position(float value) {
+  set_has_position();
+  position_ = value;
 }
 
 

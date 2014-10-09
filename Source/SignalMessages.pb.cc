@@ -24,6 +24,9 @@ const ::google_public::protobuf::internal::GeneratedMessageReflection*
 const ::google_public::protobuf::Descriptor* Impulse_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   Impulse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* TimeInfo_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  TimeInfo_reflection_ = NULL;
 
 }  // namespace
 
@@ -65,6 +68,23 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Impulse));
+  TimeInfo_descriptor_ = file->message_type(2);
+  static const int TimeInfo_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, isplaying_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, tempo_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, position_),
+  };
+  TimeInfo_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      TimeInfo_descriptor_,
+      TimeInfo::default_instance_,
+      TimeInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(TimeInfo));
 }
 
 namespace {
@@ -81,6 +101,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     SignalLevel_descriptor_, &SignalLevel::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Impulse_descriptor_, &Impulse::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    TimeInfo_descriptor_, &TimeInfo::default_instance());
 }
 
 }  // namespace
@@ -90,6 +112,8 @@ void protobuf_ShutdownFile_SignalMessages_2eproto() {
   delete SignalLevel_reflection_;
   delete Impulse::default_instance_;
   delete Impulse_reflection_;
+  delete TimeInfo::default_instance_;
+  delete TimeInfo_reflection_;
 }
 
 void protobuf_AddDesc_SignalMessages_2eproto() {
@@ -101,14 +125,18 @@ void protobuf_AddDesc_SignalMessages_2eproto() {
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n"
     "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:"
-    "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011B\020B\016Si"
-    "gnalMessages", 132);
+    "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"K\n\010Ti"
+    "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp"
+    "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa"
+    "lMessages", 209);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SignalMessages.proto", &protobuf_RegisterTypes);
   SignalLevel::default_instance_ = new SignalLevel();
   Impulse::default_instance_ = new Impulse();
+  TimeInfo::default_instance_ = new TimeInfo();
   SignalLevel::default_instance_->InitAsDefaultInstance();
   Impulse::default_instance_->InitAsDefaultInstance();
+  TimeInfo::default_instance_->InitAsDefaultInstance();
   ::google_public::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_SignalMessages_2eproto);
 }
 
@@ -571,6 +599,289 @@ void Impulse::Swap(Impulse* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = Impulse_descriptor_;
   metadata.reflection = Impulse_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int TimeInfo::kIsPlayingFieldNumber;
+const int TimeInfo::kTempoFieldNumber;
+const int TimeInfo::kPositionFieldNumber;
+#endif  // !_MSC_VER
+
+TimeInfo::TimeInfo()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void TimeInfo::InitAsDefaultInstance() {
+}
+
+TimeInfo::TimeInfo(const TimeInfo& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void TimeInfo::SharedCtor() {
+  _cached_size_ = 0;
+  isplaying_ = false;
+  tempo_ = 0;
+  position_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+TimeInfo::~TimeInfo() {
+  SharedDtor();
+}
+
+void TimeInfo::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void TimeInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* TimeInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TimeInfo_descriptor_;
+}
+
+const TimeInfo& TimeInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_SignalMessages_2eproto();
+  return *default_instance_;
+}
+
+TimeInfo* TimeInfo::default_instance_ = NULL;
+
+TimeInfo* TimeInfo::New() const {
+  return new TimeInfo;
+}
+
+void TimeInfo::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    isplaying_ = false;
+    tempo_ = 0;
+    position_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool TimeInfo::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required bool isPlaying = 1 [default = false];
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google_public::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isplaying_)));
+          set_has_isplaying();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(21)) goto parse_tempo;
+        break;
+      }
+
+      // required float tempo = 2 [default = 0];
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_tempo:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &tempo_)));
+          set_has_tempo();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(29)) goto parse_position;
+        break;
+      }
+
+      // required float position = 3 [default = 0];
+      case 3: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_position:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &position_)));
+          set_has_position();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void TimeInfo::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required bool isPlaying = 1 [default = false];
+  if (has_isplaying()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteBool(1, this->isplaying(), output);
+  }
+
+  // required float tempo = 2 [default = 0];
+  if (has_tempo()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(2, this->tempo(), output);
+  }
+
+  // required float position = 3 [default = 0];
+  if (has_position()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(3, this->position(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* TimeInfo::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required bool isPlaying = 1 [default = false];
+  if (has_isplaying()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->isplaying(), target);
+  }
+
+  // required float tempo = 2 [default = 0];
+  if (has_tempo()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->tempo(), target);
+  }
+
+  // required float position = 3 [default = 0];
+  if (has_position()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->position(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int TimeInfo::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required bool isPlaying = 1 [default = false];
+    if (has_isplaying()) {
+      total_size += 1 + 1;
+    }
+
+    // required float tempo = 2 [default = 0];
+    if (has_tempo()) {
+      total_size += 1 + 4;
+    }
+
+    // required float position = 3 [default = 0];
+    if (has_position()) {
+      total_size += 1 + 4;
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void TimeInfo::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const TimeInfo* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const TimeInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void TimeInfo::MergeFrom(const TimeInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_isplaying()) {
+      set_isplaying(from.isplaying());
+    }
+    if (from.has_tempo()) {
+      set_tempo(from.tempo());
+    }
+    if (from.has_position()) {
+      set_position(from.position());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void TimeInfo::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TimeInfo::CopyFrom(const TimeInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TimeInfo::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+
+  return true;
+}
+
+void TimeInfo::Swap(TimeInfo* other) {
+  if (other != this) {
+    std::swap(isplaying_, other->isplaying_);
+    std::swap(tempo_, other->tempo_);
+    std::swap(position_, other->position_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata TimeInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = TimeInfo_descriptor_;
+  metadata.reflection = TimeInfo_reflection_;
   return metadata;
 }
 

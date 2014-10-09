@@ -79,7 +79,7 @@ public:
     void defineSignalMessagesTimeInfo();
     void sendSignalLevelMessage(std::string datastring);
     void sendImpulseMessage(std::string datastring);
-    void sendTimeInfo(std::string datastring);
+    void sendTimeInfoMessage(std::string datastring);
     
     float denormalize(float input);
     
@@ -126,9 +126,9 @@ public:
     int channel;
     int averagingBufferSize;
     float inputSensitivity;
-    bool sendTimeInfo;
-    bool sendSignalLevel;
-    bool sendImpulse;
+    bool sendTimeInfo    = true;
+    bool sendSignalLevel = true;
+    bool sendImpulse     = true;
     bool monoStereo;         //false -> mono
     
     

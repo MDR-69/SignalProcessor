@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SignalMessages.proto',
   package='',
-  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x42\x10\x42\x0eSignalMessages')
+  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
 
 
 
@@ -80,8 +80,51 @@ _IMPULSE = _descriptor.Descriptor(
   serialized_end=114,
 )
 
+
+_TIMEINFO = _descriptor.Descriptor(
+  name='TimeInfo',
+  full_name='TimeInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='isPlaying', full_name='TimeInfo.isPlaying', index=0,
+      number=1, type=8, cpp_type=7, label=2,
+      has_default_value=True, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='tempo', full_name='TimeInfo.tempo', index=1,
+      number=2, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='position', full_name='TimeInfo.position', index=2,
+      number=3, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=116,
+  serialized_end=191,
+)
+
 DESCRIPTOR.message_types_by_name['SignalLevel'] = _SIGNALLEVEL
 DESCRIPTOR.message_types_by_name['Impulse'] = _IMPULSE
+DESCRIPTOR.message_types_by_name['TimeInfo'] = _TIMEINFO
 
 class SignalLevel(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType
@@ -94,6 +137,12 @@ class Impulse(_message.Message):
   DESCRIPTOR = _IMPULSE
 
   # @@protoc_insertion_point(class_scope:Impulse)
+
+class TimeInfo(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _TIMEINFO
+
+  # @@protoc_insertion_point(class_scope:TimeInfo)
 
 
 DESCRIPTOR.has_options = True

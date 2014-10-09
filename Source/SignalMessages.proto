@@ -14,4 +14,6 @@ message Impulse {
 
 message TimeInfo {
   required bool isPlaying = 1 [default=false];
+  required float tempo = 2 [default=0];
+  required float position = 3 [default=0];          //Current position, in pulses-per-quarter-note
 }
