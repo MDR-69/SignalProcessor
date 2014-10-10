@@ -18,20 +18,23 @@ using boost::asio::local::stream_protocol;
 //==============================================================================
 SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
-averagingBufferSize(defaultAveragingBufferSize),
-inputSensitivity(defaultInputSensitivity),
-monoStereo(defaultMonoStereo),
-timeInfoSocket(myIO_service),
-signalLevelSocket(myIO_service),
-impulseSocket(myIO_service),
-timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
-signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel),
-impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse),
-datastringTimeInfo(""),
-datastringLevel(""),
-datastringImpulse("")
+  averagingBufferSize(defaultAveragingBufferSize),
+  inputSensitivity(defaultInputSensitivity),
+  monoStereo(defaultMonoStereo),
+  timeInfoSocket(myIO_service),
+  signalLevelSocket(myIO_service),
+  impulseSocket(myIO_service),
+  timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
+  signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel + channel),
+  impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse + channel),
+  datastringTimeInfo(""),
+  datastringLevel(""),
+  datastringImpulse("")
 {
+    defineSignalMessagesChannel();
+    
     lastPosInfo.resetToDefault();
+    
     
     try {
         std::cout << "SignalLevel Initial connection\n";
@@ -275,7 +278,7 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
     signalAverageEnergy = denormalize(((signalAverageEnergy * averageSignalWeight) + signalInstantEnergy) / averageEnergyBufferSize);
-    signalInstantEnergy = signalSum / (averagingBufferSize * monoStereo);
+    signalInstantEnergy = signalSum / (averagingBufferSize * numberOfChannels);
     
     
     // If the instant signal energy is thresholdFactor times greater than the average energy, consider that a beat is detected
@@ -292,7 +295,6 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     
     
     if (nbBufValProcessed >= averagingBufferSize) {
-        
         if (sendSignalLevel == true) {
             signal.set_signallevel(inputSensitivity * signalInstantEnergy);
             signal.SerializeToString(&datastringLevel);
@@ -348,15 +350,15 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     
-    //    boost::asio::ip::tcp::endpoint newSignalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel);
-    //    boost::asio::ip::tcp::endpoint newImpulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse);
-    //
-    //    signalLevelEndpoint = newSignalLevelEndpoint;
-    //    impulseEndpoint = newImpulseEndpoint;
-    //    connectionEstablished_impulse = false;
-    //    connectionEstablished_signalLevel = false;
-    //    signalLevelSocket.close();
-    //    impulseSocket.close();
+    boost::asio::ip::tcp::endpoint newSignalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel + channel);
+    boost::asio::ip::tcp::endpoint newImpulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse + channel);
+    
+    signalLevelEndpoint = newSignalLevelEndpoint;
+    impulseEndpoint = newImpulseEndpoint;
+    connectionEstablished_impulse = false;
+    connectionEstablished_signalLevel = false;
+    signalLevelSocket.close();
+    impulseSocket.close();
     
     signal.set_signalid(channel);
     
@@ -392,7 +394,6 @@ void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) 
         }
         
         int writtensize = boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
-        std::cout << "Wrote TimeInfo : " << datastring << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
         
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
@@ -416,7 +417,7 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
     try {
         
         if (connectionEstablished_signalLevel == false) {
-            std::cout << "Trying to reconnect - signalLevelSocket ch " << channel << "\n";
+            //std::cout << "Trying to reconnect - signalLevelSocket ch " << channel << "\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             signalLevelSocket.close();
@@ -448,7 +449,7 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
     try {
         
         if (connectionEstablished_impulse == false) {
-            std::cout << "Trying to reconnect - impulseSocket ch " << channel << "\n";
+//            std::cout << "Trying to reconnect - impulseSocket ch " << channel << "\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             impulseSocket.close();
