@@ -52,12 +52,11 @@ private:
     Label infoLabel, averagingBufferLabel, inputSensitivityLabel, channelLabel, javaAppPathLabel;
     Slider averagingBufferSlider, inputSensitivitySlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, monoStereoButton;
-    //ComboBox modeComboBox;
+    ImageButton logoButton;
     ComboBox channelComboBox;
     ScopedPointer<ResizableCornerComponent> resizer;
     ComponentBoundsConstrainer resizeLimits;
     TextEditor textEditorProcessingPath;
-    
     
     AudioPlayHead::CurrentPositionInfo lastDisplayedPosition;
     
@@ -68,6 +67,7 @@ private:
     
     void displayPositionInfo (const AudioPlayHead::CurrentPositionInfo& pos);
 
+    String logoFilePath = "data/logo_white.png";
 };
 
 

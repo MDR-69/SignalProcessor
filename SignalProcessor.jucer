@@ -12,6 +12,7 @@
               jucerVersion="3.1.0" companyName="PlayMe" companyWebsite="http://playme-official.com">
   <MAINGROUP id="JmcptF" name="SignalProcessor">
     <GROUP id="{940915AD-7379-8ED5-F295-BBF170A10727}" name="Source">
+      <FILE id="BCjFOH" name="logo_white.png" compile="0" resource="1" file="Source/Resources/logo_white.png"/>
       <FILE id="bzT7LV" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="JEPlLQ" name="PluginProcessor.h" compile="0" resource="0"

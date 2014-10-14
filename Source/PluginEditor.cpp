@@ -26,6 +26,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendSignalLevelButton("Send SignalLevel"),
       sendImpulseButton("Send Impulse"),
       monoStereoButton ("Stereo Processing"),
+      logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
       textEditorProcessingPath ("processingPath")
 {
@@ -80,7 +81,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     String channelComboBoxElements[] = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
     for (int i = 1; i <= sizeof(channelComboBoxElements)/sizeof(channelComboBoxElements[0]); ++i)
         channelComboBox.addItem (channelComboBoxElements[i-1], i);
-    channelComboBox.setSelectedId (getProcessor().channel - 1);
+    channelComboBox.setSelectedId (getProcessor().channel);
     channelComboBox.addListener (this);
 
     
@@ -90,6 +91,16 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont (Font (11.0f));
+    
+
+    Image image = ImageCache::getFromMemory (BinaryData::logo_white_png, BinaryData::logo_white_pngSize);
+    logoButton.setImages (true, true, true,
+                  image, 1.0f, Colours::transparentBlack,
+                  image, 1.0f, Colours::transparentBlack,
+                  image, 1.0f, Colours::transparentBlack,
+                  0.5f);
+    addAndMakeVisible (logoButton);
+    logoButton.addListener (this);
     
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);
@@ -123,7 +134,7 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
     
     g.setColour (Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("PlayMe Signal Processing!",
+    g.drawFittedText ("PlayMe Signal Processing test !",
                       0, 0, getWidth(), getHeight(),
                       Justification::centred, 1);
     
