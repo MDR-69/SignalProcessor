@@ -257,6 +257,8 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     //keyboardState.processNextMidiBuffer (midiMessages, 0, buffer.getNumSamples(), true);
     
     
+    std::cout << "sendTimeInfo : " << sendTimeInfo << "   sendSignalLevel : " << sendSignalLevel << "  sendImpulse : " << sendImpulse << "   monoStereo : " << monoStereo << "\n";
+    
     //////////////////////////////////////////////////////////////////
     // Audio processing takes place here !
     
@@ -393,7 +395,7 @@ void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) 
             connectionEstablished_timeInfo = true;
         }
         
-        int writtensize = boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
+        boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
         
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
@@ -528,11 +530,11 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             lastUIHeight        = xmlState->getIntAttribute ("uiHeight", lastUIHeight);
             averagingBufferSize = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
             inputSensitivity    = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
-            sendTimeInfo        = xmlState->getIntAttribute ("sendTimeInfo", sendTimeInfo);
-            sendSignalLevel     = xmlState->getIntAttribute ("sendSignalLevel", sendSignalLevel);
-            sendImpulse         = xmlState->getIntAttribute ("sendImpulse", sendImpulse);
+            sendTimeInfo        = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
+            sendSignalLevel     = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);
+            sendImpulse         = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
             channel             = xmlState->getIntAttribute ("channel", channel);
-            monoStereo          = xmlState->getIntAttribute ("monoStereo", monoStereo);
+            monoStereo          = xmlState->getBoolAttribute ("monoStereo", monoStereo);
             std::cout << "I just read channel : " << channel << "\n";
         }
     }

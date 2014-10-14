@@ -19,17 +19,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       infoLabel (String::empty),
       averagingBufferLabel ("", "Averaging Buffer (samples):"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
-      sendTimeInfoLabel("", "Send Time Info:"),
-      sendSignalLevelLabel("", "Send Signal Level:"),
-      sendImpulseLabel("", "Send Impulses:"),
       channelLabel ("", "Channel Number:"),
-      monoStereoLabel ("", "Mono/Stereo Processing:"),
       averagingBufferSlider ("averagingBuffer"),
       inputSensitivitySlider ("inputSensitivity"),
-      sendTimeInfoButton("sendTimeInfo"),
-      sendSignalLevelButton("sendSignalLevel"),
-      sendImpulseButton("sendImpulse"),
-      monoStereoButton ("Stereo"),
+      sendTimeInfoButton("Send TimeInfo"),
+      sendSignalLevelButton("Send SignalLevel"),
+      sendImpulseButton("Send Impulse"),
+      monoStereoButton ("Stereo Processing"),
       channelComboBox ("channel"),
       textEditorProcessingPath ("processingPath")
 {
@@ -42,27 +38,36 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setSliderStyle (Slider::IncDecButtons);
     averagingBufferSlider.addListener (this);
     averagingBufferSlider.setRange (64, 4096, 64);
+    averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     
     addAndMakeVisible (inputSensitivitySlider);
     inputSensitivitySlider.setSliderStyle (Slider::Rotary);
     inputSensitivitySlider.addListener (this);
     inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
+    averagingBufferSlider.setValue(getProcessor().inputSensitivity);
 
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.addListener (this);
-    sendTimeInfoButton.setBounds (300, 350, 100, 40);
+    sendTimeInfoButton.changeWidthToFitText();
+    sendTimeInfoButton.setBounds (300, 180, 140, 20);
     addAndMakeVisible (sendSignalLevelButton);
     sendSignalLevelButton.addListener (this);
-    sendSignalLevelButton.setBounds (300, 400, 100, 40);
+    sendSignalLevelButton.changeWidthToFitText();
+    sendSignalLevelButton.setBounds (300, 200, 140, 20);
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.addListener (this);
-    sendImpulseButton.setBounds (300, 450, 100, 40);
-    
+    sendImpulseButton.changeWidthToFitText();
+    sendImpulseButton.setBounds (300, 220, 140, 20);
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
-    //monoStereoButton.changeWidthToFitText (22);
-    monoStereoButton.setBounds (300, 300, 40, 40);
-
+    monoStereoButton.changeWidthToFitText();
+    monoStereoButton.setBounds (300, 240, 140, 20);
+    
+    sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
+    sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
+    sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
+    monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
+    
     addAndMakeVisible (textEditorProcessingPath);
     textEditorProcessingPath.setBounds (10, 200, 200, 24);
     textEditorProcessingPath.addListener (this);
@@ -75,7 +80,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     String channelComboBoxElements[] = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
     for (int i = 1; i <= sizeof(channelComboBoxElements)/sizeof(channelComboBoxElements[0]); ++i)
         channelComboBox.addItem (channelComboBoxElements[i-1], i);
-    channelComboBox.setSelectedId (1);
+    channelComboBox.setSelectedId (getProcessor().channel - 1);
     channelComboBox.addListener (this);
 
     
@@ -85,15 +90,6 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont (Font (11.0f));
-
-    sendTimeInfoLabel.attachToComponent(&sendTimeInfoButton, false);
-    sendTimeInfoLabel.setFont (Font (11.0f));
-    sendSignalLevelLabel.attachToComponent(&sendSignalLevelButton, false);
-    sendSignalLevelLabel.setFont (Font (11.0f));
-    sendImpulseLabel.attachToComponent(&sendImpulseButton, false);
-    sendImpulseLabel.setFont (Font (11.0f));
-    monoStereoLabel.attachToComponent(&monoStereoButton, false);
-    monoStereoLabel.setFont (Font (11.0f));
     
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);
