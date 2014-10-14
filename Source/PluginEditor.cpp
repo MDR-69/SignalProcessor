@@ -101,6 +101,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
                   0.5f);
     addAndMakeVisible (logoButton);
     logoButton.addListener (this);
+    logoButton.setBounds(50,350,image.getWidth(),image.getHeight());
     
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);

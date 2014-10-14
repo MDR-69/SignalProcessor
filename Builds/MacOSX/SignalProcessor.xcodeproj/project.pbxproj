@@ -36,6 +36,7 @@
 		4BE5443C4D1691945F8D2AC0 /* CarbonEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6E8266DF0460B2EB1ABFDD5 /* CarbonEventHandler.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		4D65D2BFB5A6B900B7E0D105 /* MusicDeviceBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C04535CD5E8C55FB497C3 /* MusicDeviceBase.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		565BD6FA66407B1B4EF81910 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97668EC9F2798247E7E12C9 /* CoreAudio.framework */; };
+		5B11905619ED3D4C0051F441 /* BinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B11905419ED3D4C0051F441 /* BinaryData.cpp */; };
 		5B3F4B7419C57AC40099651D /* libboost_atomic-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6C19C57AC40099651D /* libboost_atomic-mt.a */; };
 		5B3F4B7519C57AC40099651D /* libboost_atomic-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6D19C57AC40099651D /* libboost_atomic-mt.dylib */; };
 		5B3F4B7619C57AC40099651D /* libboost_iostreams-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6E19C57AC40099651D /* libboost_iostreams-mt.a */; };
@@ -443,6 +444,9 @@
 		59D754455D41A49BC407DD64 /* juce_FileInputSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_FileInputSource.cpp; path = ../../JuceLibraryCode/modules/juce_core/streams/juce_FileInputSource.cpp; sourceTree = SOURCE_ROOT; };
 		5AF3819E5056B718CB5650FB /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		5B0EC4B719B9938800139C25 /* SignalMessages.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SignalMessages.proto; path = ../../Source/SignalMessages.proto; sourceTree = "<group>"; };
+		5B11905319ED3D4C0051F441 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = "<group>"; };
+		5B11905419ED3D4C0051F441 /* BinaryData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = "<group>"; };
+		5B11905519ED3D4C0051F441 /* BinaryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = "<group>"; };
 		5B3F4B6C19C57AC40099651D /* libboost_atomic-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_atomic-mt.a"; path = "../../../../../../../opt/local/lib/libboost_atomic-mt.a"; sourceTree = "<group>"; };
 		5B3F4B6D19C57AC40099651D /* libboost_atomic-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_atomic-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_atomic-mt.dylib"; sourceTree = "<group>"; };
 		5B3F4B6E19C57AC40099651D /* libboost_iostreams-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_iostreams-mt.a"; path = "../../../../../../../opt/local/lib/libboost_iostreams-mt.a"; sourceTree = "<group>"; };
@@ -1708,6 +1712,9 @@
 			children = (
 				0859E2A313EE7D6840ECD5C6 /* Juce AU Wrapper */,
 				A956B60AC02AFEDF85D1A21B /* AppConfig.h */,
+				5B11905419ED3D4C0051F441 /* BinaryData.cpp */,
+				5B11905519ED3D4C0051F441 /* BinaryData.h */,
+				5B11905319ED3D4C0051F441 /* JuceHeader.h */,
 				B7A45EEE56C385F266CBFE92 /* juce_AAX_Wrapper.cpp */,
 				767423FC846B44BE5A8CFB12 /* juce_AAX_Wrapper.mm */,
 				2E46D9B38B756D82899D9B11 /* juce_AU_Resources.r */,
@@ -3198,6 +3205,7 @@
 				C7F1A16FCD7871EC70612F84 /* juce_audio_processors.mm in Sources */,
 				422C3D942843A24BEA914094 /* juce_audio_utils.mm in Sources */,
 				91B78862079EB709105F2DBE /* juce_box2d.cpp in Sources */,
+				5B11905619ED3D4C0051F441 /* BinaryData.cpp in Sources */,
 				8A680A17592B1FA65D989755 /* juce_core.mm in Sources */,
 				04A7DCB6AFF028F44DAD6A12 /* juce_cryptography.mm in Sources */,
 				D59C67E978A4987F72D2BF76 /* juce_data_structures.mm in Sources */,
