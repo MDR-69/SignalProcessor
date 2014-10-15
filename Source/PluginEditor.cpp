@@ -28,53 +28,68 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       monoStereoButton ("Stereo Processing"),
       logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
-      textEditorProcessingPath ("processingPath")
+//      textEditorProcessingPath ("processingPath"),
+      pluginFont("standard 07_57", 25.0f, 0)
 {
     
-    //Keep the pointer on the Audio Processor
-    //SignalProcessorAudioProcessor& audioProcessorInstance = owner;
+    // This is where our plugin's editor size is set.
+    setSize (500, 500);
+    
+    SquareLookAndFeel* slaf = new SquareLookAndFeel();
+    setupSquareLookAndFeelColours (*slaf);
     
     // add some sliders..
     addAndMakeVisible (averagingBufferSlider);
+    averagingBufferSlider.setLookAndFeel(slaf);
     averagingBufferSlider.setSliderStyle (Slider::IncDecButtons);
     averagingBufferSlider.addListener (this);
     averagingBufferSlider.setRange (64, 4096, 64);
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     
     addAndMakeVisible (inputSensitivitySlider);
+    inputSensitivitySlider.setLookAndFeel(slaf);
     inputSensitivitySlider.setSliderStyle (Slider::Rotary);
     inputSensitivitySlider.addListener (this);
     inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
     averagingBufferSlider.setValue(getProcessor().inputSensitivity);
 
     addAndMakeVisible (sendTimeInfoButton);
+    sendTimeInfoButton.setLookAndFeel(slaf);
     sendTimeInfoButton.addListener (this);
     sendTimeInfoButton.changeWidthToFitText();
     sendTimeInfoButton.setBounds (300, 180, 140, 20);
+    sendTimeInfoButton.setColour (0, Colours::white);
     addAndMakeVisible (sendSignalLevelButton);
+    sendSignalLevelButton.setLookAndFeel(slaf);
     sendSignalLevelButton.addListener (this);
     sendSignalLevelButton.changeWidthToFitText();
     sendSignalLevelButton.setBounds (300, 200, 140, 20);
+    sendSignalLevelButton.setColour (0, Colours::white);
     addAndMakeVisible (sendImpulseButton);
+    sendImpulseButton.setLookAndFeel(slaf);
     sendImpulseButton.addListener (this);
     sendImpulseButton.changeWidthToFitText();
     sendImpulseButton.setBounds (300, 220, 140, 20);
+    sendImpulseButton.setColour (0, Colours::white);
     addAndMakeVisible (monoStereoButton);
+    monoStereoButton.setLookAndFeel(slaf);
     monoStereoButton.addListener (this);
     monoStereoButton.changeWidthToFitText();
     monoStereoButton.setBounds (300, 240, 140, 20);
+    monoStereoButton.setColour (0, Colours::white);
     
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
     
-    addAndMakeVisible (textEditorProcessingPath);
-    textEditorProcessingPath.setBounds (10, 200, 200, 24);
-    textEditorProcessingPath.addListener (this);
-    textEditorProcessingPath.setText ("Single-line text box");
+//    addAndMakeVisible (textEditorProcessingPath);
+//    textEditorProcessingPath.setBounds (10, 200, 200, 24);
+//    textEditorProcessingPath.addListener (this);
+//    textEditorProcessingPath.setText ("Single-line text box");
     
     addAndMakeVisible(channelComboBox);
+    channelComboBox.setLookAndFeel(slaf);
     channelComboBox.setBounds (10, 185, 100, 24);
     channelComboBox.setEditableText (false);
     channelComboBox.setJustificationType (Justification::centred);
@@ -87,21 +102,22 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     
     // add some labels for the sliders..
     averagingBufferLabel.attachToComponent (&averagingBufferSlider, false);
-    averagingBufferLabel.setFont (Font (11.0f));
+    averagingBufferLabel.setFont(pluginFont);
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
-    inputSensitivityLabel.setFont (Font (11.0f));
+    inputSensitivityLabel.setFont(pluginFont);
     
 
-    Image image = ImageCache::getFromMemory (BinaryData::logo_white_png, BinaryData::logo_white_pngSize);
+    logoImage = ImageCache::getFromMemory (BinaryData::logo_white_png, BinaryData::logo_white_pngSize);
     logoButton.setImages (true, true, true,
-                  image, 1.0f, Colours::transparentBlack,
-                  image, 1.0f, Colours::transparentBlack,
-                  image, 1.0f, Colours::transparentBlack,
+                  logoImage, 1.0f, Colours::transparentBlack,
+                  logoImage, 1.0f, Colours::transparentBlack,
+                  logoImage, 1.0f, Colours::transparentBlack,
                   0.5f);
     addAndMakeVisible (logoButton);
     logoButton.addListener (this);
-    logoButton.setBounds(50,350,image.getWidth(),image.getHeight());
+//    logoButton.setBounds((getWidth() - image.getWidth())/2,30,image.getWidth(),image.getHeight());
+    logoButton.setCentrePosition(getWidth()/2, 35 + logoImage.getHeight()/2);
     
     // add the midi keyboard component..
     addAndMakeVisible (midiKeyboard);
@@ -109,13 +125,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     // add a label that will display the current timecode and status..
     addAndMakeVisible (infoLabel);
     infoLabel.setColour (Label::textColourId, Colours::black);
-
-    // add the triangular resizer component for the bottom-right of the UI
-    addAndMakeVisible (resizer = new ResizableCornerComponent (this, &resizeLimits));
-    resizeLimits.setSizeLimits (150, 150, 800, 800);
+    infoLabel.setFont(pluginFont);
     
-    // This is where our plugin's editor size is set.
-    setSize (500, 500);
+    //To be done : free slaf
+    //delete(slaf);
     
     startTimer (50);
     
@@ -133,29 +146,34 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
                                        Colours::black, 0, (float) getHeight(), false));
     g.fillAll();
     
+    //g.setColour (Colours::white);
+    g.setFont (pluginFont);
     g.setColour (Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("PlayMe Signal Processing test !",
-                      0, 0, getWidth(), getHeight(),
+    
+    g.drawLine(20, 20, getWidth() - 20, 20, 8);
+    g.drawLine(20, 90, getWidth() - 20, 90, 8);
+    
+    g.drawFittedText ("This plugin is to be used together with Strobot",
+                      0, getHeight()/2 - 20, getWidth(), getHeight(),
                       Justification::centred, 1);
     
 }
 
 
-void SignalProcessorAudioProcessorEditor::resized()
-{
-    infoLabel.setBounds (10, 4, 400, 25);
-    averagingBufferSlider.setBounds (20, 60, 150, 40);
-    inputSensitivitySlider.setBounds (200, 60, 150, 40);
-    
-    const int keyboardHeight = 70;
-    midiKeyboard.setBounds (4, getHeight() - keyboardHeight - 4, getWidth() - 8, keyboardHeight);
-    
-    resizer->setBounds (getWidth() - 16, getHeight() - 16, 16, 16);
-    
-    getProcessor().lastUIWidth = getWidth();
-    getProcessor().lastUIHeight = getHeight();
-}
+//void SignalProcessorAudioProcessorEditor::resized()
+//{
+//    infoLabel.setBounds (10, 4, 400, 25);
+//    averagingBufferSlider.setBounds (20, 60, 150, 40);
+//    inputSensitivitySlider.setBounds (200, 60, 150, 40);
+//    
+//    const int keyboardHeight = 70;
+//    midiKeyboard.setBounds (4, getHeight() - keyboardHeight - 4, getWidth() - 8, keyboardHeight);
+//    
+//    resizer->setBounds (getWidth() - 16, getHeight() - 16, 16, 16);
+//    
+//    getProcessor().lastUIWidth = getWidth();
+//    getProcessor().lastUIHeight = getHeight();
+//}
 
 //==============================================================================
 // This timer periodically checks whether any of the filter's parameters have changed...
@@ -258,6 +276,30 @@ void SignalProcessorAudioProcessorEditor::textEditorFocusLost (TextEditor& edito
 }
 
 
+//==============================================================================
+// GUI Look and Feel functions
+void SignalProcessorAudioProcessorEditor::setupSquareLookAndFeelColours (LookAndFeel& laf)
+{
+    const Colour baseColour (Colours::red);
+    laf.setColour (Slider::thumbColourId, Colour::greyLevel (0.95f));
+    laf.setColour (Slider::textBoxOutlineColourId, Colours::transparentWhite);
+    laf.setColour (Slider::rotarySliderFillColourId, baseColour);
+    laf.setColour (Slider::rotarySliderOutlineColourId, Colours::white);
+    laf.setColour (Slider::trackColourId, Colours::black);
+    
+    laf.setColour (TextButton::buttonColourId, Colours::white);
+    laf.setColour (TextButton::textColourOffId, baseColour);
+     
+    laf.setColour (TextButton::buttonOnColourId, laf.findColour (TextButton::textColourOffId));
+    laf.setColour (TextButton::textColourOnId, laf.findColour (TextButton::buttonColourId));
+}
+ 
+void SignalProcessorAudioProcessorEditor::setAllLookAndFeels (LookAndFeel* laf)
+{
+//    for (int i = 0; i < demoComp.getNumChildComponents(); ++i)
+//        if (Component* c = demoComp.getChildComponent (i))
+//            c->setLookAndFeel (laf);
+}
 
 //==============================================================================
 // quick-and-dirty function to format a timecode string
@@ -318,4 +360,5 @@ void SignalProcessorAudioProcessorEditor::displayPositionInfo (const AudioPlayHe
     infoLabel.setText ("[" + SystemStats::getJUCEVersion() + "]   " + displayText, dontSendNotification);
 }
 
-
+                                         
+                                         
