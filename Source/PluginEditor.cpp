@@ -35,7 +35,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     // This is where our plugin's editor size is set.
     setSize (500, 500);
     
-    SquareLookAndFeel* slaf = new SquareLookAndFeel();
+    slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
     
     // add some sliders..
@@ -53,6 +53,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
     averagingBufferSlider.setValue(getProcessor().inputSensitivity);
 
+    averagingBufferSlider.setBounds (20, 60, 150, 40);
+    inputSensitivitySlider.setBounds (200, 60, 150, 40);
+    
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);
     sendTimeInfoButton.addListener (this);
@@ -126,6 +129,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     addAndMakeVisible (infoLabel);
     infoLabel.setColour (Label::textColourId, Colours::black);
     infoLabel.setFont(pluginFont);
+    infoLabel.setBounds (10, 4, 400, 25);
     
     //To be done : free slaf
     //delete(slaf);
@@ -136,6 +140,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
 
 SignalProcessorAudioProcessorEditor::~SignalProcessorAudioProcessorEditor()
 {
+    delete(slaf);
 }
 
 //==============================================================================
@@ -162,9 +167,6 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
 
 //void SignalProcessorAudioProcessorEditor::resized()
 //{
-//    infoLabel.setBounds (10, 4, 400, 25);
-//    averagingBufferSlider.setBounds (20, 60, 150, 40);
-//    inputSensitivitySlider.setBounds (200, 60, 150, 40);
 //    
 //    const int keyboardHeight = 70;
 //    midiKeyboard.setBounds (4, getHeight() - keyboardHeight - 4, getWidth() - 8, keyboardHeight);

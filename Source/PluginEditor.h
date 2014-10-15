@@ -48,8 +48,6 @@ public:
 private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
-    
-    
     MidiKeyboardComponent midiKeyboard;
     Label infoLabel, averagingBufferLabel, inputSensitivityLabel, channelLabel, javaAppPathLabel;
     Slider averagingBufferSlider, inputSensitivitySlider;
@@ -448,7 +446,7 @@ private:
         }
     };
 
-
+    SquareLookAndFeel* slaf;
 
 
 
