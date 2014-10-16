@@ -1,9 +1,12 @@
 /*
  ==============================================================================
  
-   This file was auto-generated!
- 
-   It contains the basic startup code for a Juce application.
+    PluginProcessor.cpp
+    PlayMe / Martin Di Rollo - 2014
+    Analyze the incoming audio data (without modifying it), and if requested
+    by the user, send specific messages in order to transmit the data to
+    another application
+    The signal processing is done here, inside the processBlock function
  
  ==============================================================================
  */
