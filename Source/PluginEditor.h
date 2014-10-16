@@ -51,6 +51,7 @@ private:
     Label infoLabel, averagingBufferLabel, inputSensitivityLabel, channelLabel, javaAppPathLabel;
     Slider averagingBufferSlider, inputSensitivitySlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, monoStereoButton;
+    Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, monoStereoButtonLabel;
     ImageButton logoButton;
     ComboBox channelComboBox;
     ScopedPointer<ResizableCornerComponent> resizer;

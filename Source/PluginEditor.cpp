@@ -25,11 +25,15 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendSignalLevelButton("Send SignalLevel"),
       sendImpulseButton("Send Impulse"),
       monoStereoButton ("Stereo Processing"),
+      sendTimeInfoButtonLabel ("", "Send Time Info"),
+      sendSignalLevelButtonLabel ("", "Send Signal Level"),
+      sendImpulseButtonLabel ("", "Send Impulse"),
+      monoStereoButtonLabel ("", "Stereo Processing"),
       logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
       bigFont("standard 07_57", 45.0f, 0),
       pluginFont("standard 07_57", 25.0f, 0),
-      smallFont("standard 07_57", 14.0f, 0)
+      smallFont("standard 07_57", 15.0f, 0)
 {
     
     // This is where our plugin's editor size is set.
@@ -59,32 +63,48 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendTimeInfoButton.setLookAndFeel(slaf);
     sendTimeInfoButton.addListener (this);
     sendTimeInfoButton.changeWidthToFitText();
-    sendTimeInfoButton.setBounds (300, 180, 140, 20);
+    sendTimeInfoButton.setBounds (getWidth() - 50, 180, 140, 20);
     sendTimeInfoButton.setColour (Label::textColourId, Colours::white);
+    sendTimeInfoButton.setButtonText("");
     addAndMakeVisible (sendSignalLevelButton);
     sendSignalLevelButton.setLookAndFeel(slaf);
     sendSignalLevelButton.addListener (this);
     sendSignalLevelButton.changeWidthToFitText();
-    sendSignalLevelButton.setBounds (300, 200, 140, 20);
+    sendSignalLevelButton.setBounds (getWidth() - 50, 200, 140, 20);
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
+    sendSignalLevelButton.setButtonText("");
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.setLookAndFeel(slaf);
     sendImpulseButton.addListener (this);
     sendImpulseButton.changeWidthToFitText();
-    sendImpulseButton.setBounds (300, 220, 140, 20);
+    sendImpulseButton.setBounds (getWidth() - 50, 220, 140, 20);
     sendImpulseButton.setColour (Label::textColourId, Colours::white);
+    sendImpulseButton.setButtonText("");
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
     monoStereoButton.changeWidthToFitText();
-    monoStereoButton.setBounds (300, 240, 140, 20);
+    monoStereoButton.setBounds (getWidth() - 50, 240, 140, 20);
     monoStereoButton.setColour (Label::textColourId, Colours::white);
     monoStereoButton.setLookAndFeel(slaf);
+    monoStereoButton.setButtonText("");
 
-    
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
+
+    sendTimeInfoButtonLabel.attachToComponent (&sendTimeInfoButton, true);
+    sendTimeInfoButtonLabel.setFont(smallFont);
+    sendTimeInfoButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendSignalLevelButtonLabel.attachToComponent (&sendSignalLevelButton, true);
+    sendSignalLevelButtonLabel.setFont(smallFont);
+    sendSignalLevelButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendImpulseButtonLabel.attachToComponent (&sendImpulseButton, true);
+    sendImpulseButtonLabel.setFont(smallFont);
+    sendImpulseButtonLabel.setColour(Label::textColourId, Colours::white);
+    monoStereoButtonLabel.attachToComponent (&monoStereoButton, true);
+    monoStereoButtonLabel.setFont(smallFont);
+    monoStereoButtonLabel.setColour(Label::textColourId, Colours::white);
     
     addAndMakeVisible(channelComboBox);
     channelComboBox.setBounds (20, 185, 150, 20);
