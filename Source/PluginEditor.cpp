@@ -27,12 +27,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       monoStereoButton ("Stereo Processing"),
       logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
+      bigFont("standard 07_57", 45.0f, 0),
       pluginFont("standard 07_57", 25.0f, 0),
       smallFont("standard 07_57", 14.0f, 0)
 {
     
     // This is where our plugin's editor size is set.
-    setSize (500, 500);
+    setSize (500, 350);
     
     slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
@@ -42,9 +43,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setLookAndFeel(slaf);
     averagingBufferSlider.setSliderStyle (Slider::LinearBar);
     averagingBufferSlider.addListener (this);
-    averagingBufferSlider.setRange (64, 4096, 64);
+    averagingBufferSlider.setRange (64, 4096, 1.0);
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
-    averagingBufferSlider.setBounds (20, 240, 150, 20);
+    averagingBufferSlider.setBounds (20, 230, 150, 20);
     
     addAndMakeVisible (inputSensitivitySlider);
     inputSensitivitySlider.setLookAndFeel(slaf);
@@ -52,7 +53,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.addListener (this);
     inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
     inputSensitivitySlider.setValue(getProcessor().inputSensitivity);
-    inputSensitivitySlider.setBounds (20, 280, 150, 20);
+    inputSensitivitySlider.setBounds (20, 270, 150, 20);
     
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);
@@ -86,8 +87,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
     
     addAndMakeVisible(channelComboBox);
-    channelComboBox.setLookAndFeel(slaf);
-    channelComboBox.setBounds (10, 185, 100, 24);
+    channelComboBox.setBounds (20, 185, 150, 20);
     channelComboBox.setEditableText (false);
     channelComboBox.setJustificationType (Justification::centred);
     String channelComboBoxElements[] = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"};
@@ -95,7 +95,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
         channelComboBox.addItem (channelComboBoxElements[i-1], i);
     channelComboBox.setSelectedId (getProcessor().channel);
     channelComboBox.addListener (this);
-
+    channelComboBox.setLookAndFeel(slaf);
     
     // add some labels for the sliders..
     averagingBufferLabel.attachToComponent (&averagingBufferSlider, false);
@@ -105,6 +105,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);
     inputSensitivityLabel.setColour(Label::textColourId, Colours::white);
+    
+    channelLabel.attachToComponent (&channelComboBox, false);
+    channelLabel.setFont(smallFont);
+    channelLabel.setColour(Label::textColourId, Colours::white);
 
     logoImage = ImageCache::getFromMemory (BinaryData::logo_white_png, BinaryData::logo_white_pngSize);
     logoButton.setImages (true, true, true,
@@ -140,14 +144,17 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
     g.setGradientFill (ColourGradient (Colours::grey, 0, 0,
                                        Colours::black, 0, (float) getHeight(), false));
     g.fillAll();
-    
-    //g.setColour (Colours::white);
-    g.setFont (pluginFont);
     g.setColour (Colours::white);
     
     g.drawLine(20, 20, getWidth() - 20, 20, 8);
     g.drawLine(20, 90, getWidth() - 20, 90, 8);
-    
+
+    g.setFont (bigFont);
+    g.drawFittedText ("Signal Processor",
+                      0, 110, getWidth(), 45,
+                      Justification::centred, 1);
+
+    g.setFont (pluginFont);
     g.drawFittedText ("This plugin is to be used together with Strobot",
                       0, getHeight()/2 - 20, getWidth(), getHeight(),
                       Justification::centred, 1);
@@ -249,25 +256,30 @@ void SignalProcessorAudioProcessorEditor::textEditorFocusLost (TextEditor& edito
 void SignalProcessorAudioProcessorEditor::setupSquareLookAndFeelColours (LookAndFeel& laf)
 {
     const Colour baseColour (Colours::red);
+    
     laf.setColour (Slider::thumbColourId, Colour::greyLevel (0.95f));
     laf.setColour (Slider::textBoxOutlineColourId, Colours::transparentWhite);
     laf.setColour (Slider::rotarySliderFillColourId, baseColour);
     laf.setColour (Slider::rotarySliderOutlineColourId, Colours::white);
-    laf.setColour (Slider::trackColourId, Colours::black);
+    laf.setColour (Slider::trackColourId, Colours::white);
+    laf.setColour (Slider::textBoxTextColourId, Colours::white);
     
     laf.setColour (TextButton::buttonColourId, Colours::white);
     laf.setColour (TextButton::textColourOffId, baseColour);
-     
     laf.setColour (TextButton::buttonOnColourId, laf.findColour (TextButton::textColourOffId));
     laf.setColour (TextButton::textColourOnId, laf.findColour (TextButton::buttonColourId));
+    laf.setColour (ToggleButton::textColourId, Colours::white);
+    
+    laf.setColour (Label::textColourId, Colours::white);
+    
+    laf.setColour (ComboBox::textColourId, Colours::white);
+    laf.setColour (ComboBox::backgroundColourId, baseColour);
+    laf.setColour (ComboBox::buttonColourId, Colours::black);
+    laf.setColour (ComboBox::outlineColourId, Colours::transparentWhite);
+
 }
  
-void SignalProcessorAudioProcessorEditor::setAllLookAndFeels (LookAndFeel* laf)
-{
-//    for (int i = 0; i < demoComp.getNumChildComponents(); ++i)
-//        if (Component* c = demoComp.getChildComponent (i))
-//            c->setLookAndFeel (laf);
-}
+
 
 //==============================================================================
 // quick-and-dirty function to format a timecode string

@@ -65,8 +65,8 @@ private:
     
     void displayPositionInfo (const AudioPlayHead::CurrentPositionInfo& pos);
     void setupSquareLookAndFeelColours (LookAndFeel& laf);
-    void setAllLookAndFeels (LookAndFeel* laf);
     
+    Font bigFont;
     Font pluginFont;
     Font smallFont;
     Image logoImage;
