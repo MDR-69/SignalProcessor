@@ -233,35 +233,16 @@ void SignalProcessorAudioProcessor::prepareToPlay (double sampleRate, int sample
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    keyboardState.reset();
 }
 
 void SignalProcessorAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    keyboardState.reset();
 }
 
 void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // I've added this to avoid people getting screaming feedback
-    // when they first compile the plugin, but obviously you don't need to
-    // this code if your algorithm already fills all the output channels.
-    //    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
-    //        buffer.clear (i, 0, buffer.getNumSamples());
-    
-    // Now pass any incoming midi messages to our keyboard state object, and let it
-    // add messages to the buffer if the user is clicking on the on-screen keys
-    //keyboardState.processNextMidiBuffer (midiMessages, 0, buffer.getNumSamples(), true);
-    
-    
-    std::cout << "sendTimeInfo : " << sendTimeInfo << "   sendSignalLevel : " << sendSignalLevel << "  sendImpulse : " << sendImpulse << "   monoStereo : " << monoStereo << "\n";
-    
     //////////////////////////////////////////////////////////////////
     // Audio processing takes place here !
     
@@ -371,7 +352,6 @@ void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     impulse.set_signalid(channel);
     impulse.SerializeToString(&datastringImpulse);
     
-    std::cout << "Reset channel as " << channel << "\n";
 }
 
 void SignalProcessorAudioProcessor::defineSignalMessagesAveragingBuffer() {
@@ -390,7 +370,6 @@ void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) 
     try {
         
         if (connectionEstablished_timeInfo == false) {
-            std::cout << "Trying to reconnect - timeInfoSocket\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             timeInfoSocket.close();
@@ -403,7 +382,6 @@ void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) 
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false - timeInfoSocket\n";
             connectionEstablished_timeInfo = false;
             timeInfoSocket.close();
         }
@@ -422,9 +400,6 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
     try {
         
         if (connectionEstablished_signalLevel == false) {
-            //std::cout << "Trying to reconnect - signalLevelSocket ch " << channel << "\n";
-            // Close the old, and try a new connection to the Java server - if impossible, an
-            // exception is raised and the following instructions are not executed
             signalLevelSocket.close();
             signalLevelSocket.connect(signalLevelEndpoint);
             connectionEstablished_signalLevel = true;
@@ -432,7 +407,6 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
         
         // Sync write
         boost::asio::write(signalLevelSocket, boost::asio::buffer(datastring), ignored_error);
-        // std::cout << "Error code : " << ignored_error << "   Size returned by write : " << size_written << " \n";
         
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
@@ -443,7 +417,6 @@ void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastrin
         
     } catch (const std::exception & e) {
         std::cout << "SignalLevelSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
-        //std::cerr << e.what();
     }
     
     
@@ -454,7 +427,6 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
     try {
         
         if (connectionEstablished_impulse == false) {
-//            std::cout << "Trying to reconnect - impulseSocket ch " << channel << "\n";
             // Close the old, and try a new connection to the Java server - if impossible, an
             // exception is raised and the following instructions are not executed
             impulseSocket.close();
@@ -463,9 +435,7 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
         }
         
         boost::asio::write(impulseSocket, boost::asio::buffer(datastring), ignored_error);
-        // std::cout << "Wrote Impulse : " << testString << "  - size : " << writtensize << "  - result : " << ignored_error << "\n";
-        
-        
+
         // If the returned errorcode is different from 0 ("no error"), reset the server connection
         if (ignored_error.value() != 0) {
             std::cout << "Set the connection to false - impulseSocket ch " << channel << "\n";
@@ -475,7 +445,6 @@ void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
         
     } catch (const std::exception & e) {
         std::cout << "ImpulseSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
-        //std::cerr << e.what();
     }
     
     
@@ -518,7 +487,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
 
 void SignalProcessorAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
+    // Restore the parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
     // This getXmlFromBinary() helper function retrieves our XML from the binary blob..
     ScopedPointer<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
@@ -538,7 +507,6 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             sendImpulse         = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
             channel             = xmlState->getIntAttribute ("channel", channel);
             monoStereo          = xmlState->getBoolAttribute ("monoStereo", monoStereo);
-            std::cout << "I just read channel : " << channel << "\n";
         }
     }
 }
