@@ -22,6 +22,8 @@
 #include <sys/stat.h>
 #include <boost/asio.hpp>
 #include "boost/bind.hpp"
+#include "osc/OscOutboundPacketStream.h"
+#include "ip/UdpSocket.h"
 #include "SignalMessages.pb.h"
 
 //==============================================================================
