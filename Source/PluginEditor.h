@@ -72,6 +72,7 @@ private:
     Font smallFont;
     Image logoImage;
 
+    int beatIntensity = 0;
     
     //==============================================================================
     /** Custom Look And Feel subclasss.

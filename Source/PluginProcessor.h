@@ -24,6 +24,7 @@
 #include "boost/bind.hpp"
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
+#include "udp_client_server.h"
 #include "SignalMessages.pb.h"
 
 //==============================================================================
@@ -79,24 +80,13 @@ public:
     void getStateInformation (MemoryBlock& destData);
     void setStateInformation (const void* data, int sizeInBytes);
     
+    void defineDefaultSignalMessages();
     void defineSignalMessagesChannel();
-    void defineSignalMessagesAveragingBuffer();
-    void defineSignalMessagesTimeInfo();
-    void sendSignalLevelMessage(std::string datastring);
-    void sendImpulseMessage(std::string datastring);
-    void sendTimeInfoMessage(std::string datastring);
+
     
     float denormalize(float input);
     
-    // this keeps a copy of the last set of time info that was acquired during an audio
-    // callback - the UI component will read this and display it.
     AudioPlayHead::CurrentPositionInfo lastPosInfo;
-    
-    // these are used to persist the UI's size - the values are stored along with the
-    // filter's other parameters, and the UI component will update them when it gets
-    // resized.
-    int lastUIWidth, lastUIHeight;
-    
     
     //==============================================================================
     // Default parameter values
@@ -107,8 +97,6 @@ public:
     const bool defaultMonoStereo = false;        //Mono processing
     const float defaultInputSensitivity = 1.0;
     const int defaultChannel = 1;
-    
-    
     
     //==============================================================================
     enum Parameters
@@ -140,31 +128,25 @@ public:
     float signalAverageEnergy = 0;
     float signalInstantEnergy = 0;
     const int thresholdFactor = 4;
-    const int averageEnergyBufferSize = 20;                         //16 times the size of the buffer set by the DAW
+    const int averageEnergyBufferSize = 20;                         //20 times the size of the buffer set by the DAW
     const int averageSignalWeight = averageEnergyBufferSize - 1;    //Just a const variable to gain a substraction operation
     int samplesSinceLastTimeInfoTransmission = 0;                   //The time message is to be sent every timeInfoCycle (if active)
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it
-    const int portNumberTimeInfo    = 7000;
-    const int portNumberSignalLevel = 8000;
-    const int portNumberImpulse     = 9000;
+    const int portNumberSignalLevel = 7001;
+    const int portNumberImpulse     = 7002;
+    const int portNumberTimeInfo    = 7003;
     const int nbOfSamplesToSkip     = 6;
     const int timeInfoCycle         = 4096;       //Send the time info message every 4096 samples, that's about 100ms
-    bool connectionEstablished_timeInfo = false;
-    bool connectionEstablished_signalLevel = false;
-    bool connectionEstablished_impulse = false;
-    boost::asio::io_service myIO_service;
-    boost::asio::ip::tcp::socket timeInfoSocket;
-    boost::asio::ip::tcp::socket signalLevelSocket;
-    boost::asio::ip::tcp::socket impulseSocket;
-    boost::asio::ip::tcp::endpoint timeInfoEndpoint;
-    boost::asio::ip::tcp::endpoint signalLevelEndpoint;
-    boost::asio::ip::tcp::endpoint impulseEndpoint;
-    boost::system::error_code ignored_error;
-    std::string datastringTimeInfo;
-    std::string datastringLevel;
-    std::string datastringImpulse;
+    
+    udp_client udpClientTimeInfo;
+    udp_client udpClientSignalLevel;
+    udp_client udpClientImpulse;
+    
+    char* dataArrayTimeInfo;
+    char* dataArrayImpulse;
+    char* dataArrayLevel;
     
     //==============================================================================
     // Small optimisation : always use the same SignalMessages objects, it saves creating a new one every time

@@ -24,47 +24,28 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   averagingBufferSize(defaultAveragingBufferSize),
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
-  timeInfoSocket(myIO_service),
-  signalLevelSocket(myIO_service),
-  impulseSocket(myIO_service),
-  timeInfoEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberTimeInfo),
-  signalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel + channel),
-  impulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse + channel),
-  datastringTimeInfo(""),
-  datastringLevel(""),
-  datastringImpulse("")
+  udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
+  udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
+  udpClientImpulse("127.0.0.1", portNumberImpulse)
 {
-    defineSignalMessagesChannel();
+    
+    //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
+    defineDefaultSignalMessages();
+    
+    dataArrayImpulse  = new char[impulse.ByteSize()];
+    dataArrayLevel    = new char[signal.ByteSize()];
+    dataArrayTimeInfo = new char[timeInfo.ByteSize()];
     
     lastPosInfo.resetToDefault();
-    
-    
-    try {
-        std::cout << "SignalLevel Initial connection\n";
-        signalLevelSocket.connect(signalLevelEndpoint);
-        connectionEstablished_signalLevel = true;
-    }
-    catch (std::exception e) {
-        std::cout << "SignalLevel - Couldn't do the initial connection\n";
-    }
-    
-    try {
-        std::cout << "Impulse Initial connection\n";
-        impulseSocket.connect(impulseEndpoint);
-        connectionEstablished_impulse = true;
-    }
-    catch (std::exception e) {
-        std::cout << "Impulse - Couldn't do the initial connection\n";
-    }
+
 }
 
 SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
 {
-    signalLevelSocket.close();
-    impulseSocket.close();
-    if (connectionEstablished_timeInfo == true) {
-        timeInfoSocket.close();
-    }
+    
+    delete [] dataArrayImpulse;
+    delete [] dataArrayLevel;
+    delete [] dataArrayTimeInfo;
     std::cout << "PlayMeSignalProcessor socket closed\n";
 }
 
@@ -125,7 +106,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     // UI-related, or anything at all that may block in any way!
     switch (index)
     {
-        case averagingBufferSizeParam:      averagingBufferSize = newValue;  defineSignalMessagesAveragingBuffer(); break;
+        case averagingBufferSizeParam:      averagingBufferSize = newValue;  break;
         case inputSensitivityParam:         inputSensitivity    = newValue;  break;
         case sendTimeInfoParam:             sendTimeInfo        = newValue;  break;
         case sendSignalLevelParam:          sendSignalLevel     = newValue;  break;
@@ -248,7 +229,7 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     
     // If the signal is defined by the user as mono, no need to check the second channel
     int numberOfChannels = (monoStereo==false) ? 1 : getNumInputChannels();
-    for (int channel = 0; channel < numberOfChannels; ++channel)
+    for (int channel = 0; channel < numberOfChannels; channel++)
     {
         const float* channelData = buffer.getReadPointer (channel);
         
@@ -275,16 +256,18 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         
         if (sendImpulse == true) {
             //Send the impulse message (which was pre-generated earlier)
-            sendImpulseMessage(datastringImpulse);
+//            for (int j = 0; j < 2; j++) {
+//                //Redundancy to avoid lost messages
+                udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
+//            }
         }
     }
-    
     
     if (nbBufValProcessed >= averagingBufferSize) {
         if (sendSignalLevel == true) {
             signal.set_signallevel(inputSensitivity * signalInstantEnergy);
-            signal.SerializeToString(&datastringLevel);
-            sendSignalLevelMessage(datastringLevel);
+            signal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
+            udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
         }
         
         nbBufValProcessed = 0;
@@ -298,32 +281,23 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
             AudioPlayHead::CurrentPositionInfo currentTime;
             if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
             {
+                // Update the variable used to display the latest time in the GUI
+                lastPosInfo = currentTime;
+                
                 // Successfully got the current time from the host, set the pulses-per-quarter-note value inside the timeInfo message
                 timeInfo.set_position((float)currentTime.ppqPosition);
                 timeInfo.set_isplaying(currentTime.isPlaying);
                 timeInfo.set_tempo((float)currentTime.bpm);
-                timeInfo.SerializeToString(&datastringTimeInfo);
-            
-                sendTimeInfoMessage(datastringTimeInfo);
+                timeInfo.SerializeToArray(dataArrayTimeInfo, timeInfo.GetCachedSize());
+                udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
             }
+        }
+        else {
+            // Don't send the current time, set the GUI info to a default value
+            lastPosInfo.resetToDefault();
         }
         samplesSinceLastTimeInfoTransmission = 0;
     }
-    
-    // ask the host for the current time so we can display it...
-    AudioPlayHead::CurrentPositionInfo newTime;
-    
-    if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (newTime))
-    {
-        // Successfully got the current time from the host..
-        lastPosInfo = newTime;
-    }
-    else
-    {
-        // If the host fails to fill-in the current time, we'll just clear it to a default..
-        lastPosInfo.resetToDefault();
-    }
-    
 }
 
 float SignalProcessorAudioProcessor::denormalize(float input) {
@@ -334,122 +308,30 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 //==============================================================================
 
 
+// Build the default signal messages
+void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
+    
+    signal.set_signalid(channel);
+    signal.set_signallevel(0.0);
+    
+    impulse.set_signalid(channel);
+    impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
+    
+    timeInfo.set_isplaying(false);
+    timeInfo.set_position(0.0);
+    timeInfo.set_tempo(120.0);
+    
+}
+
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
-    
-    boost::asio::ip::tcp::endpoint newSignalLevelEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberSignalLevel + channel);
-    boost::asio::ip::tcp::endpoint newImpulseEndpoint(boost::asio::ip::address::from_string("127.0.0.1"), portNumberImpulse + channel);
-    
-    signalLevelEndpoint = newSignalLevelEndpoint;
-    impulseEndpoint = newImpulseEndpoint;
-    connectionEstablished_impulse = false;
-    connectionEstablished_signalLevel = false;
-    signalLevelSocket.close();
-    impulseSocket.close();
     
     signal.set_signalid(channel);
     
     //It is possible to pre-serialize impulse messages here, as the message will never change
     impulse.set_signalid(channel);
-    impulse.SerializeToString(&datastringImpulse);
+    impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
     
 }
-
-void SignalProcessorAudioProcessor::defineSignalMessagesAveragingBuffer() {
-    
-    //signal.set_buffersize(averagingBufferSize);
-    
-}
-
-void SignalProcessorAudioProcessor::defineSignalMessagesTimeInfo() {
-    // TBIL
-}
-
-
-void SignalProcessorAudioProcessor::sendTimeInfoMessage(std::string datastring) {
-    
-    try {
-        
-        if (connectionEstablished_timeInfo == false) {
-            // Close the old, and try a new connection to the Java server - if impossible, an
-            // exception is raised and the following instructions are not executed
-            timeInfoSocket.close();
-            timeInfoSocket.connect(timeInfoEndpoint);
-            connectionEstablished_timeInfo = true;
-        }
-        
-        boost::asio::write(timeInfoSocket, boost::asio::buffer(datastring), ignored_error);
-        
-        
-        // If the returned errorcode is different from 0 ("no error"), reset the server connection
-        if (ignored_error.value() != 0) {
-            connectionEstablished_timeInfo = false;
-            timeInfoSocket.close();
-        }
-        
-    } catch (const std::exception & e) {
-        std::cout << "TimeInfoSocket - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
-        //std::cerr << e.what();
-    }
-    
-    
-}
-
-
-void SignalProcessorAudioProcessor::sendSignalLevelMessage(std::string datastring) {
-    
-    try {
-        
-        if (connectionEstablished_signalLevel == false) {
-            signalLevelSocket.close();
-            signalLevelSocket.connect(signalLevelEndpoint);
-            connectionEstablished_signalLevel = true;
-        }
-        
-        // Sync write
-        boost::asio::write(signalLevelSocket, boost::asio::buffer(datastring), ignored_error);
-        
-        // If the returned errorcode is different from 0 ("no error"), reset the server connection
-        if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false - signalLevelSocket ch " << channel << "\n";
-            connectionEstablished_signalLevel = false;
-            signalLevelSocket.close();
-        }
-        
-    } catch (const std::exception & e) {
-        std::cout << "SignalLevelSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
-    }
-    
-    
-}
-
-void SignalProcessorAudioProcessor::sendImpulseMessage(std::string datastring) {
-    
-    try {
-        
-        if (connectionEstablished_impulse == false) {
-            // Close the old, and try a new connection to the Java server - if impossible, an
-            // exception is raised and the following instructions are not executed
-            impulseSocket.close();
-            impulseSocket.connect(impulseEndpoint);
-            connectionEstablished_impulse = true;
-        }
-        
-        boost::asio::write(impulseSocket, boost::asio::buffer(datastring), ignored_error);
-
-        // If the returned errorcode is different from 0 ("no error"), reset the server connection
-        if (ignored_error.value() != 0) {
-            std::cout << "Set the connection to false - impulseSocket ch " << channel << "\n";
-            connectionEstablished_impulse = false;
-            impulseSocket.close();
-        }
-        
-    } catch (const std::exception & e) {
-        std::cout << "ImpulseSocket ch " << channel << " - Caught an error while trying to initialize the socket - the Java server might not be ready\n";
-    }
-    
-    
-}
-
 
 //==============================================================================
 bool SignalProcessorAudioProcessor::hasEditor() const
@@ -469,8 +351,6 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     XmlElement xml ("MYPLUGINSETTINGS");
     
     // add some attributes to it..
-    xml.setAttribute ("uiWidth", lastUIWidth);
-    xml.setAttribute ("uiHeight", lastUIHeight);
     xml.setAttribute ("averagingBufferSize", averagingBufferSize);
     xml.setAttribute ("inputSensitivity", inputSensitivity);
     xml.setAttribute ("sendTimeInfo", sendTimeInfo);
@@ -498,8 +378,6 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
         if (xmlState->hasTagName ("MYPLUGINSETTINGS"))
         {
             // now pull out our parameters..
-            lastUIWidth         = xmlState->getIntAttribute ("uiWidth", lastUIWidth);
-            lastUIHeight        = xmlState->getIntAttribute ("uiHeight", lastUIHeight);
             averagingBufferSize = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
             inputSensitivity    = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
             sendTimeInfo        = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
