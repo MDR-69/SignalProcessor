@@ -97,6 +97,7 @@ public:
     const bool defaultMonoStereo = false;        //Mono processing
     const float defaultInputSensitivity = 1.0;
     const int defaultChannel = 1;
+    const int defaultAverageEnergyBufferSize = 8.0;
     
     //==============================================================================
     enum Parameters
@@ -108,6 +109,7 @@ public:
         sendImpulseParam,
         channelParam,
         monoStereoParam,
+        averageEnergyBufferSizeParam,
         totalNumParams
     };
     
@@ -118,7 +120,7 @@ public:
     bool sendSignalLevel = true;
     bool sendImpulse     = true;
     bool monoStereo;         //false -> mono
-    
+    int averageEnergyBufferSize;
     
     //==============================================================================
     // Variables used by the audio algorithm
@@ -128,9 +130,10 @@ public:
     float signalAverageEnergy = 0;
     float signalInstantEnergy = 0;
     const int thresholdFactor = 4;
-    const int averageEnergyBufferSize = 20;                         //20 times the size of the buffer set by the DAW
-    const int averageSignalWeight = averageEnergyBufferSize - 1;    //Just a const variable to gain a substraction operation
     int samplesSinceLastTimeInfoTransmission = 0;                   //The time message is to be sent every timeInfoCycle (if active)
+
+    // Set to 1.0f when a beat is detected
+    float beatIntensity = 0.1f;
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it

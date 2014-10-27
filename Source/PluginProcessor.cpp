@@ -24,6 +24,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   averagingBufferSize(defaultAveragingBufferSize),
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
+  averageEnergyBufferSize(defaultAverageEnergyBufferSize),
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
   udpClientImpulse("127.0.0.1", portNumberImpulse)
@@ -78,6 +79,7 @@ float SignalProcessorAudioProcessor::getParameter (int index)
         case sendImpulseParam:              return sendImpulse;
         case channelParam:                  return channel;
         case monoStereoParam:               return monoStereo;
+        case averageEnergyBufferSizeParam:  return averageEnergyBufferSize;
         default:                            return 0.0f;
     }
 }
@@ -93,6 +95,7 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
         case sendImpulseParam:              return defaultSendImpulse;
         case channelParam:                  return defaultChannel;
         case monoStereoParam:               return defaultMonoStereo;
+        case averageEnergyBufferSizeParam:  return defaultAverageEnergyBufferSize;
         default:                            break;
     }
     
@@ -106,13 +109,14 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     // UI-related, or anything at all that may block in any way!
     switch (index)
     {
-        case averagingBufferSizeParam:      averagingBufferSize = newValue;  break;
-        case inputSensitivityParam:         inputSensitivity    = newValue;  break;
-        case sendTimeInfoParam:             sendTimeInfo        = newValue;  break;
-        case sendSignalLevelParam:          sendSignalLevel     = newValue;  break;
-        case sendImpulseParam:              sendImpulse         = newValue;  break;
-        case channelParam:                  channel             = newValue;  defineSignalMessagesChannel();  break;
-        case monoStereoParam:               monoStereo          = newValue;  break;
+        case averagingBufferSizeParam:      averagingBufferSize     = newValue;  break;
+        case inputSensitivityParam:         inputSensitivity        = newValue;  break;
+        case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
+        case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
+        case sendImpulseParam:              sendImpulse             = newValue;  break;
+        case channelParam:                  channel                 = newValue;  defineSignalMessagesChannel();  break;
+        case monoStereoParam:               monoStereo              = newValue;  break;
+        case averageEnergyBufferSizeParam:  averageEnergyBufferSize = newValue;  break;
         default:                            break;
     }
 }
@@ -128,6 +132,7 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
         case sendImpulseParam:             return "Send Impulses";         break;
         case channelParam:                 return "Channel Number";        break;
         case monoStereoParam:              return "Mono / Stereo";         break;
+        case averageEnergyBufferSizeParam: return "Beat Detection Window"; break;
         default:                           break;
     }
     return String::empty;
@@ -244,9 +249,22 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     samplesSinceLastTimeInfoTransmission += buffer.getNumSamples();
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
-    signalAverageEnergy = denormalize(((signalAverageEnergy * averageSignalWeight) + signalInstantEnergy) / averageEnergyBufferSize);
+    signalAverageEnergy = denormalize(((signalAverageEnergy * (averageEnergyBufferSize-1)) + signalInstantEnergy) / averageEnergyBufferSize);
     signalInstantEnergy = signalSum / (averagingBufferSize * numberOfChannels);
-    
+
+    if (sendImpulse == true) {
+        // Fade the beat detection image (variable used by the editor)
+        if (beatIntensity > 0.1) {
+            beatIntensity = std::max(0.1, beatIntensity - 0.05);
+        }
+        else {
+            beatIntensity = 0.1;
+        }
+        
+    }
+    else {
+        beatIntensity = 0;
+    }
     
     // If the instant signal energy is thresholdFactor times greater than the average energy, consider that a beat is detected
     if (signalInstantEnergy > signalAverageEnergy*thresholdFactor) {
@@ -255,13 +273,13 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         signalAverageEnergy = signalInstantEnergy;
         
         if (sendImpulse == true) {
+            beatIntensity = 1.0f;
             //Send the impulse message (which was pre-generated earlier)
-//            for (int j = 0; j < 2; j++) {
-//                //Redundancy to avoid lost messages
-                udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
-//            }
+            udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
         }
     }
+    
+
     
     if (nbBufValProcessed >= averagingBufferSize) {
         if (sendSignalLevel == true) {
@@ -358,6 +376,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("sendImpulse", sendImpulse);
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
+    xml.setAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
     
     std::cout << "SignalProcessor - Successfully saved XML plugin info for channel : " << channel << "\n";
     
@@ -378,13 +397,14 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
         if (xmlState->hasTagName ("MYPLUGINSETTINGS"))
         {
             // now pull out our parameters..
-            averagingBufferSize = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
-            inputSensitivity    = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
-            sendTimeInfo        = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
-            sendSignalLevel     = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);
-            sendImpulse         = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
-            channel             = xmlState->getIntAttribute ("channel", channel);
-            monoStereo          = xmlState->getBoolAttribute ("monoStereo", monoStereo);
+            averagingBufferSize     = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
+            inputSensitivity        = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
+            sendTimeInfo            = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
+            sendSignalLevel         = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);
+            sendImpulse             = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
+            channel                 = xmlState->getIntAttribute ("channel", channel);
+            monoStereo              = xmlState->getBoolAttribute ("monoStereo", monoStereo);
+            averageEnergyBufferSize = xmlState->getIntAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
         }
     }
 }

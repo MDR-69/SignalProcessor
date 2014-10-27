@@ -48,8 +48,8 @@ public:
 private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
-    Label infoLabel, averagingBufferLabel, inputSensitivityLabel, channelLabel, javaAppPathLabel;
-    Slider averagingBufferSlider, inputSensitivitySlider;
+    Label infoLabel, averagingBufferLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel, javaAppPathLabel;
+    Slider averagingBufferSlider, inputSensitivitySlider, beatDetectionWindowSlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, monoStereoButton;
     Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, monoStereoButtonLabel;
     ImageButton logoButton;
@@ -58,6 +58,7 @@ private:
     ComponentBoundsConstrainer resizeLimits;
     
     AudioPlayHead::CurrentPositionInfo lastDisplayedPosition;
+    float lastDisplayedBeatIntensity = 0.0;
     
     SignalProcessorAudioProcessor& getProcessor() const
     {
@@ -71,9 +72,9 @@ private:
     Font pluginFont;
     Font smallFont;
     Image logoImage;
+    Image beatImage;
+    AffineTransform transform;
 
-    int beatIntensity = 0;
-    
     //==============================================================================
     /** Custom Look And Feel subclasss.
 

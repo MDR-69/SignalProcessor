@@ -18,9 +18,11 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       infoLabel (String::empty),
       averagingBufferLabel ("", "Averaging Buffer (samples):"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
+      beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
       averagingBufferSlider ("averagingBuffer"),
       inputSensitivitySlider ("inputSensitivity"),
+      beatDetectionWindowSlider ("beatDetectionWindow"),
       sendTimeInfoButton("Send TimeInfo"),
       sendSignalLevelButton("Send SignalLevel"),
       sendImpulseButton("Send Impulse"),
@@ -37,7 +39,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
 {
     
     // This is where our plugin's editor size is set.
-    setSize (500, 350);
+    setSize (500, 380);
     
     slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
@@ -55,9 +57,17 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.setLookAndFeel(slaf);
     inputSensitivitySlider.setSliderStyle (Slider::LinearBar);
     inputSensitivitySlider.addListener (this);
-    inputSensitivitySlider.setRange (0.0, 1.0, 0.01);
+    inputSensitivitySlider.setRange (0.0, 5.0, 0.01);
     inputSensitivitySlider.setValue(getProcessor().inputSensitivity);
     inputSensitivitySlider.setBounds (20, 270, 150, 20);
+
+    addAndMakeVisible (beatDetectionWindowSlider);
+    beatDetectionWindowSlider.setLookAndFeel(slaf);
+    beatDetectionWindowSlider.setSliderStyle (Slider::LinearBar);
+    beatDetectionWindowSlider.addListener (this);
+    beatDetectionWindowSlider.setRange (2.0, 16.0, 1);
+    beatDetectionWindowSlider.setValue(getProcessor().averageEnergyBufferSize);
+    beatDetectionWindowSlider.setBounds (20, 310, 150, 20);
     
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);
@@ -126,6 +136,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivityLabel.setFont(smallFont);
     inputSensitivityLabel.setColour(Label::textColourId, Colours::white);
     
+    beatDetectionWindowLabel.attachToComponent (&beatDetectionWindowSlider, false);
+    beatDetectionWindowLabel.setFont(smallFont);
+    beatDetectionWindowLabel.setColour(Label::textColourId, Colours::white);
+    
     channelLabel.attachToComponent (&channelComboBox, false);
     channelLabel.setFont(smallFont);
     channelLabel.setColour(Label::textColourId, Colours::white);
@@ -146,9 +160,14 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     infoLabel.setColour (Label::textColourId, Colours::white);
     infoLabel.setFont(smallFont);
     infoLabel.setCentrePosition(getWidth()/2, getHeight() - 40);
-//    infoLabel.setBounds (10, getHeight()-40, getWidth() - 20, 25);
     
-    startTimer (50);
+    // add an image which will respond to the beat detection
+    beatImage = ImageFileFormat::loadFrom (BinaryData::RedFlash_png, (size_t) BinaryData::RedFlash_pngSize);
+//    transform = AffineTransform::translation (getWidth()/2 + (float) (beatImage.getWidth() / 2), getHeight()/2 + (float) (beatImage.getHeight() / 2)).followedBy (getTransform());
+    transform = AffineTransform::translation ((float) (beatImage.getWidth() / 2), (float) (beatImage.getHeight() / 2)).followedBy (getTransform());
+
+    
+    startTimer (20);
     
 }
 
@@ -179,6 +198,13 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
                       0, getHeight()/2 - 20, getWidth(), getHeight(),
                       Justification::centred, 1);
     
+//    std::cout << "beatIntensity : " << lastDisplayedBeatIntensity << "\n";
+//    g.setOpacity (lastDisplayedBeatIntensity);
+//    g.drawImageTransformed (beatImage, transform, false);
+    
+    g.setColour(Colours::red);
+    g.fillEllipse(getWidth()/2 + (1.0 - lastDisplayedBeatIntensity)*20, getHeight()/2 + 30 + (1.0 - lastDisplayedBeatIntensity)*20, lastDisplayedBeatIntensity*40, lastDisplayedBeatIntensity*40);
+
 }
 
 
@@ -197,7 +223,11 @@ void SignalProcessorAudioProcessorEditor::timerCallback()
     averagingBufferSlider.setValue (ourProcessor.averagingBufferSize, dontSendNotification);
     inputSensitivitySlider.setValue (ourProcessor.inputSensitivity, dontSendNotification);
     
-    
+    float newBeatIntensity = ourProcessor.beatIntensity;
+    if (lastDisplayedBeatIntensity != newBeatIntensity) {
+        lastDisplayedBeatIntensity = newBeatIntensity;
+        repaint();
+    }
 }
 
 // This is our Slider::Listener callback, when the user drags a slider.
@@ -216,6 +246,11 @@ void SignalProcessorAudioProcessorEditor::sliderValueChanged (Slider* slider)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::inputSensitivityParam,
                                                   (float) inputSensitivitySlider.getValue());
+    }
+    else if (slider == &beatDetectionWindowSlider)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::averageEnergyBufferSizeParam,
+                                                  (int) beatDetectionWindowSlider.getValue());
     }
 }
 
