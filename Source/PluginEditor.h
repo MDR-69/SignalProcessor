@@ -72,8 +72,6 @@ private:
     Font pluginFont;
     Font smallFont;
     Image logoImage;
-    Image beatImage;
-    AffineTransform transform;
 
     //==============================================================================
     /** Custom Look And Feel subclasss.

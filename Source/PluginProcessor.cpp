@@ -16,8 +16,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-using boost::asio::local::stream_protocol;
-
 //==============================================================================
 SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
@@ -47,7 +45,6 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     delete [] dataArrayImpulse;
     delete [] dataArrayLevel;
     delete [] dataArrayTimeInfo;
-    std::cout << "PlayMeSignalProcessor socket closed\n";
 }
 
 
@@ -377,8 +374,6 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
     xml.setAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
-    
-    std::cout << "SignalProcessor - Successfully saved XML plugin info for channel : " << channel << "\n";
     
     // then use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);

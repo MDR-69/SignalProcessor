@@ -45,16 +45,6 @@
 		5B12E35C19FA699E00DED744 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B12E35119FA699E00DED744 /* OscReceivedElements.cpp */; };
 		5B12E35D19FA699E00DED744 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B12E35319FA699E00DED744 /* OscTypes.cpp */; };
 		5B12E36019FAB0D500DED744 /* udp_client_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B12E35F19FAB0D500DED744 /* udp_client_server.cpp */; };
-		5B3F4B7419C57AC40099651D /* libboost_atomic-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6C19C57AC40099651D /* libboost_atomic-mt.a */; };
-		5B3F4B7519C57AC40099651D /* libboost_atomic-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6D19C57AC40099651D /* libboost_atomic-mt.dylib */; };
-		5B3F4B7619C57AC40099651D /* libboost_iostreams-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6E19C57AC40099651D /* libboost_iostreams-mt.a */; };
-		5B3F4B7719C57AC40099651D /* libboost_iostreams-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B6F19C57AC40099651D /* libboost_iostreams-mt.dylib */; };
-		5B3F4B7819C57AC40099651D /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7019C57AC40099651D /* libboost_system-mt.a */; };
-		5B3F4B7919C57AC40099651D /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7119C57AC40099651D /* libboost_system-mt.dylib */; };
-		5B3F4B7A19C57AC40099651D /* libboost_thread-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7219C57AC40099651D /* libboost_thread-mt.a */; };
-		5B3F4B7B19C57AC40099651D /* libboost_thread-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7319C57AC40099651D /* libboost_thread-mt.dylib */; };
-		5B3F4B7E19C581C60099651D /* libboost_regex-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7C19C581C60099651D /* libboost_regex-mt.a */; };
-		5B3F4B7F19C581C60099651D /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3F4B7D19C581C60099651D /* libboost_regex-mt.dylib */; };
 		5B8A22FA19BA5ACC00DC7BBB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B8A22F919BA5ACC00DC7BBB /* libz.dylib */; };
 		5BE4DCA019BB4C2800F82615 /* SignalMessages.proto in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EC4B719B9938800139C25 /* SignalMessages.proto */; };
 		5BE4DCAA19BB4E3B00F82615 /* libprotoc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE4DCA319BB4E2400F82615 /* libprotoc.a */; };
@@ -477,16 +467,6 @@
 		5B12E35419FA699E00DED744 /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscTypes.h; sourceTree = "<group>"; };
 		5B12E35E19FAB0B700DED744 /* udp_client_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = udp_client_server.h; path = ../../Source/udp_client_server.h; sourceTree = "<group>"; };
 		5B12E35F19FAB0D500DED744 /* udp_client_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = udp_client_server.cpp; path = ../../Source/udp_client_server.cpp; sourceTree = "<group>"; };
-		5B3F4B6C19C57AC40099651D /* libboost_atomic-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_atomic-mt.a"; path = "../../../../../../../opt/local/lib/libboost_atomic-mt.a"; sourceTree = "<group>"; };
-		5B3F4B6D19C57AC40099651D /* libboost_atomic-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_atomic-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_atomic-mt.dylib"; sourceTree = "<group>"; };
-		5B3F4B6E19C57AC40099651D /* libboost_iostreams-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_iostreams-mt.a"; path = "../../../../../../../opt/local/lib/libboost_iostreams-mt.a"; sourceTree = "<group>"; };
-		5B3F4B6F19C57AC40099651D /* libboost_iostreams-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_iostreams-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_iostreams-mt.dylib"; sourceTree = "<group>"; };
-		5B3F4B7019C57AC40099651D /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "../../../../../../../opt/local/lib/libboost_system-mt.a"; sourceTree = "<group>"; };
-		5B3F4B7119C57AC40099651D /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
-		5B3F4B7219C57AC40099651D /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../../../../opt/local/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
-		5B3F4B7319C57AC40099651D /* libboost_thread-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_thread-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_thread-mt.dylib"; sourceTree = "<group>"; };
-		5B3F4B7C19C581C60099651D /* libboost_regex-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_regex-mt.a"; path = "../../../../../../../opt/local/lib/libboost_regex-mt.a"; sourceTree = "<group>"; };
-		5B3F4B7D19C581C60099651D /* libboost_regex-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_regex-mt.dylib"; path = "../../../../../../../opt/local/lib/libboost_regex-mt.dylib"; sourceTree = "<group>"; };
 		5B8A22F919BA5ACC00DC7BBB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5BBFDD555E1A7C3DF299FB4D /* juce_MidiBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_MidiBuffer.h; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiBuffer.h; sourceTree = SOURCE_ROOT; };
 		5BC21ADE8536C399FE165749 /* juce_LowLevelGraphicsSoftwareRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_LowLevelGraphicsSoftwareRenderer.h; path = ../../JuceLibraryCode/modules/juce_graphics/contexts/juce_LowLevelGraphicsSoftwareRenderer.h; sourceTree = SOURCE_ROOT; };
@@ -1141,16 +1121,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B3F4B7E19C581C60099651D /* libboost_regex-mt.a in Frameworks */,
-				5B3F4B7F19C581C60099651D /* libboost_regex-mt.dylib in Frameworks */,
-				5B3F4B7419C57AC40099651D /* libboost_atomic-mt.a in Frameworks */,
-				5B3F4B7519C57AC40099651D /* libboost_atomic-mt.dylib in Frameworks */,
-				5B3F4B7619C57AC40099651D /* libboost_iostreams-mt.a in Frameworks */,
-				5B3F4B7719C57AC40099651D /* libboost_iostreams-mt.dylib in Frameworks */,
-				5B3F4B7819C57AC40099651D /* libboost_system-mt.a in Frameworks */,
-				5B3F4B7919C57AC40099651D /* libboost_system-mt.dylib in Frameworks */,
-				5B3F4B7A19C57AC40099651D /* libboost_thread-mt.a in Frameworks */,
-				5B3F4B7B19C57AC40099651D /* libboost_thread-mt.dylib in Frameworks */,
 				5BE4DCB019BB4E8900F82615 /* protobuf-lite.pc in Frameworks */,
 				5BE4DCB119BB4E8900F82615 /* protobuf.pc in Frameworks */,
 				5BE4DCAC19BB4E7400F82615 /* libprotobuf.a in Frameworks */,
@@ -3004,16 +2974,6 @@
 		F6F21BE803DEC5E6AD88245A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5B3F4B7C19C581C60099651D /* libboost_regex-mt.a */,
-				5B3F4B7D19C581C60099651D /* libboost_regex-mt.dylib */,
-				5B3F4B6C19C57AC40099651D /* libboost_atomic-mt.a */,
-				5B3F4B6D19C57AC40099651D /* libboost_atomic-mt.dylib */,
-				5B3F4B6E19C57AC40099651D /* libboost_iostreams-mt.a */,
-				5B3F4B6F19C57AC40099651D /* libboost_iostreams-mt.dylib */,
-				5B3F4B7019C57AC40099651D /* libboost_system-mt.a */,
-				5B3F4B7119C57AC40099651D /* libboost_system-mt.dylib */,
-				5B3F4B7219C57AC40099651D /* libboost_thread-mt.a */,
-				5B3F4B7319C57AC40099651D /* libboost_thread-mt.dylib */,
 				5BE4DCA119BB4E2400F82615 /* libprotobuf.a */,
 				5BE4DCA219BB4E2400F82615 /* libprotobuf-lite.a */,
 				5BE4DCA319BB4E2400F82615 /* libprotoc.a */,
@@ -3390,7 +3350,6 @@
 					"$(inherited)",
 					/opt/local/include,
 					../../,
-					/opt/local/include/boost,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";
@@ -3420,7 +3379,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = "$(EXCLUDED_SOURCE_FILE_NAMES_$(CURRENT_ARCH))";
 				EXCLUDED_SOURCE_FILE_NAMES_x86_64 = "*Carbon*.cpp";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_NDEBUG=1",
 					"NDEBUG=1",
@@ -3442,7 +3401,6 @@
 					"$(inherited)",
 					/opt/local/include,
 					../../,
-					/opt/local/include/boost,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";

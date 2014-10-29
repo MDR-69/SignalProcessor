@@ -20,8 +20,6 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <boost/asio.hpp>
-#include "boost/bind.hpp"
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 #include "udp_client_server.h"

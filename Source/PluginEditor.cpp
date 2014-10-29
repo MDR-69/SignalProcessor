@@ -161,12 +161,6 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     infoLabel.setFont(smallFont);
     infoLabel.setCentrePosition(getWidth()/2, getHeight() - 40);
     
-    // add an image which will respond to the beat detection
-    beatImage = ImageFileFormat::loadFrom (BinaryData::RedFlash_png, (size_t) BinaryData::RedFlash_pngSize);
-//    transform = AffineTransform::translation (getWidth()/2 + (float) (beatImage.getWidth() / 2), getHeight()/2 + (float) (beatImage.getHeight() / 2)).followedBy (getTransform());
-    transform = AffineTransform::translation ((float) (beatImage.getWidth() / 2), (float) (beatImage.getHeight() / 2)).followedBy (getTransform());
-
-    
     startTimer (20);
     
 }
@@ -197,10 +191,6 @@ void SignalProcessorAudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("This plugin is to be used together with Strobot",
                       0, getHeight()/2 - 20, getWidth(), getHeight(),
                       Justification::centred, 1);
-    
-//    std::cout << "beatIntensity : " << lastDisplayedBeatIntensity << "\n";
-//    g.setOpacity (lastDisplayedBeatIntensity);
-//    g.drawImageTransformed (beatImage, transform, false);
     
     g.setColour(Colours::red);
     g.fillEllipse(getWidth()/2 + (1.0 - lastDisplayedBeatIntensity)*20, getHeight()/2 + 30 + (1.0 - lastDisplayedBeatIntensity)*20, lastDisplayedBeatIntensity*40, lastDisplayedBeatIntensity*40);
