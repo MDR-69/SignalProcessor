@@ -381,6 +381,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
 
 void SignalProcessorAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
+        
     // Restore the parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
     // This getXmlFromBinary() helper function retrieves our XML from the binary blob..
@@ -402,6 +403,9 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             averageEnergyBufferSize = xmlState->getIntAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
         }
     }
+    
+    //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
+    defineDefaultSignalMessages();
 }
 
 
