@@ -16,20 +16,24 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     : AudioProcessorEditor (owner),
       audioProcessorInstance(owner),
       infoLabel (String::empty),
-      averagingBufferLabel ("", "Averaging Buffer (samples):"),
+      averagingBufferLabel ("", "Averaging Buffer Size (samples):"),
+      fftBufferLabel ("", "FFT Buffer Size (samples):"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
       beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
       averagingBufferSlider ("averagingBuffer"),
+      fftBufferSlider ("fftBuffer"),
       inputSensitivitySlider ("inputSensitivity"),
       beatDetectionWindowSlider ("beatDetectionWindow"),
       sendTimeInfoButton("Send TimeInfo"),
       sendSignalLevelButton("Send SignalLevel"),
       sendImpulseButton("Send Impulse"),
+      sendFFTButton("Send Signal FFT"),
       monoStereoButton ("Stereo Processing"),
       sendTimeInfoButtonLabel ("", "Send Time Info"),
       sendSignalLevelButtonLabel ("", "Send Signal Level"),
       sendImpulseButtonLabel ("", "Send Impulse"),
+      sendFFTButtonLabel ("", "Send Signal FFT "),
       monoStereoButtonLabel ("", "Stereo Processing"),
       logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
@@ -39,7 +43,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
 {
     
     // This is where our plugin's editor size is set.
-    setSize (500, 380);
+    setSize (500, 420);
     
     slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
@@ -52,6 +56,14 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setRange (64, 4096, 1.0);
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     averagingBufferSlider.setBounds (20, 230, 150, 20);
+
+    addAndMakeVisible (fftBufferSlider);
+    fftBufferSlider.setLookAndFeel(slaf);
+    fftBufferSlider.setSliderStyle (Slider::LinearBar);
+    fftBufferSlider.addListener (this);
+    fftBufferSlider.setRange (512, 16384, 64);
+    fftBufferSlider.setValue(getProcessor().averagingBufferSize);
+    fftBufferSlider.setBounds (20, 270, 150, 20);
     
     addAndMakeVisible (inputSensitivitySlider);
     inputSensitivitySlider.setLookAndFeel(slaf);
@@ -59,7 +71,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.addListener (this);
     inputSensitivitySlider.setRange (0.0, 5.0, 0.01);
     inputSensitivitySlider.setValue(getProcessor().inputSensitivity);
-    inputSensitivitySlider.setBounds (20, 270, 150, 20);
+    inputSensitivitySlider.setBounds (20, 310, 150, 20);
 
     addAndMakeVisible (beatDetectionWindowSlider);
     beatDetectionWindowSlider.setLookAndFeel(slaf);
@@ -67,33 +79,40 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     beatDetectionWindowSlider.addListener (this);
     beatDetectionWindowSlider.setRange (2.0, 16.0, 1);
     beatDetectionWindowSlider.setValue(getProcessor().averageEnergyBufferSize);
-    beatDetectionWindowSlider.setBounds (20, 310, 150, 20);
+    beatDetectionWindowSlider.setBounds (20, 350, 150, 20);
     
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);
     sendTimeInfoButton.addListener (this);
     sendTimeInfoButton.changeWidthToFitText();
-    sendTimeInfoButton.setBounds (getWidth() - 50, 180, 140, 20);
+    sendTimeInfoButton.setBounds (getWidth() - 50, 180, 20, 20);
     sendTimeInfoButton.setColour (Label::textColourId, Colours::white);
     sendTimeInfoButton.setButtonText("");
     addAndMakeVisible (sendSignalLevelButton);
     sendSignalLevelButton.setLookAndFeel(slaf);
     sendSignalLevelButton.addListener (this);
     sendSignalLevelButton.changeWidthToFitText();
-    sendSignalLevelButton.setBounds (getWidth() - 50, 200, 140, 20);
+    sendSignalLevelButton.setBounds (getWidth() - 50, 200, 20, 20);
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
     sendSignalLevelButton.setButtonText("");
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.setLookAndFeel(slaf);
     sendImpulseButton.addListener (this);
     sendImpulseButton.changeWidthToFitText();
-    sendImpulseButton.setBounds (getWidth() - 50, 220, 140, 20);
+    sendImpulseButton.setBounds (getWidth() - 50, 220, 20, 20);
     sendImpulseButton.setColour (Label::textColourId, Colours::white);
     sendImpulseButton.setButtonText("");
+    addAndMakeVisible (sendFFTButton);
+    sendFFTButton.setLookAndFeel(slaf);
+    sendFFTButton.addListener (this);
+    sendFFTButton.changeWidthToFitText();
+    sendFFTButton.setBounds (getWidth() - 50, 240, 20, 20);
+    sendFFTButton.setColour (Label::textColourId, Colours::white);
+    sendFFTButton.setButtonText("");
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
     monoStereoButton.changeWidthToFitText();
-    monoStereoButton.setBounds (getWidth() - 50, 240, 140, 20);
+    monoStereoButton.setBounds (getWidth() - 50, 260, 20, 20);
     monoStereoButton.setColour (Label::textColourId, Colours::white);
     monoStereoButton.setLookAndFeel(slaf);
     monoStereoButton.setButtonText("");
@@ -101,6 +120,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
+    sendFFTButton.setToggleState(getProcessor().sendFFT, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
 
     sendTimeInfoButtonLabel.attachToComponent (&sendTimeInfoButton, true);
@@ -112,6 +132,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendImpulseButtonLabel.attachToComponent (&sendImpulseButton, true);
     sendImpulseButtonLabel.setFont(smallFont);
     sendImpulseButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendFFTButtonLabel.attachToComponent (&sendFFTButton, true);
+    sendFFTButtonLabel.setFont(smallFont);
+    sendFFTButtonLabel.setColour(Label::textColourId, Colours::white);
     monoStereoButtonLabel.attachToComponent (&monoStereoButton, true);
     monoStereoButtonLabel.setFont(smallFont);
     monoStereoButtonLabel.setColour(Label::textColourId, Colours::white);
@@ -131,6 +154,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferLabel.attachToComponent (&averagingBufferSlider, false);
     averagingBufferLabel.setFont(smallFont);
     averagingBufferLabel.setColour(Label::textColourId, Colours::white);
+
+    fftBufferLabel.attachToComponent (&fftBufferSlider, false);
+    fftBufferLabel.setFont(smallFont);
+    fftBufferLabel.setColour(Label::textColourId, Colours::white);
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);

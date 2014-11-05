@@ -20,12 +20,14 @@
 SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
   averagingBufferSize(defaultAveragingBufferSize),
+  fftBufferSize(defaultFftBufferSize),
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
-  udpClientImpulse("127.0.0.1", portNumberImpulse)
+  udpClientImpulse("127.0.0.1", portNumberImpulse),
+  udpClientFFT("127.0.0.1", portNumberFFT)
 {
     
     //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
@@ -34,6 +36,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     dataArrayImpulse  = new char[impulse.ByteSize()];
     dataArrayLevel    = new char[signal.ByteSize()];
     dataArrayTimeInfo = new char[timeInfo.ByteSize()];
+    dataArrayFFT      = new char[fft.ByteSize()];
     
     lastPosInfo.resetToDefault();
 
@@ -45,6 +48,7 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     delete [] dataArrayImpulse;
     delete [] dataArrayLevel;
     delete [] dataArrayTimeInfo;
+    delete [] dataArrayFFT;
 }
 
 
@@ -70,6 +74,7 @@ float SignalProcessorAudioProcessor::getParameter (int index)
     switch (index)
     {
         case averagingBufferSizeParam:      return averagingBufferSize;
+        case fftBufferSizeParam:            return fftBufferSize;
         case inputSensitivityParam:         return inputSensitivity;
         case sendTimeInfoParam:             return sendTimeInfo;
         case sendSignalLevelParam:          return sendSignalLevel;
@@ -86,6 +91,7 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
     switch (index)
     {
         case averagingBufferSizeParam:      return defaultAveragingBufferSize;
+        case fftBufferSizeParam:            return defaultFftBufferSize;
         case inputSensitivityParam:         return defaultInputSensitivity;
         case sendTimeInfoParam:             return defaultSendTimeInfo;
         case sendSignalLevelParam:          return defaultSendSignalLevel;
@@ -107,6 +113,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     switch (index)
     {
         case averagingBufferSizeParam:      averagingBufferSize     = newValue;  break;
+        case fftBufferSizeParam:            fftBufferSize           = newValue;  break;
         case inputSensitivityParam:         inputSensitivity        = newValue;  break;
         case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
         case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
@@ -123,6 +130,7 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
     switch (index)
     {
         case averagingBufferSizeParam:     return "Averaging Buffer Size"; break;
+        case fftBufferSizeParam:           return "FFT Buffer Size";       break;
         case inputSensitivityParam:        return "Input Sensitivity";     break;
         case sendTimeInfoParam:            return "Send Time Info";        break;
         case sendSignalLevelParam:         return "Send Signal Level";     break;
@@ -244,6 +252,10 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     
     nbBufValProcessed += buffer.getNumSamples();
     samplesSinceLastTimeInfoTransmission += buffer.getNumSamples();
+
+    if (sendFFT == true) {
+        //Do some FFT related stuff - TBIL
+    }
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
     signalAverageEnergy = denormalize(((signalAverageEnergy * (averageEnergyBufferSize-1)) + signalInstantEnergy) / averageEnergyBufferSize);
@@ -336,11 +348,22 @@ void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
     timeInfo.set_position(0.0);
     timeInfo.set_tempo(120.0);
     
+    fft.set_signalid(channel);
+    fft.set_band1(0.0);
+    fft.set_band2(0.0);
+    fft.set_band3(0.0);
+    fft.set_band4(0.0);
+    fft.set_band5(0.0);
+    fft.set_band6(0.0);
+    fft.set_band7(0.0);
+    fft.set_band8(0.0);
+    
 }
 
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     
     signal.set_signalid(channel);
+    fft.set_signalid(channel);
     
     //It is possible to pre-serialize impulse messages here, as the message will never change
     impulse.set_signalid(channel);
@@ -367,6 +390,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     
     // add some attributes to it..
     xml.setAttribute ("averagingBufferSize", averagingBufferSize);
+    xml.setAttribute ("fftBufferSize", fftBufferSize);
     xml.setAttribute ("inputSensitivity", inputSensitivity);
     xml.setAttribute ("sendTimeInfo", sendTimeInfo);
     xml.setAttribute ("sendSignalLevel", sendSignalLevel);
@@ -394,6 +418,7 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
         {
             // now pull out our parameters..
             averagingBufferSize     = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
+            fftBufferSize           = xmlState->getIntAttribute ("fftBufferSize", fftBufferSize);
             inputSensitivity        = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
             sendTimeInfo            = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
             sendSignalLevel         = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);

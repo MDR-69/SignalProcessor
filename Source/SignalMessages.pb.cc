@@ -24,6 +24,9 @@ const ::google_public::protobuf::internal::GeneratedMessageReflection*
 const ::google_public::protobuf::Descriptor* Impulse_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   Impulse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* FFT_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  FFT_reflection_ = NULL;
 const ::google_public::protobuf::Descriptor* TimeInfo_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   TimeInfo_reflection_ = NULL;
@@ -68,7 +71,30 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Impulse));
-  TimeInfo_descriptor_ = file->message_type(2);
+  FFT_descriptor_ = file->message_type(2);
+  static const int FFT_offsets_[9] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, signalid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band1_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band2_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band3_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band4_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band5_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band6_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band7_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, band8_),
+  };
+  FFT_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      FFT_descriptor_,
+      FFT::default_instance_,
+      FFT_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FFT, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(FFT));
+  TimeInfo_descriptor_ = file->message_type(3);
   static const int TimeInfo_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, isplaying_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, tempo_),
@@ -102,6 +128,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Impulse_descriptor_, &Impulse::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    FFT_descriptor_, &FFT::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     TimeInfo_descriptor_, &TimeInfo::default_instance());
 }
 
@@ -112,6 +140,8 @@ void protobuf_ShutdownFile_SignalMessages_2eproto() {
   delete SignalLevel_reflection_;
   delete Impulse::default_instance_;
   delete Impulse_reflection_;
+  delete FFT::default_instance_;
+  delete FFT_reflection_;
   delete TimeInfo::default_instance_;
   delete TimeInfo_reflection_;
 }
@@ -125,17 +155,23 @@ void protobuf_AddDesc_SignalMessages_2eproto() {
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n"
     "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:"
-    "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"K\n\010Ti"
-    "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp"
-    "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa"
-    "lMessages", 209);
+    "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"\252\001\n\003F"
+    "FT\022\023\n\010signalID\030\001 \002(\005:\0011\022\020\n\005band1\030\002 \002(\002:\001"
+    "0\022\020\n\005band2\030\003 \002(\002:\0010\022\020\n\005band3\030\004 \002(\002:\0010\022\020\n"
+    "\005band4\030\005 \002(\002:\0010\022\020\n\005band5\030\006 \002(\002:\0010\022\020\n\005ban"
+    "d6\030\007 \002(\002:\0010\022\020\n\005band7\030\010 \002(\002:\0010\022\020\n\005band8\030\t"
+    " \002(\002:\0010\"K\n\010TimeInfo\022\030\n\tisPlaying\030\001 \002(\010:\005"
+    "false\022\020\n\005tempo\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002("
+    "\002:\0010B\020B\016SignalMessages", 382);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SignalMessages.proto", &protobuf_RegisterTypes);
   SignalLevel::default_instance_ = new SignalLevel();
   Impulse::default_instance_ = new Impulse();
+  FFT::default_instance_ = new FFT();
   TimeInfo::default_instance_ = new TimeInfo();
   SignalLevel::default_instance_->InitAsDefaultInstance();
   Impulse::default_instance_->InitAsDefaultInstance();
+  FFT::default_instance_->InitAsDefaultInstance();
   TimeInfo::default_instance_->InitAsDefaultInstance();
   ::google_public::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_SignalMessages_2eproto);
 }
@@ -599,6 +635,525 @@ void Impulse::Swap(Impulse* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = Impulse_descriptor_;
   metadata.reflection = Impulse_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int FFT::kSignalIDFieldNumber;
+const int FFT::kBand1FieldNumber;
+const int FFT::kBand2FieldNumber;
+const int FFT::kBand3FieldNumber;
+const int FFT::kBand4FieldNumber;
+const int FFT::kBand5FieldNumber;
+const int FFT::kBand6FieldNumber;
+const int FFT::kBand7FieldNumber;
+const int FFT::kBand8FieldNumber;
+#endif  // !_MSC_VER
+
+FFT::FFT()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void FFT::InitAsDefaultInstance() {
+}
+
+FFT::FFT(const FFT& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void FFT::SharedCtor() {
+  _cached_size_ = 0;
+  signalid_ = 1;
+  band1_ = 0;
+  band2_ = 0;
+  band3_ = 0;
+  band4_ = 0;
+  band5_ = 0;
+  band6_ = 0;
+  band7_ = 0;
+  band8_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+FFT::~FFT() {
+  SharedDtor();
+}
+
+void FFT::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void FFT::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* FFT::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return FFT_descriptor_;
+}
+
+const FFT& FFT::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_SignalMessages_2eproto();
+  return *default_instance_;
+}
+
+FFT* FFT::default_instance_ = NULL;
+
+FFT* FFT::New() const {
+  return new FFT;
+}
+
+void FFT::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    signalid_ = 1;
+    band1_ = 0;
+    band2_ = 0;
+    band3_ = 0;
+    band4_ = 0;
+    band5_ = 0;
+    band6_ = 0;
+    band7_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    band8_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool FFT::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 signalID = 1 [default = 1];
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int32, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &signalid_)));
+          set_has_signalid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(21)) goto parse_band1;
+        break;
+      }
+
+      // required float band1 = 2 [default = 0];
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band1:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band1_)));
+          set_has_band1();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(29)) goto parse_band2;
+        break;
+      }
+
+      // required float band2 = 3 [default = 0];
+      case 3: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band2:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band2_)));
+          set_has_band2();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(37)) goto parse_band3;
+        break;
+      }
+
+      // required float band3 = 4 [default = 0];
+      case 4: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band3:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band3_)));
+          set_has_band3();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(45)) goto parse_band4;
+        break;
+      }
+
+      // required float band4 = 5 [default = 0];
+      case 5: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band4:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band4_)));
+          set_has_band4();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(53)) goto parse_band5;
+        break;
+      }
+
+      // required float band5 = 6 [default = 0];
+      case 6: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band5:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band5_)));
+          set_has_band5();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(61)) goto parse_band6;
+        break;
+      }
+
+      // required float band6 = 7 [default = 0];
+      case 7: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band6:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band6_)));
+          set_has_band6();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(69)) goto parse_band7;
+        break;
+      }
+
+      // required float band7 = 8 [default = 0];
+      case 8: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band7:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band7_)));
+          set_has_band7();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(77)) goto parse_band8;
+        break;
+      }
+
+      // required float band8 = 9 [default = 0];
+      case 9: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_band8:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &band8_)));
+          set_has_band8();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void FFT::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required int32 signalID = 1 [default = 1];
+  if (has_signalid()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt32(1, this->signalid(), output);
+  }
+
+  // required float band1 = 2 [default = 0];
+  if (has_band1()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(2, this->band1(), output);
+  }
+
+  // required float band2 = 3 [default = 0];
+  if (has_band2()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(3, this->band2(), output);
+  }
+
+  // required float band3 = 4 [default = 0];
+  if (has_band3()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(4, this->band3(), output);
+  }
+
+  // required float band4 = 5 [default = 0];
+  if (has_band4()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(5, this->band4(), output);
+  }
+
+  // required float band5 = 6 [default = 0];
+  if (has_band5()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(6, this->band5(), output);
+  }
+
+  // required float band6 = 7 [default = 0];
+  if (has_band6()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(7, this->band6(), output);
+  }
+
+  // required float band7 = 8 [default = 0];
+  if (has_band7()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(8, this->band7(), output);
+  }
+
+  // required float band8 = 9 [default = 0];
+  if (has_band8()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(9, this->band8(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* FFT::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required int32 signalID = 1 [default = 1];
+  if (has_signalid()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->signalid(), target);
+  }
+
+  // required float band1 = 2 [default = 0];
+  if (has_band1()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->band1(), target);
+  }
+
+  // required float band2 = 3 [default = 0];
+  if (has_band2()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->band2(), target);
+  }
+
+  // required float band3 = 4 [default = 0];
+  if (has_band3()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->band3(), target);
+  }
+
+  // required float band4 = 5 [default = 0];
+  if (has_band4()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(5, this->band4(), target);
+  }
+
+  // required float band5 = 6 [default = 0];
+  if (has_band5()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->band5(), target);
+  }
+
+  // required float band6 = 7 [default = 0];
+  if (has_band6()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(7, this->band6(), target);
+  }
+
+  // required float band7 = 8 [default = 0];
+  if (has_band7()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(8, this->band7(), target);
+  }
+
+  // required float band8 = 9 [default = 0];
+  if (has_band8()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(9, this->band8(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int FFT::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 signalID = 1 [default = 1];
+    if (has_signalid()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int32Size(
+          this->signalid());
+    }
+
+    // required float band1 = 2 [default = 0];
+    if (has_band1()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band2 = 3 [default = 0];
+    if (has_band2()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band3 = 4 [default = 0];
+    if (has_band3()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band4 = 5 [default = 0];
+    if (has_band4()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band5 = 6 [default = 0];
+    if (has_band5()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band6 = 7 [default = 0];
+    if (has_band6()) {
+      total_size += 1 + 4;
+    }
+
+    // required float band7 = 8 [default = 0];
+    if (has_band7()) {
+      total_size += 1 + 4;
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required float band8 = 9 [default = 0];
+    if (has_band8()) {
+      total_size += 1 + 4;
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void FFT::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const FFT* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const FFT*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void FFT::MergeFrom(const FFT& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_signalid()) {
+      set_signalid(from.signalid());
+    }
+    if (from.has_band1()) {
+      set_band1(from.band1());
+    }
+    if (from.has_band2()) {
+      set_band2(from.band2());
+    }
+    if (from.has_band3()) {
+      set_band3(from.band3());
+    }
+    if (from.has_band4()) {
+      set_band4(from.band4());
+    }
+    if (from.has_band5()) {
+      set_band5(from.band5());
+    }
+    if (from.has_band6()) {
+      set_band6(from.band6());
+    }
+    if (from.has_band7()) {
+      set_band7(from.band7());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_band8()) {
+      set_band8(from.band8());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void FFT::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FFT::CopyFrom(const FFT& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FFT::IsInitialized() const {
+  if ((_has_bits_[0] & 0x000001ff) != 0x000001ff) return false;
+
+  return true;
+}
+
+void FFT::Swap(FFT* other) {
+  if (other != this) {
+    std::swap(signalid_, other->signalid_);
+    std::swap(band1_, other->band1_);
+    std::swap(band2_, other->band2_);
+    std::swap(band3_, other->band3_);
+    std::swap(band4_, other->band4_);
+    std::swap(band5_, other->band5_);
+    std::swap(band6_, other->band6_);
+    std::swap(band7_, other->band7_);
+    std::swap(band8_, other->band8_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata FFT::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = FFT_descriptor_;
+  metadata.reflection = FFT_reflection_;
   return metadata;
 }
 

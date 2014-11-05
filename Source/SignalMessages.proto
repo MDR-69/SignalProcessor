@@ -12,6 +12,18 @@ message Impulse {
   required int32 signalID = 1 [default=1];
 }
 
+message FFT {
+  required int32 signalID = 1 [default=1];
+  required float band1 = 2 [default=0];
+  required float band2 = 3 [default=0];
+  required float band3 = 4 [default=0];
+  required float band4 = 5 [default=0];
+  required float band5 = 6 [default=0];
+  required float band6 = 7 [default=0];
+  required float band7 = 8 [default=0];
+  required float band8 = 9 [default=0];
+}
+
 message TimeInfo {
   required bool isPlaying = 1 [default=false];
   required float tempo = 2 [default=0];

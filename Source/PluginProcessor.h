@@ -41,6 +41,8 @@ public:
     
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     
+    void calculateFFT ();
+    
     //==============================================================================
     AudioProcessorEditor* createEditor();
     bool hasEditor() const;
@@ -88,19 +90,21 @@ public:
     
     //==============================================================================
     // Default parameter values
-    const int defaultAveragingBufferSize = 2048;
-    const bool defaultSendTimeInfo = false;
-    const bool defaultSendSignalLevel = true;
-    const bool defaultSendImpulse = true;
-    const bool defaultMonoStereo = false;        //Mono processing
-    const float defaultInputSensitivity = 1.0;
-    const int defaultChannel = 1;
+    const int defaultAveragingBufferSize     = 2048;
+    const int defaultFftBufferSize           = 4096;
+    const bool defaultSendTimeInfo           = false;
+    const bool defaultSendSignalLevel        = true;
+    const bool defaultSendImpulse            = true;
+    const bool defaultMonoStereo             = false;        //Mono processing
+    const float defaultInputSensitivity      = 1.0;
+    const int defaultChannel                 = 1;
     const int defaultAverageEnergyBufferSize = 8.0;
     
     //==============================================================================
     enum Parameters
     {
         averagingBufferSizeParam = 0,
+        fftBufferSizeParam,
         inputSensitivityParam,
         sendTimeInfoParam,
         sendSignalLevelParam,
@@ -113,10 +117,12 @@ public:
     
     int channel;
     int averagingBufferSize;
+    int fftBufferSize;
     float inputSensitivity;
     bool sendTimeInfo    = true;
     bool sendSignalLevel = true;
     bool sendImpulse     = true;
+    bool sendFFT         = false;
     bool monoStereo;         //false -> mono
     int averageEnergyBufferSize;
     
@@ -138,22 +144,26 @@ public:
     const int portNumberSignalLevel = 7001;
     const int portNumberImpulse     = 7002;
     const int portNumberTimeInfo    = 7003;
+    const int portNumberFFT         = 7004;
     const int nbOfSamplesToSkip     = 6;
-    const int timeInfoCycle         = 4096;       //Send the time info message every 4096 samples, that's about 100ms
+    const int timeInfoCycle         = 2048;       //Send the time info message every 2048 samples, that's about 50ms
     
     udp_client udpClientTimeInfo;
     udp_client udpClientSignalLevel;
     udp_client udpClientImpulse;
+    udp_client udpClientFFT;
     
     char* dataArrayTimeInfo;
     char* dataArrayImpulse;
     char* dataArrayLevel;
+    char* dataArrayFFT;
     
     //==============================================================================
     // Small optimisation : always use the same SignalMessages objects, it saves creating a new one every time
     Impulse impulse;
     SignalLevel signal;
     TimeInfo timeInfo;
+    FFT fft;
     
     
 private:

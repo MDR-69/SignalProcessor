@@ -33,6 +33,7 @@ void protobuf_ShutdownFile_SignalMessages_2eproto();
 
 class SignalLevel;
 class Impulse;
+class FFT;
 class TimeInfo;
 
 // ===================================================================
@@ -211,6 +212,168 @@ class Impulse : public ::google_public::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class FFT : public ::google_public::protobuf::Message {
+ public:
+  FFT();
+  virtual ~FFT();
+
+  FFT(const FFT& from);
+
+  inline FFT& operator=(const FFT& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const FFT& default_instance();
+
+  void Swap(FFT* other);
+
+  // implements Message ----------------------------------------------
+
+  FFT* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const FFT& from);
+  void MergeFrom(const FFT& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 signalID = 1 [default = 1];
+  inline bool has_signalid() const;
+  inline void clear_signalid();
+  static const int kSignalIDFieldNumber = 1;
+  inline ::google_public::protobuf::int32 signalid() const;
+  inline void set_signalid(::google_public::protobuf::int32 value);
+
+  // required float band1 = 2 [default = 0];
+  inline bool has_band1() const;
+  inline void clear_band1();
+  static const int kBand1FieldNumber = 2;
+  inline float band1() const;
+  inline void set_band1(float value);
+
+  // required float band2 = 3 [default = 0];
+  inline bool has_band2() const;
+  inline void clear_band2();
+  static const int kBand2FieldNumber = 3;
+  inline float band2() const;
+  inline void set_band2(float value);
+
+  // required float band3 = 4 [default = 0];
+  inline bool has_band3() const;
+  inline void clear_band3();
+  static const int kBand3FieldNumber = 4;
+  inline float band3() const;
+  inline void set_band3(float value);
+
+  // required float band4 = 5 [default = 0];
+  inline bool has_band4() const;
+  inline void clear_band4();
+  static const int kBand4FieldNumber = 5;
+  inline float band4() const;
+  inline void set_band4(float value);
+
+  // required float band5 = 6 [default = 0];
+  inline bool has_band5() const;
+  inline void clear_band5();
+  static const int kBand5FieldNumber = 6;
+  inline float band5() const;
+  inline void set_band5(float value);
+
+  // required float band6 = 7 [default = 0];
+  inline bool has_band6() const;
+  inline void clear_band6();
+  static const int kBand6FieldNumber = 7;
+  inline float band6() const;
+  inline void set_band6(float value);
+
+  // required float band7 = 8 [default = 0];
+  inline bool has_band7() const;
+  inline void clear_band7();
+  static const int kBand7FieldNumber = 8;
+  inline float band7() const;
+  inline void set_band7(float value);
+
+  // required float band8 = 9 [default = 0];
+  inline bool has_band8() const;
+  inline void clear_band8();
+  static const int kBand8FieldNumber = 9;
+  inline float band8() const;
+  inline void set_band8(float value);
+
+  // @@protoc_insertion_point(class_scope:FFT)
+ private:
+  inline void set_has_signalid();
+  inline void clear_has_signalid();
+  inline void set_has_band1();
+  inline void clear_has_band1();
+  inline void set_has_band2();
+  inline void clear_has_band2();
+  inline void set_has_band3();
+  inline void clear_has_band3();
+  inline void set_has_band4();
+  inline void clear_has_band4();
+  inline void set_has_band5();
+  inline void clear_has_band5();
+  inline void set_has_band6();
+  inline void clear_has_band6();
+  inline void set_has_band7();
+  inline void clear_has_band7();
+  inline void set_has_band8();
+  inline void clear_has_band8();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google_public::protobuf::int32 signalid_;
+  float band1_;
+  float band2_;
+  float band3_;
+  float band4_;
+  float band5_;
+  float band6_;
+  float band7_;
+  float band8_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(9 + 31) / 32];
+
+  friend void  protobuf_AddDesc_SignalMessages_2eproto();
+  friend void protobuf_AssignDesc_SignalMessages_2eproto();
+  friend void protobuf_ShutdownFile_SignalMessages_2eproto();
+
+  void InitAsDefaultInstance();
+  static FFT* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class TimeInfo : public ::google_public::protobuf::Message {
  public:
   TimeInfo();
@@ -386,6 +549,208 @@ inline ::google_public::protobuf::int32 Impulse::signalid() const {
 inline void Impulse::set_signalid(::google_public::protobuf::int32 value) {
   set_has_signalid();
   signalid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// FFT
+
+// required int32 signalID = 1 [default = 1];
+inline bool FFT::has_signalid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void FFT::set_has_signalid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void FFT::clear_has_signalid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void FFT::clear_signalid() {
+  signalid_ = 1;
+  clear_has_signalid();
+}
+inline ::google_public::protobuf::int32 FFT::signalid() const {
+  return signalid_;
+}
+inline void FFT::set_signalid(::google_public::protobuf::int32 value) {
+  set_has_signalid();
+  signalid_ = value;
+}
+
+// required float band1 = 2 [default = 0];
+inline bool FFT::has_band1() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void FFT::set_has_band1() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void FFT::clear_has_band1() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void FFT::clear_band1() {
+  band1_ = 0;
+  clear_has_band1();
+}
+inline float FFT::band1() const {
+  return band1_;
+}
+inline void FFT::set_band1(float value) {
+  set_has_band1();
+  band1_ = value;
+}
+
+// required float band2 = 3 [default = 0];
+inline bool FFT::has_band2() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void FFT::set_has_band2() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void FFT::clear_has_band2() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void FFT::clear_band2() {
+  band2_ = 0;
+  clear_has_band2();
+}
+inline float FFT::band2() const {
+  return band2_;
+}
+inline void FFT::set_band2(float value) {
+  set_has_band2();
+  band2_ = value;
+}
+
+// required float band3 = 4 [default = 0];
+inline bool FFT::has_band3() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void FFT::set_has_band3() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void FFT::clear_has_band3() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void FFT::clear_band3() {
+  band3_ = 0;
+  clear_has_band3();
+}
+inline float FFT::band3() const {
+  return band3_;
+}
+inline void FFT::set_band3(float value) {
+  set_has_band3();
+  band3_ = value;
+}
+
+// required float band4 = 5 [default = 0];
+inline bool FFT::has_band4() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void FFT::set_has_band4() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void FFT::clear_has_band4() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void FFT::clear_band4() {
+  band4_ = 0;
+  clear_has_band4();
+}
+inline float FFT::band4() const {
+  return band4_;
+}
+inline void FFT::set_band4(float value) {
+  set_has_band4();
+  band4_ = value;
+}
+
+// required float band5 = 6 [default = 0];
+inline bool FFT::has_band5() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void FFT::set_has_band5() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void FFT::clear_has_band5() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void FFT::clear_band5() {
+  band5_ = 0;
+  clear_has_band5();
+}
+inline float FFT::band5() const {
+  return band5_;
+}
+inline void FFT::set_band5(float value) {
+  set_has_band5();
+  band5_ = value;
+}
+
+// required float band6 = 7 [default = 0];
+inline bool FFT::has_band6() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void FFT::set_has_band6() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void FFT::clear_has_band6() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void FFT::clear_band6() {
+  band6_ = 0;
+  clear_has_band6();
+}
+inline float FFT::band6() const {
+  return band6_;
+}
+inline void FFT::set_band6(float value) {
+  set_has_band6();
+  band6_ = value;
+}
+
+// required float band7 = 8 [default = 0];
+inline bool FFT::has_band7() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void FFT::set_has_band7() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void FFT::clear_has_band7() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void FFT::clear_band7() {
+  band7_ = 0;
+  clear_has_band7();
+}
+inline float FFT::band7() const {
+  return band7_;
+}
+inline void FFT::set_band7(float value) {
+  set_has_band7();
+  band7_ = value;
+}
+
+// required float band8 = 9 [default = 0];
+inline bool FFT::has_band8() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void FFT::set_has_band8() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void FFT::clear_has_band8() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void FFT::clear_band8() {
+  band8_ = 0;
+  clear_has_band8();
+}
+inline float FFT::band8() const {
+  return band8_;
+}
+inline void FFT::set_band8(float value) {
+  set_has_band8();
+  band8_ = value;
 }
 
 // -------------------------------------------------------------------

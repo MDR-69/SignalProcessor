@@ -48,10 +48,10 @@ public:
 private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
-    Label infoLabel, averagingBufferLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel, javaAppPathLabel;
-    Slider averagingBufferSlider, inputSensitivitySlider, beatDetectionWindowSlider;
-    ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, monoStereoButton;
-    Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, monoStereoButtonLabel;
+    Label infoLabel, averagingBufferLabel, fftBufferLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel, javaAppPathLabel;
+    Slider averagingBufferSlider, fftBufferSlider, inputSensitivitySlider, beatDetectionWindowSlider;
+    ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, sendFFTButton, monoStereoButton;
+    Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, sendFFTButtonLabel, monoStereoButtonLabel;
     ImageButton logoButton;
     ComboBox channelComboBox;
     ScopedPointer<ResizableCornerComponent> resizer;

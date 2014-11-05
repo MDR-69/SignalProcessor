@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SignalMessages.proto',
   package='',
-  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
+  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"\xaa\x01\n\x03\x46\x46T\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x10\n\x05\x62\x61nd1\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd2\x18\x03 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd3\x18\x04 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd4\x18\x05 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd5\x18\x06 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd6\x18\x07 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd7\x18\x08 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd8\x18\t \x02(\x02:\x01\x30\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
 
 
 
@@ -81,6 +81,90 @@ _IMPULSE = _descriptor.Descriptor(
 )
 
 
+_FFT = _descriptor.Descriptor(
+  name='FFT',
+  full_name='FFT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signalID', full_name='FFT.signalID', index=0,
+      number=1, type=5, cpp_type=1, label=2,
+      has_default_value=True, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band1', full_name='FFT.band1', index=1,
+      number=2, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band2', full_name='FFT.band2', index=2,
+      number=3, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band3', full_name='FFT.band3', index=3,
+      number=4, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band4', full_name='FFT.band4', index=4,
+      number=5, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band5', full_name='FFT.band5', index=5,
+      number=6, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band6', full_name='FFT.band6', index=6,
+      number=7, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band7', full_name='FFT.band7', index=7,
+      number=8, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='band8', full_name='FFT.band8', index=8,
+      number=9, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=117,
+  serialized_end=287,
+)
+
+
 _TIMEINFO = _descriptor.Descriptor(
   name='TimeInfo',
   full_name='TimeInfo',
@@ -118,12 +202,13 @@ _TIMEINFO = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=116,
-  serialized_end=191,
+  serialized_start=289,
+  serialized_end=364,
 )
 
 DESCRIPTOR.message_types_by_name['SignalLevel'] = _SIGNALLEVEL
 DESCRIPTOR.message_types_by_name['Impulse'] = _IMPULSE
+DESCRIPTOR.message_types_by_name['FFT'] = _FFT
 DESCRIPTOR.message_types_by_name['TimeInfo'] = _TIMEINFO
 
 class SignalLevel(_message.Message):
@@ -137,6 +222,12 @@ class Impulse(_message.Message):
   DESCRIPTOR = _IMPULSE
 
   # @@protoc_insertion_point(class_scope:Impulse)
+
+class FFT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _FFT
+
+  # @@protoc_insertion_point(class_scope:FFT)
 
 class TimeInfo(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType
