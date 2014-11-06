@@ -24,9 +24,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
-
   oscTransmissionSocket( IpEndpointName( "127.0.0.1", portNumberOSC )),
-
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
   udpClientImpulse("127.0.0.1", portNumberImpulse),
@@ -308,22 +306,12 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
                 udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
             }
             if (sendOSC) {
-                std::cout << "I've got an OSC message to send\n";
                 oscOutputStream->Clear();
                 *oscOutputStream << osc::BeginBundleImmediate
-                << osc::BeginMessage( "/impls/")
-                << osc::EndMessage
+                << osc::BeginMessage( "IMPLS" )
+                << channel << osc::EndMessage
                 << osc::EndBundle;
-                std::cout << "I've built my OSC message\n";
-//                << osc::BeginMessage( "/test1" )
-//                << true << 23 << (float)3.1415 << "hello" << osc::EndMessage
-//                << osc::BeginMessage( "/test2" )
-//                << true << 24 << (float)10.8 << "world" << osc::EndMessage
-//                << osc::EndBundle;
-                std::cout << "oscOutputStream->Data : " << oscOutputStream->Data() << "     Size : " << oscOutputStream->Size() << "\n";
                 oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
-                
-                std::cout << "I've sent my OSC message !!!!\n";
             }
         }
     }
@@ -336,8 +324,14 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
                 udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
             }
             if (sendOSC) {
-                
-                
+                //Example of an OSC signal level message : SIGLVL1/0.23245
+                oscOutputStream->Clear();
+                *oscOutputStream << osc::BeginBundleImmediate
+                << osc::BeginMessage( "SIGLVL" )
+                << channel << "/"
+                << (inputSensitivity * signalInstantEnergy) << osc::EndMessage
+                << osc::EndBundle;
+                oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
             }
         }
         
@@ -364,7 +358,14 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
                     udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
                 }
                 if (sendOSC) {
-                    
+                    oscOutputStream->Clear();
+                    *oscOutputStream << osc::BeginBundleImmediate
+                    << osc::BeginMessage( "TIME" )
+                    << ((float)currentTime.ppqPosition) << osc::EndMessage
+                    << osc::BeginMessage( "BPM" )
+                    << ((float)currentTime.bpm) << osc::EndMessage
+                    << osc::EndBundle;
+                    oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
                 }
             }
         }
