@@ -46,15 +46,6 @@
 		5B12E35D19FA699E00DED744 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B12E35319FA699E00DED744 /* OscTypes.cpp */; };
 		5B12E36019FAB0D500DED744 /* udp_client_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B12E35F19FAB0D500DED744 /* udp_client_server.cpp */; };
 		5B8A22FA19BA5ACC00DC7BBB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B8A22F919BA5ACC00DC7BBB /* libz.dylib */; };
-		5BDB69681A0A052200E93184 /* Array.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB69251A0A052200E93184 /* Array.cc */; };
-		5BDB69691A0A052200E93184 /* convolution.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB69291A0A052200E93184 /* convolution.cc */; };
-		5BDB69741A0A052200E93184 /* explicit.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB69361A0A052200E93184 /* explicit.cc */; };
-		5BDB69751A0A052200E93184 /* fftw++.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB69381A0A052200E93184 /* fftw++.cc */; };
-		5BDB69761A0A052200E93184 /* fftw++.doxycfg in Resources */ = {isa = PBXBuildFile; fileRef = 5BDB69391A0A052200E93184 /* fftw++.doxycfg */; };
-		5BDB69771A0A052200E93184 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5BDB693B1A0A052200E93184 /* LICENSE */; };
-		5BDB69781A0A052200E93184 /* LICENSE.LESSER in Resources */ = {isa = PBXBuildFile; fileRef = 5BDB693C1A0A052200E93184 /* LICENSE.LESSER */; };
-		5BDB69791A0A052200E93184 /* MAKEDOCS in Resources */ = {isa = PBXBuildFile; fileRef = 5BDB693D1A0A052200E93184 /* MAKEDOCS */; };
-		5BDB697A1A0A052200E93184 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 5BDB693F1A0A052200E93184 /* README */; };
 		5BE4DCA019BB4C2800F82615 /* SignalMessages.proto in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EC4B719B9938800139C25 /* SignalMessages.proto */; };
 		5BE4DCAA19BB4E3B00F82615 /* libprotoc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE4DCA319BB4E2400F82615 /* libprotoc.a */; };
 		5BE4DCAB19BB4E5500F82615 /* libprotobuf.la in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE4DCA819BB4E2400F82615 /* libprotobuf.la */; };
@@ -479,23 +470,6 @@
 		5B8A22F919BA5ACC00DC7BBB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5BBFDD555E1A7C3DF299FB4D /* juce_MidiBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_MidiBuffer.h; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiBuffer.h; sourceTree = SOURCE_ROOT; };
 		5BC21ADE8536C399FE165749 /* juce_LowLevelGraphicsSoftwareRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_LowLevelGraphicsSoftwareRenderer.h; path = ../../JuceLibraryCode/modules/juce_graphics/contexts/juce_LowLevelGraphicsSoftwareRenderer.h; sourceTree = SOURCE_ROOT; };
-		5BDB69251A0A052200E93184 /* Array.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Array.cc; sourceTree = "<group>"; };
-		5BDB69261A0A052200E93184 /* Array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Array.h; sourceTree = "<group>"; };
-		5BDB69271A0A052200E93184 /* cmult-sse2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "cmult-sse2.h"; sourceTree = "<group>"; };
-		5BDB69281A0A052200E93184 /* Complex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Complex.h; sourceTree = "<group>"; };
-		5BDB69291A0A052200E93184 /* convolution.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = convolution.cc; sourceTree = "<group>"; };
-		5BDB692A1A0A052200E93184 /* convolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convolution.h; sourceTree = "<group>"; };
-		5BDB69361A0A052200E93184 /* explicit.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = explicit.cc; sourceTree = "<group>"; };
-		5BDB69371A0A052200E93184 /* explicit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = explicit.h; sourceTree = "<group>"; };
-		5BDB69381A0A052200E93184 /* fftw++.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "fftw++.cc"; sourceTree = "<group>"; };
-		5BDB69391A0A052200E93184 /* fftw++.doxycfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "fftw++.doxycfg"; sourceTree = "<group>"; };
-		5BDB693A1A0A052200E93184 /* fftw++.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fftw++.h"; sourceTree = "<group>"; };
-		5BDB693B1A0A052200E93184 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		5BDB693C1A0A052200E93184 /* LICENSE.LESSER */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.LESSER; sourceTree = "<group>"; };
-		5BDB693D1A0A052200E93184 /* MAKEDOCS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MAKEDOCS; sourceTree = "<group>"; };
-		5BDB693E1A0A052200E93184 /* precision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = precision.h; sourceTree = "<group>"; };
-		5BDB693F1A0A052200E93184 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		5BDB69401A0A052200E93184 /* seconds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seconds.h; sourceTree = "<group>"; };
 		5BE4DCA119BB4E2400F82615 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = ../../Source/Google/protobuf/lib/libprotobuf.a; sourceTree = "<group>"; };
 		5BE4DCA219BB4E2400F82615 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../../Source/Google/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
 		5BE4DCA319BB4E2400F82615 /* libprotoc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotoc.a; path = ../../Source/Google/protobuf/lib/libprotoc.a; sourceTree = "<group>"; };
@@ -1939,31 +1913,6 @@
 			path = ../../osc;
 			sourceTree = "<group>";
 		};
-		5BDB69241A0A052200E93184 /* fftw++ */ = {
-			isa = PBXGroup;
-			children = (
-				5BDB69251A0A052200E93184 /* Array.cc */,
-				5BDB69261A0A052200E93184 /* Array.h */,
-				5BDB69271A0A052200E93184 /* cmult-sse2.h */,
-				5BDB69281A0A052200E93184 /* Complex.h */,
-				5BDB69291A0A052200E93184 /* convolution.cc */,
-				5BDB692A1A0A052200E93184 /* convolution.h */,
-				5BDB69361A0A052200E93184 /* explicit.cc */,
-				5BDB69371A0A052200E93184 /* explicit.h */,
-				5BDB69381A0A052200E93184 /* fftw++.cc */,
-				5BDB69391A0A052200E93184 /* fftw++.doxycfg */,
-				5BDB693A1A0A052200E93184 /* fftw++.h */,
-				5BDB693B1A0A052200E93184 /* LICENSE */,
-				5BDB693C1A0A052200E93184 /* LICENSE.LESSER */,
-				5BDB693D1A0A052200E93184 /* MAKEDOCS */,
-				5BDB693E1A0A052200E93184 /* precision.h */,
-				5BDB693F1A0A052200E93184 /* README */,
-				5BDB69401A0A052200E93184 /* seconds.h */,
-			);
-			name = "fftw++";
-			path = "../../fftw++";
-			sourceTree = "<group>";
-		};
 		5BE4DCA519BB4E2400F82615 /* pkgconfig */ = {
 			isa = PBXGroup;
 			children = (
@@ -2421,7 +2370,6 @@
 		95F837C55D911C533B99A183 /* SignalProcessor */ = {
 			isa = PBXGroup;
 			children = (
-				5BDB69241A0A052200E93184 /* fftw++ */,
 				5B12E33B19FA699E00DED744 /* ip */,
 				5B12E34819FA699E00DED744 /* osc */,
 				430560BF85E920CD1B491295 /* Source */,
@@ -3225,12 +3173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BDB697A1A0A052200E93184 /* README in Resources */,
-				5BDB69771A0A052200E93184 /* LICENSE in Resources */,
-				5BDB69781A0A052200E93184 /* LICENSE.LESSER in Resources */,
 				6C4712F9013B5B9CED958575 /* RecentFilesMenuTemplate.nib in Resources */,
-				5BDB69791A0A052200E93184 /* MAKEDOCS in Resources */,
-				5BDB69761A0A052200E93184 /* fftw++.doxycfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3268,7 +3211,6 @@
 			files = (
 				5BE4DCA019BB4C2800F82615 /* SignalMessages.proto in Sources */,
 				FFE3E4918C891DF7258D3650 /* PluginProcessor.cpp in Sources */,
-				5BDB69691A0A052200E93184 /* convolution.cc in Sources */,
 				FF69925B0041630D69956750 /* PluginEditor.cpp in Sources */,
 				14FFF52F018E8DD5DEDA396F /* AUBase.cpp in Sources */,
 				884253AA8F615837DDB2B177 /* AUBuffer.cpp in Sources */,
@@ -3284,7 +3226,6 @@
 				5B12E35619FA699E00DED744 /* NetworkingUtils.cpp in Sources */,
 				3DE5787C3CA5C8D563A1CDE0 /* AUOutputBase.cpp in Sources */,
 				8A25B5E0146D27DB514D16A2 /* AUOutputElement.cpp in Sources */,
-				5BDB69681A0A052200E93184 /* Array.cc in Sources */,
 				F585B62D8A5713CDDD95A5F4 /* AUScopeElement.cpp in Sources */,
 				0F10E70041B852BEDFDADC2B /* CAAudioChannelLayout.cpp in Sources */,
 				5B12E35C19FA699E00DED744 /* OscReceivedElements.cpp in Sources */,
@@ -3315,7 +3256,6 @@
 				6C744D67CFCAF11C98ABC797 /* juce_graphics.mm in Sources */,
 				9F786FCA82ED3FE55421DBE8 /* juce_gui_basics.mm in Sources */,
 				0325E1E1D3796825C1DF6FE8 /* juce_gui_extra.mm in Sources */,
-				5BDB69751A0A052200E93184 /* fftw++.cc in Sources */,
 				4A0E95F43630D79880F5EBE6 /* juce_opengl.mm in Sources */,
 				4A78C58B74C1F3AF70FED48A /* juce_PluginUtilities.cpp in Sources */,
 				7D237DE86724622BEF87B680 /* juce_RTAS_DigiCode1.cpp in Sources */,
@@ -3325,7 +3265,6 @@
 				383520BEC148CB160DCCD901 /* juce_RTAS_MacUtilities.mm in Sources */,
 				ABDF7B298D2B8A352431401B /* juce_RTAS_Wrapper.cpp in Sources */,
 				C1C13C30ADE58003B5D09F81 /* juce_video.mm in Sources */,
-				5BDB69741A0A052200E93184 /* explicit.cc in Sources */,
 				F632BFB8C363AA094E71EC51 /* juce_VST_Wrapper.cpp in Sources */,
 				65814A825D33B68A99399042 /* juce_VST_Wrapper.mm in Sources */,
 				1D00C75842B330C7C9164F39 /* juce_VST3_Wrapper.cpp in Sources */,
@@ -3411,7 +3350,6 @@
 					"$(inherited)",
 					/opt/local/include,
 					../../,
-					/usr/local/include,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";
@@ -3463,7 +3401,6 @@
 					"$(inherited)",
 					/opt/local/include,
 					../../,
-					/usr/local/include,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";

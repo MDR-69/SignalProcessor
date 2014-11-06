@@ -51,7 +51,9 @@ private:
     Label infoLabel, averagingBufferLabel, fftBufferLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel, javaAppPathLabel;
     Slider averagingBufferSlider, fftBufferSlider, inputSensitivitySlider, beatDetectionWindowSlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, sendFFTButton, monoStereoButton;
+    ToggleButton sendOSCButton, sendBinaryUDPButton;
     Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, sendFFTButtonLabel, monoStereoButtonLabel;
+    Label sendOSCButtonLabel, sendBinaryUDPButtonLabel;
     ImageButton logoButton;
     ComboBox channelComboBox;
     ScopedPointer<ResizableCornerComponent> resizer;

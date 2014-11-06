@@ -30,11 +30,15 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendImpulseButton("Send Impulse"),
       sendFFTButton("Send Signal FFT"),
       monoStereoButton ("Stereo Processing"),
+      sendOSCButton("Send OSC Data"),
+      sendBinaryUDPButton("Send UDP Data"),
       sendTimeInfoButtonLabel ("", "Send Time Info"),
       sendSignalLevelButtonLabel ("", "Send Signal Level"),
       sendImpulseButtonLabel ("", "Send Impulse"),
       sendFFTButtonLabel ("", "Send Signal FFT "),
       monoStereoButtonLabel ("", "Stereo Processing"),
+      sendOSCButtonLabel ("", "Send Data Using OSC"),
+      sendBinaryUDPButtonLabel ("", "Send Data Using UDP"),
       logoButton("PlayMe Signal Processor"),
       channelComboBox ("channel"),
       bigFont("standard 07_57", 45.0f, 0),
@@ -117,11 +121,28 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     monoStereoButton.setLookAndFeel(slaf);
     monoStereoButton.setButtonText("");
 
+    addAndMakeVisible (sendOSCButton);
+    sendOSCButton.setLookAndFeel(slaf);
+    sendOSCButton.addListener (this);
+    sendOSCButton.changeWidthToFitText();
+    sendOSCButton.setBounds (getWidth() - 50, 300, 20, 20);
+    sendOSCButton.setColour (Label::textColourId, Colours::white);
+    sendOSCButton.setButtonText("");
+    addAndMakeVisible (sendBinaryUDPButton);
+    sendBinaryUDPButton.setLookAndFeel(slaf);
+    sendBinaryUDPButton.addListener (this);
+    sendBinaryUDPButton.changeWidthToFitText();
+    sendBinaryUDPButton.setBounds (getWidth() - 50, 320, 20, 20);
+    sendBinaryUDPButton.setColour (Label::textColourId, Colours::white);
+    sendBinaryUDPButton.setButtonText("");
+    
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
     sendFFTButton.setToggleState(getProcessor().sendFFT, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
+    sendOSCButton.setToggleState(getProcessor().sendOSC, dontSendNotification);
+    sendBinaryUDPButton.setToggleState(getProcessor().sendBinaryUDP, dontSendNotification);
 
     sendTimeInfoButtonLabel.attachToComponent (&sendTimeInfoButton, true);
     sendTimeInfoButtonLabel.setFont(smallFont);
@@ -138,6 +159,12 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     monoStereoButtonLabel.attachToComponent (&monoStereoButton, true);
     monoStereoButtonLabel.setFont(smallFont);
     monoStereoButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendOSCButtonLabel.attachToComponent (&sendOSCButton, true);
+    sendOSCButtonLabel.setFont(smallFont);
+    sendOSCButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendBinaryUDPButtonLabel.attachToComponent (&sendBinaryUDPButton, true);
+    sendBinaryUDPButtonLabel.setFont(smallFont);
+    sendBinaryUDPButtonLabel.setColour(Label::textColourId, Colours::white);
     
     addAndMakeVisible(channelComboBox);
     channelComboBox.setBounds (20, 185, 150, 20);
@@ -239,6 +266,7 @@ void SignalProcessorAudioProcessorEditor::timerCallback()
     //To be set later, to update any parameter !!!
     averagingBufferSlider.setValue (ourProcessor.averagingBufferSize, dontSendNotification);
     inputSensitivitySlider.setValue (ourProcessor.inputSensitivity, dontSendNotification);
+    fftBufferSlider.setValue (ourProcessor.fftBufferSize, dontSendNotification);
     
     float newBeatIntensity = ourProcessor.beatIntensity;
     if (lastDisplayedBeatIntensity != newBeatIntensity) {
@@ -269,6 +297,11 @@ void SignalProcessorAudioProcessorEditor::sliderValueChanged (Slider* slider)
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::averageEnergyBufferSizeParam,
                                                   (int) beatDetectionWindowSlider.getValue());
     }
+    else if (slider == &fftBufferSlider)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftBufferSizeParam,
+                                                  (int) fftBufferSlider.getValue());
+    }
 }
 
 void SignalProcessorAudioProcessorEditor::buttonClicked (Button* button)
@@ -292,6 +325,21 @@ void SignalProcessorAudioProcessorEditor::buttonClicked (Button* button)
     else if (button == &sendImpulseButton)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendImpulseParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendFFTButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendFFTParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendOSCButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendOSCParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendBinaryUDPButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendBinaryUDPParam,
                                                   button->getToggleState());
     }
 }

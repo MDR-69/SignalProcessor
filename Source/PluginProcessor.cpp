@@ -24,11 +24,17 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
+
+  oscTransmissionSocket( IpEndpointName( "127.0.0.1", portNumberOSC )),
+
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
   udpClientImpulse("127.0.0.1", portNumberImpulse),
   udpClientFFT("127.0.0.1", portNumberFFT)
 {
+    //Initialize the OSC output buffer
+    oscOutputBuffer   = new char[oscOutputBufferSize];
+    oscOutputStream   = new osc::OutboundPacketStream(oscOutputBuffer, oscOutputBufferSize);
     
     //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
     defineDefaultSignalMessages();
@@ -49,6 +55,8 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     delete [] dataArrayLevel;
     delete [] dataArrayTimeInfo;
     delete [] dataArrayFFT;
+    delete [] oscOutputBuffer;
+    delete oscOutputStream;
 }
 
 
@@ -79,9 +87,12 @@ float SignalProcessorAudioProcessor::getParameter (int index)
         case sendTimeInfoParam:             return sendTimeInfo;
         case sendSignalLevelParam:          return sendSignalLevel;
         case sendImpulseParam:              return sendImpulse;
+        case sendFFTParam:                  return sendFFT;
         case channelParam:                  return channel;
         case monoStereoParam:               return monoStereo;
         case averageEnergyBufferSizeParam:  return averageEnergyBufferSize;
+        case sendOSCParam:                  return sendOSC;
+        case sendBinaryUDPParam:            return sendBinaryUDP;
         default:                            return 0.0f;
     }
 }
@@ -96,9 +107,12 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
         case sendTimeInfoParam:             return defaultSendTimeInfo;
         case sendSignalLevelParam:          return defaultSendSignalLevel;
         case sendImpulseParam:              return defaultSendImpulse;
+        case sendFFTParam:                  return defaultsendFFT;
         case channelParam:                  return defaultChannel;
         case monoStereoParam:               return defaultMonoStereo;
         case averageEnergyBufferSizeParam:  return defaultAverageEnergyBufferSize;
+        case sendOSCParam:                  return defaultSendOSC;
+        case sendBinaryUDPParam:            return defaultSendBinaryUDP;
         default:                            break;
     }
     
@@ -118,9 +132,12 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
         case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
         case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
         case sendImpulseParam:              sendImpulse             = newValue;  break;
+        case sendFFTParam:                  sendFFT                 = newValue;  break;
         case channelParam:                  channel                 = newValue;  defineSignalMessagesChannel();  break;
         case monoStereoParam:               monoStereo              = newValue;  break;
         case averageEnergyBufferSizeParam:  averageEnergyBufferSize = newValue;  break;
+        case sendOSCParam:                  sendOSC                 = newValue;  break;
+        case sendBinaryUDPParam:            sendBinaryUDP           = newValue;  break;
         default:                            break;
     }
 }
@@ -135,9 +152,12 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
         case sendTimeInfoParam:            return "Send Time Info";        break;
         case sendSignalLevelParam:         return "Send Signal Level";     break;
         case sendImpulseParam:             return "Send Impulses";         break;
+        case sendFFTParam:                 return "Send FFT Analysis";     break;
         case channelParam:                 return "Channel Number";        break;
         case monoStereoParam:              return "Mono / Stereo";         break;
         case averageEnergyBufferSizeParam: return "Beat Detection Window"; break;
+        case sendOSCParam:                 return "Send Data Using OSC";   break;
+        case sendBinaryUDPParam:           return "Send Data Using UDP";   break;
         default:                           break;
     }
     return String::empty;
@@ -284,17 +304,41 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         if (sendImpulse == true) {
             beatIntensity = 1.0f;
             //Send the impulse message (which was pre-generated earlier)
-            udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
+            if (sendBinaryUDP) {
+                udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
+            }
+            if (sendOSC) {
+                std::cout << "I've got an OSC message to send\n";
+                oscOutputStream->Clear();
+                *oscOutputStream << osc::BeginBundleImmediate
+                << osc::BeginMessage( "/impls/")
+                << osc::EndMessage
+                << osc::EndBundle;
+                std::cout << "I've built my OSC message\n";
+//                << osc::BeginMessage( "/test1" )
+//                << true << 23 << (float)3.1415 << "hello" << osc::EndMessage
+//                << osc::BeginMessage( "/test2" )
+//                << true << 24 << (float)10.8 << "world" << osc::EndMessage
+//                << osc::EndBundle;
+                std::cout << "oscOutputStream->Data : " << oscOutputStream->Data() << "     Size : " << oscOutputStream->Size() << "\n";
+                oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+                
+                std::cout << "I've sent my OSC message !!!!\n";
+            }
         }
     }
     
-
-    
     if (nbBufValProcessed >= averagingBufferSize) {
         if (sendSignalLevel == true) {
-            signal.set_signallevel(inputSensitivity * signalInstantEnergy);
-            signal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
-            udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
+            if (sendBinaryUDP) {
+                signal.set_signallevel(inputSensitivity * signalInstantEnergy);
+                signal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
+                udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
+            }
+            if (sendOSC) {
+                
+                
+            }
         }
         
         nbBufValProcessed = 0;
@@ -312,11 +356,16 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
                 lastPosInfo = currentTime;
                 
                 // Successfully got the current time from the host, set the pulses-per-quarter-note value inside the timeInfo message
-                timeInfo.set_position((float)currentTime.ppqPosition);
-                timeInfo.set_isplaying(currentTime.isPlaying);
-                timeInfo.set_tempo((float)currentTime.bpm);
-                timeInfo.SerializeToArray(dataArrayTimeInfo, timeInfo.GetCachedSize());
-                udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
+                if (sendBinaryUDP) {
+                    timeInfo.set_position((float)currentTime.ppqPosition);
+                    timeInfo.set_isplaying(currentTime.isPlaying);
+                    timeInfo.set_tempo((float)currentTime.bpm);
+                    timeInfo.SerializeToArray(dataArrayTimeInfo, timeInfo.GetCachedSize());
+                    udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
+                }
+                if (sendOSC) {
+                    
+                }
             }
         }
         else {
@@ -330,6 +379,25 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
 float SignalProcessorAudioProcessor::denormalize(float input) {
     float temp = input + 1.0f;
     return temp - 1.0f;
+}
+
+//==============================================================================
+// OSC Functions
+
+void sendOSC_TimeInfo() {
+    
+}
+
+void sendOSC_SignalLevel() {
+    
+}
+
+void sendOSC_Impulse() {
+    
+}
+
+void sendOSC_FFT() {
+    
 }
 
 //==============================================================================
@@ -395,9 +463,12 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("sendTimeInfo", sendTimeInfo);
     xml.setAttribute ("sendSignalLevel", sendSignalLevel);
     xml.setAttribute ("sendImpulse", sendImpulse);
+    xml.setAttribute ("sendFFT", sendFFT);
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
     xml.setAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
+    xml.setAttribute ("sendOSC", sendOSC);
+    xml.setAttribute ("sendBinaryUDP", sendBinaryUDP);
     
     // then use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);
@@ -423,9 +494,12 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             sendTimeInfo            = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
             sendSignalLevel         = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);
             sendImpulse             = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
+            sendFFT                 = xmlState->getBoolAttribute ("sendFFT", sendFFT);
             channel                 = xmlState->getIntAttribute ("channel", channel);
             monoStereo              = xmlState->getBoolAttribute ("monoStereo", monoStereo);
             averageEnergyBufferSize = xmlState->getIntAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
+            sendOSC                 = xmlState->getBoolAttribute ("sendOSC", sendOSC);
+            sendBinaryUDP           = xmlState->getBoolAttribute ("sendBinaryUDP", sendBinaryUDP);
         }
     }
     

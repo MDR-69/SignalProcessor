@@ -24,6 +24,7 @@
 #include "ip/UdpSocket.h"
 #include "udp_client_server.h"
 #include "SignalMessages.pb.h"
+#include "math.h"
 
 //==============================================================================
 /**
@@ -83,9 +84,9 @@ public:
     void defineDefaultSignalMessages();
     void defineSignalMessagesChannel();
 
-    
+    //==============================================================================
+    // Utility functions and variables
     float denormalize(float input);
-    
     AudioPlayHead::CurrentPositionInfo lastPosInfo;
     
     //==============================================================================
@@ -95,7 +96,10 @@ public:
     const bool defaultSendTimeInfo           = false;
     const bool defaultSendSignalLevel        = true;
     const bool defaultSendImpulse            = true;
+    const bool defaultsendFFT                = false;
     const bool defaultMonoStereo             = false;        //Mono processing
+    const bool defaultSendBinaryUDP          = true;
+    const bool defaultSendOSC                = false;
     const float defaultInputSensitivity      = 1.0;
     const int defaultChannel                 = 1;
     const int defaultAverageEnergyBufferSize = 8.0;
@@ -109,9 +113,12 @@ public:
         sendTimeInfoParam,
         sendSignalLevelParam,
         sendImpulseParam,
+        sendFFTParam,
         channelParam,
         monoStereoParam,
         averageEnergyBufferSizeParam,
+        sendOSCParam,
+        sendBinaryUDPParam,
         totalNumParams
     };
     
@@ -119,6 +126,10 @@ public:
     int averagingBufferSize;
     int fftBufferSize;
     float inputSensitivity;
+    
+    bool sendBinaryUDP   = true;
+    bool sendOSC         = false;
+    
     bool sendTimeInfo    = true;
     bool sendSignalLevel = true;
     bool sendImpulse     = true;
@@ -147,6 +158,27 @@ public:
     const int portNumberFFT         = 7004;
     const int nbOfSamplesToSkip     = 6;
     const int timeInfoCycle         = 2048;       //Send the time info message every 2048 samples, that's about 50ms
+    const String udpIpAddress       = "127.0.0.1";
+    
+    //==============================================================================
+    // OSC Functions
+    osc::OutboundPacketStream* oscOutputStream;
+    void sendOSC_TimeInfo();
+    void sendOSC_SignalLevel();
+    void sendOSC_Impulse();
+    void sendOSC_FFT();
+    
+    // OSC socket and output buffer
+    const int portNumberOSC           = 9000;
+    const int oscOutputBufferSize     = 384;            //Should be enough
+    char* oscOutputBuffer;
+    UdpTransmitSocket oscTransmissionSocket;
+    
+    // Messages used for OSC transmission
+    const char* fftOSCString          = "FFT";
+    const char* signalLevelOSCString  = "SIGLEVEL";
+    const char* impulseOSCString      = "IMPULSE";
+    const char* timeInfoOSCString     = "TIMEINFO";
     
     udp_client udpClientTimeInfo;
     udp_client udpClientSignalLevel;
