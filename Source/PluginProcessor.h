@@ -14,17 +14,31 @@
 #ifndef PLUGINPROCESSOR_H_INCLUDED
 #define PLUGINPROCESSOR_H_INCLUDED
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "../JuceLibraryCode/JuceHeader.h"  // Juce librairies : used to generate the AU/VST wrapper
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "osc/OscOutboundPacketStream.h"
-#include "ip/UdpSocket.h"
-#include "udp_client_server.h"
-#include "SignalMessages.pb.h"
+#include "osc/OscOutboundPacketStream.h"    // used to output OSC
+#include "ip/UdpSocket.h"                   // used to output OSC
+#include "udp_client_server.h"              // used to output Protobuf binary
+#include "SignalMessages.pb.h"              // protobuf messages definition
 #include "math.h"
+#include <time.h>                           // used to create random FFT-related functions
+#include <Accelerate/Accelerate.h>          // the Accelerate headers are needed to use vDSP
+
+
+// vDSP related definitions
+// Calculate the number of elements in an array.
+#define	NumberOf(a)	(sizeof (a) / sizeof *(a))
+// Number of signal samples to use.
+#define	SampleLength		320
+// Sampling frequency (in Hz) - Valid lengths for vDSP_DFT_zrop_CreateSetup in Mac OS X 10.7 are f * 2**n, where f is 3, 5, or 15, and 5 <= n.
+#define	SamplingFrequency	3266
+
+static const double_t TwoPi = 0x3.243f6a8885a308d313198a2e03707344ap1;
+
 
 //==============================================================================
 /**
@@ -149,6 +163,17 @@ public:
 
     // Set to 1.0f when a beat is detected
     float beatIntensity = 0.1f;
+    
+    // Used by FFT computations
+    //--------------------------
+    // Define the state for the pseudo-random number generator.
+    float* fftBuffer;                                           // Buffer used to store any incoming input data
+    int fftBufferIndex = 0;                                     // Index where the data should be written
+    UInt32 log2N          = 10; // 1024 samples
+    UInt32 N              = (1 << log2N);
+    FFTSetup FFTSettings;
+    COMPLEX_SPLIT FFTData;
+    float * hammingWindow;
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it

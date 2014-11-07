@@ -30,6 +30,16 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   udpClientImpulse("127.0.0.1", portNumberImpulse),
   udpClientFFT("127.0.0.1", portNumberFFT)
 {
+    //Initialize the FFT data buffer
+    fftBuffer             = new float[fftBufferSize];
+
+    FFTSettings           = vDSP_create_fftsetup(log2N, kFFTRadix2);
+    FFTData.realp         = (float *) malloc(sizeof(float) * N/2);
+    FFTData.imagp         = (float *) malloc(sizeof(float) * N/2);
+    hammingWindow         = (float *) malloc(sizeof(float) * N);
+    // create an array of floats to represent a hamming window
+    vDSP_hamm_window(hammingWindow, N, 0);
+    
     //Initialize the OSC output buffer
     oscOutputBuffer   = new char[oscOutputBufferSize];
     oscOutputStream   = new osc::OutboundPacketStream(oscOutputBuffer, oscOutputBufferSize);
@@ -54,7 +64,13 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     delete [] dataArrayTimeInfo;
     delete [] dataArrayFFT;
     delete [] oscOutputBuffer;
+    delete [] fftBuffer;
     delete oscOutputStream;
+    
+    vDSP_destroy_fftsetup(FFTSettings);
+    free(FFTData.realp);
+    free(FFTData.imagp);
+    free(hammingWindow);
 }
 
 
@@ -254,6 +270,10 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
 {
     //////////////////////////////////////////////////////////////////
     // Audio processing takes place here !
+
+// A lot of optimization is to be done using vDSP functions ! For now, do it simple, then do it right
+//    Vector multiply with scalar
+//    vDSP_zvzsml
     
     // If the signal is defined by the user as mono, no need to check the second channel
     int numberOfChannels = (monoStereo==false) ? 1 : getNumInputChannels();
@@ -261,18 +281,53 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     {
         const float* channelData = buffer.getReadPointer (channel);
         
+        // Move the available buffer in the processed data buffer (for FFT)
+        for (int i=0; i<buffer.getNumSamples(); i+=1) {
+            if (fftBufferIndex < fftBufferSize) {
+                *(fftBuffer + fftBufferIndex) = channelData[i];
+                fftBufferIndex += 1;
+            }
+        }
+        
+        if (fftBufferIndex >= fftBufferSize) {
+            //Time to calculate the FFT on fftBuffer
+            // FFT Time ----------
+            // Moving data from A to B via hamming window
+            vDSP_vmul(fftBuffer, 1, hammingWindow, 1, fftBuffer, 1, N);
+            
+            // Converting data in B into split complex form
+            // http://en.wikipedia.org/wiki/Split-complex-number
+            vDSP_ctoz((COMPLEX *) fftBuffer, 2, &FFTData, 1, N/2);
+            
+            // Doing the FFT
+            vDSP_fft_zrip(FFTSettings, &FFTData, 1, log2N, kFFTDirection_Forward);
+            
+            // calculating square of magnitude for each value
+            vDSP_zvmags(&FFTData, 1, FFTData.realp, 1, N/2);  
+            
+            // At this point, FFTData.realp is an array of 512 FFT values (1024/2).  
+            
+            std::cout << "I just did a FFT !\n";
+            fftBufferIndex = 0;
+        }
+        
+        
         //Only read one value out of nbOfSamplesToSkip, it's faster this way
         for (int i=0; i<buffer.getNumSamples(); i+=nbOfSamplesToSkip) {
             //The objective is to get an average of the signal's amplitude -> use the absolute value
             signalSum += std::abs(channelData[i]);
+            
+            //Optimization, use Mean square of vector.
+            //extern void vDSP_measqv
         }
+        
     }
     
     nbBufValProcessed += buffer.getNumSamples();
     samplesSinceLastTimeInfoTransmission += buffer.getNumSamples();
 
     if (sendFFT == true) {
-        //Do some FFT related stuff - TBIL
+
     }
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
@@ -383,23 +438,9 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 }
 
 //==============================================================================
-// OSC Functions
+// FFT Functions
 
-void sendOSC_TimeInfo() {
-    
-}
 
-void sendOSC_SignalLevel() {
-    
-}
-
-void sendOSC_Impulse() {
-    
-}
-
-void sendOSC_FFT() {
-    
-}
 
 //==============================================================================
 
