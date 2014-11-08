@@ -31,14 +31,51 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   udpClientFFT("127.0.0.1", portNumberFFT)
 {
     //Initialize the FFT data buffer
-    fftBuffer             = new float[fftBufferSize];
+//    fftBuffer             = new float[fftBufferSize];
+//    fftBuffer             = new float[N];
+    fftBuffer               = (float *) malloc(sizeof(float) * N);
 
-    FFTSettings           = vDSP_create_fftsetup(log2N, kFFTRadix2);
-    FFTData.realp         = (float *) malloc(sizeof(float) * N/2);
-    FFTData.imagp         = (float *) malloc(sizeof(float) * N/2);
-    hammingWindow         = (float *) malloc(sizeof(float) * N);
-    // create an array of floats to represent a hamming window
-    vDSP_hamm_window(hammingWindow, N, 0);
+    //FFTSettings           = vDSP_create_fftsetup(log2N, kFFTRadix2);
+    
+    zop_Setup = vDSP_DFT_zop_CreateSetup(0, N, vDSP_DFT_FORWARD);
+	if (zop_Setup == NULL)
+	{
+		fprintf(stderr, "Error, vDSP_zop_CreateSetup failed.\n");
+		exit (EXIT_FAILURE);
+	}
+    
+    zrop_Setup = vDSP_DFT_zrop_CreateSetup(zop_Setup, N, vDSP_DFT_FORWARD);
+	if (zrop_Setup == NULL)
+	{
+		fprintf(stderr, "Error, vDSP_zop_CreateSetup failed.\n");
+		exit (EXIT_FAILURE);
+	}
+
+    
+    
+    // Allocate memory for the arrays.
+    float *BufferMemory = (float *) malloc(N * sizeof *BufferMemory);
+    float *ObservedMemory = (float *) malloc(N * sizeof *ObservedMemory);
+    
+    if (ObservedMemory == NULL || BufferMemory == NULL)
+    {
+        fprintf(stderr, "Error, failed to allocate memory.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Assign half of BufferMemory to reals and half to imaginaries.
+    Buffer = { BufferMemory, BufferMemory + N/2 };
+    
+    // Assign half of ObservedMemory to reals and half to imaginaries.
+    Observed = { ObservedMemory, ObservedMemory + N/2 };
+    
+    
+    
+//    FFTData.realp         = (float *) malloc(sizeof(float) * N/2);
+//    FFTData.imagp         = (float *) malloc(sizeof(float) * N/2);
+//    hammingWindow         = (float *) malloc(sizeof(float) * N);
+//    // create an array of floats to represent a hamming window
+//    vDSP_hamm_window(hammingWindow, N, 0);
     
     //Initialize the OSC output buffer
     oscOutputBuffer   = new char[oscOutputBufferSize];
@@ -64,13 +101,18 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     delete [] dataArrayTimeInfo;
     delete [] dataArrayFFT;
     delete [] oscOutputBuffer;
-    delete [] fftBuffer;
+//    delete [] fftBuffer;
     delete oscOutputStream;
     
-    vDSP_destroy_fftsetup(FFTSettings);
-    free(FFTData.realp);
-    free(FFTData.imagp);
-    free(hammingWindow);
+//    vDSP_destroy_fftsetup(FFTSettings);
+//    free(FFTData.realp);
+//    free(FFTData.imagp);
+
+    free(fftBuffer);
+	vDSP_DFT_DestroySetup(zop_Setup);
+	vDSP_DFT_DestroySetup(zrop_Setup);
+    
+//    free(hammingWindow);
 }
 
 
@@ -283,32 +325,76 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         
         // Move the available buffer in the processed data buffer (for FFT)
         for (int i=0; i<buffer.getNumSamples(); i+=1) {
-            if (fftBufferIndex < fftBufferSize) {
+//            if (fftBufferIndex < fftBufferSize) {
+            if (fftBufferIndex < N) {
                 *(fftBuffer + fftBufferIndex) = channelData[i];
                 fftBufferIndex += 1;
             }
         }
         
-        if (fftBufferIndex >= fftBufferSize) {
-            //Time to calculate the FFT on fftBuffer
-            // FFT Time ----------
-            // Moving data from A to B via hamming window
-            vDSP_vmul(fftBuffer, 1, hammingWindow, 1, fftBuffer, 1, N);
+//        if (fftBufferIndex >= fftBufferSize) {
+        if (fftBufferIndex >= N) {
+
+            printf("\n\tOne-dimensional real DFT of %lu elements.\n",
+                   (unsigned long) N);
             
-            // Converting data in B into split complex form
-            // http://en.wikipedia.org/wiki/Split-complex-number
-            vDSP_ctoz((COMPLEX *) fftBuffer, 2, &FFTData, 1, N/2);
+            /*	Reinterpret the real signal as an interleaved-data complex
+             vector and use vDSP_ctoz to move the data to a separated-data
+             complex vector.  This puts the even-indexed elements of Signal
+             in Observed.realp and the odd-indexed elements in
+             Observed.imagp.
+             
+             Note that we pass vDSP_ctoz two times Signal's normal stride,
+             because ctoz skips through a complex vector from real to real,
+             skipping imaginary elements.  Considering this as a stride of
+             two real-sized elements rather than one complex element is a
+             legacy use.
+             
+             In the destination array, a stride of one is used regardless of
+             the source stride.  Since the destination is a buffer allocated
+             just for this purpose, there is no point in replicating the
+             source stride. and the DFT routines work best with unit
+             strides.  (In fact, the routine we use here, vDSP_DFT_Execute,
+             uses only a unit stride and has no parameter for anything
+             else.)
+             */
+            vDSP_ctoz((DSPComplex *) fftBuffer, 2*Stride, &Buffer, 1, N/2);
             
-            // Doing the FFT
-            vDSP_fft_zrip(FFTSettings, &FFTData, 1, log2N, kFFTDirection_Forward);
+            // Perform a real-to-complex DFT.
+            vDSP_DFT_Execute(zrop_Setup,
+                             Buffer.realp, Buffer.imagp,
+                             Observed.realp, Observed.imagp);
             
-            // calculating square of magnitude for each value
-            vDSP_zvmags(&FFTData, 1, FFTData.realp, 1, N/2);  
-            
-            // At this point, FFTData.realp is an array of 512 FFT values (1024/2).  
-            
-            std::cout << "I just did a FFT !\n";
+            std::cout << "I just did a DFT !\n";
+            float maxVal = 0;
+            int maxValPos = 0;
+            for (int i=0; i < N/2; i += 1) {
+                if (maxVal < *(Observed.realp + i)) {
+                    maxVal = *(Observed.realp + i);
+                    maxValPos = i;
+                }
+                //std::cout << i << ":";
+                //std::cout << *(FFTData.realp + i);
+                //std::cout << ", ";
+            }
+            float estimatedFreq;
+            float fftBandWidth;         //Width of an FFT band (in Hz), ie the FFT result array contains N/2 bands of X Hz
+            fftBandWidth = getSampleRate() / N;
+            if (*(Observed.realp + maxValPos - 1) > *(Observed.realp + maxValPos + 1)) {
+                estimatedFreq = fftBandWidth *
+                                (maxValPos*(*(Observed.realp + maxValPos)) + (maxValPos-1)*(*(Observed.realp + maxValPos-1))) /
+                                 (*(Observed.realp + maxValPos - 1) + *(Observed.realp + maxValPos)) ;
+            }
+            else {
+                estimatedFreq = fftBandWidth *
+                (maxValPos*(*(Observed.realp + maxValPos)) + (maxValPos+1)*(*(Observed.realp + maxValPos+1))) /
+                (*(Observed.realp + maxValPos + 1) + *(Observed.realp + maxValPos)) ;
+            }
+            //std::cout << maxValPos << ": " << maxVal << "\n";
+            std::cout << "Estimated frequency : " << estimatedFreq << "\n";
             fftBufferIndex = 0;
+            
+            
         }
         
         
@@ -478,6 +564,10 @@ void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     //It is possible to pre-serialize impulse messages here, as the message will never change
     impulse.set_signalid(channel);
     impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
+    
+    
+    //Contact SNCF Kung fu
+    //paul.favier@sncf.fr
     
 }
 

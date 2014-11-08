@@ -29,13 +29,15 @@
 #include <Accelerate/Accelerate.h>          // the Accelerate headers are needed to use vDSP
 
 
-// vDSP related definitions
-// Calculate the number of elements in an array.
-#define	NumberOf(a)	(sizeof (a) / sizeof *(a))
-// Number of signal samples to use.
-#define	SampleLength		320
-// Sampling frequency (in Hz) - Valid lengths for vDSP_DFT_zrop_CreateSetup in Mac OS X 10.7 are f * 2**n, where f is 3, 5, or 15, and 5 <= n.
-#define	SamplingFrequency	3266
+//// vDSP related definitions
+//// Calculate the number of elements in an array.
+//#define	NumberOf(a)	(sizeof (a) / sizeof *(a))
+//// Number of signal samples to use.
+//#define	SampleLength		320
+//// Sampling frequency (in Hz) - Valid lengths for vDSP_DFT_zrop_CreateSetup in Mac OS X 10.7 are f * 2**n, where f is 3, 5, or 15, and 5 <= n.
+//#define	SamplingFrequency	3266
+
+#define	N		4096	// Number of elements.
 
 static const double_t TwoPi = 0x3.243f6a8885a308d313198a2e03707344ap1;
 
@@ -169,10 +171,16 @@ public:
     // Define the state for the pseudo-random number generator.
     float* fftBuffer;                                           // Buffer used to store any incoming input data
     int fftBufferIndex = 0;                                     // Index where the data should be written
-    UInt32 log2N          = 10; // 1024 samples
-    UInt32 N              = (1 << log2N);
-    FFTSetup FFTSettings;
-    COMPLEX_SPLIT FFTData;
+//    UInt32 log2N          = 10; // 1024 samples
+//    UInt32 N              = (1 << log2N);
+    const vDSP_Stride Stride = 1;
+    DSPSplitComplex Buffer;
+    DSPSplitComplex Observed;
+    
+    //FFTSetup FFTSettings;
+    //COMPLEX_SPLIT FFTData;
+    vDSP_DFT_Setup zop_Setup;
+    vDSP_DFT_Setup zrop_Setup;
     float * hammingWindow;
     
     //==============================================================================
