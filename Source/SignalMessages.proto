@@ -14,14 +14,7 @@ message Impulse {
 
 message FFT {
   required int32 signalID = 1 [default=1];
-  required float band1 = 2 [default=0];
-  required float band2 = 3 [default=0];
-  required float band3 = 4 [default=0];
-  required float band4 = 5 [default=0];
-  required float band5 = 6 [default=0];
-  required float band6 = 7 [default=0];
-  required float band7 = 8 [default=0];
-  required float band8 = 9 [default=0];
+  repeated float data = 4 [packed=true];            //Array of floats, one for each signal band
 }
 
 message TimeInfo {

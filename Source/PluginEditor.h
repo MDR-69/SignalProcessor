@@ -48,6 +48,7 @@ public:
 private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
+    TooltipWindow tooltipWindow;        //Used to display tooltips
     Label infoLabel, averagingBufferLabel, fftBufferLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel, javaAppPathLabel;
     Slider averagingBufferSlider, fftBufferSlider, inputSensitivitySlider, beatDetectionWindowSlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, sendFFTButton, monoStereoButton;
@@ -316,6 +317,7 @@ private:
                 g.strokePath (outlineArc, PathStrokeType (lineThickness));
             }
         }
+
     };
 
     //==============================================================================
@@ -446,6 +448,34 @@ private:
             g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId));
             g.fillPath (needle, AffineTransform::rotation (angle, r.getCentreX(), r.getCentreY()));
         }
+
+//        void drawTooltip (Graphics& g, const String& text, int width, int height) override
+//        {
+//            //Colour newCol = findColour (TooltipWindow::backgroundColourId);
+//            g.fillAll (findColour (TooltipWindow::backgroundColourId));
+//            #if ! JUCE_MAC // The mac windows already have a non-optional 1 pix outline, so don't double it here..
+//            g.setColour (findColour (TooltipWindow::outlineColourId));
+//            g.drawRect (0, 0, width, height, 1);
+//            #endif
+//            Font tooltipFont("standard 07_57", 13.0f, 0);
+//            layoutTooltipText (text, findColour (TooltipWindow::textColourId), tooltipFont)
+//            .draw (g, Rectangle<float> ((float) width, (float) height));
+//        }
+//
+//        static TextLayout layoutTooltipText (const String& text, Colour colour, Font font) noexcept
+//        {
+//            const float tooltipFontSize = 13.0f;
+//            const int maxToolTipWidth = 250;
+//            
+//            AttributedString s;
+//            s.setJustification (Justification::centred);
+//            s.append (text, Font (tooltipFontSize, Font::bold), colour);
+//            //s.append (text, font, colour);
+//            
+//            TextLayout tl;
+//            tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
+//            return tl;
+//        }
     };
 
     SquareLookAndFeel* slaf;

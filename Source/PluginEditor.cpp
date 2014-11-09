@@ -15,6 +15,7 @@
 SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (SignalProcessorAudioProcessor& owner)
     : AudioProcessorEditor (owner),
       audioProcessorInstance(owner),
+      tooltipWindow(nullptr, 700),
       infoLabel (String::empty),
       averagingBufferLabel ("", "Averaging Buffer Size (samples):"),
       fftBufferLabel ("", "FFT Buffer Size (samples):"),
@@ -52,6 +53,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
     
+    // Set the tooltips' look&feel
+    tooltipWindow.setLookAndFeel(slaf);
+    
     // add some sliders..
     addAndMakeVisible (averagingBufferSlider);
     averagingBufferSlider.setLookAndFeel(slaf);
@@ -60,7 +64,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setRange (64, 4096, 1.0);
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     averagingBufferSlider.setBounds (20, 230, 150, 20);
-
+    
     addAndMakeVisible (fftBufferSlider);
     fftBufferSlider.setLookAndFeel(slaf);
     fftBufferSlider.setSliderStyle (Slider::LinearBar);
@@ -76,7 +80,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivitySlider.setRange (0.0, 5.0, 0.01);
     inputSensitivitySlider.setValue(getProcessor().inputSensitivity);
     inputSensitivitySlider.setBounds (20, 310, 150, 20);
-
+    
     addAndMakeVisible (beatDetectionWindowSlider);
     beatDetectionWindowSlider.setLookAndFeel(slaf);
     beatDetectionWindowSlider.setSliderStyle (Slider::LinearBar);
@@ -89,52 +93,63 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendTimeInfoButton.setLookAndFeel(slaf);
     sendTimeInfoButton.addListener (this);
     sendTimeInfoButton.changeWidthToFitText();
-    sendTimeInfoButton.setBounds (getWidth() - 50, 180, 20, 20);
+    sendTimeInfoButton.setBounds (getWidth() - 50, 170, 18, 18);
     sendTimeInfoButton.setColour (Label::textColourId, Colours::white);
     sendTimeInfoButton.setButtonText("");
+    sendTimeInfoButton.setTooltip("Check this to send periodically the DAW's playback status, the BPM as well as the current position. These messages are approximately sent every 50 ms");
     addAndMakeVisible (sendSignalLevelButton);
     sendSignalLevelButton.setLookAndFeel(slaf);
     sendSignalLevelButton.addListener (this);
     sendSignalLevelButton.changeWidthToFitText();
-    sendSignalLevelButton.setBounds (getWidth() - 50, 200, 20, 20);
+    sendSignalLevelButton.setBounds (getWidth() - 50, 192, 18, 18);
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
     sendSignalLevelButton.setButtonText("");
+    sendSignalLevelButton.setTooltip("Check this to send periodically this track's instant signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages)");
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.setLookAndFeel(slaf);
     sendImpulseButton.addListener (this);
     sendImpulseButton.changeWidthToFitText();
-    sendImpulseButton.setBounds (getWidth() - 50, 220, 20, 20);
+    sendImpulseButton.setBounds (getWidth() - 50, 214, 18, 18);
     sendImpulseButton.setColour (Label::textColourId, Colours::white);
     sendImpulseButton.setButtonText("");
+    sendImpulseButton.setTooltip("Check this to send the beats detected by the plugin. Whenever a beat is detected, the red circle in the center of the GUI will flash");
+    
     addAndMakeVisible (sendFFTButton);
     sendFFTButton.setLookAndFeel(slaf);
     sendFFTButton.addListener (this);
     sendFFTButton.changeWidthToFitText();
-    sendFFTButton.setBounds (getWidth() - 50, 240, 20, 20);
+    sendFFTButton.setBounds (getWidth() - 50, 236, 18, 18);
     sendFFTButton.setColour (Label::textColourId, Colours::white);
     sendFFTButton.setButtonText("");
+    sendFFTButton.setTooltip("Check this to send a frequency analysis of the input source. Compared to the other analysis, this tends to be more expensive in terms of CPU resources, so only check this if you plan to use it");
+    
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
     monoStereoButton.changeWidthToFitText();
-    monoStereoButton.setBounds (getWidth() - 50, 260, 20, 20);
+    monoStereoButton.setBounds (getWidth() - 50, 258, 18, 18);
     monoStereoButton.setColour (Label::textColourId, Colours::white);
     monoStereoButton.setLookAndFeel(slaf);
     monoStereoButton.setButtonText("");
+    monoStereoButton.setTooltip("Check this to consider the input source as a stereo source for the signal level analysis. To use less resources, the default behaviour only checks the left input. Considering your source stereo is only useful if you have very agressive left/right panning effects");
 
     addAndMakeVisible (sendOSCButton);
     sendOSCButton.setLookAndFeel(slaf);
     sendOSCButton.addListener (this);
     sendOSCButton.changeWidthToFitText();
-    sendOSCButton.setBounds (getWidth() - 50, 300, 20, 20);
+    sendOSCButton.setBounds (getWidth() - 50, 320, 18, 18);
     sendOSCButton.setColour (Label::textColourId, Colours::white);
     sendOSCButton.setButtonText("");
+    sendOSCButton.setTooltip("Check this to consider the input source as a stereo source for the signal level analysis. To use less resources, the default behaviour only checks the left input. Considering your source stereo is only useful if you have very agressive left/right panning effects");
+
     addAndMakeVisible (sendBinaryUDPButton);
     sendBinaryUDPButton.setLookAndFeel(slaf);
     sendBinaryUDPButton.addListener (this);
     sendBinaryUDPButton.changeWidthToFitText();
-    sendBinaryUDPButton.setBounds (getWidth() - 50, 320, 20, 20);
+    sendBinaryUDPButton.setBounds (getWidth() - 50, 342, 18, 18);
     sendBinaryUDPButton.setColour (Label::textColourId, Colours::white);
     sendBinaryUDPButton.setButtonText("");
+    sendBinaryUDPButton.setTooltip("Send data using raw binary UDP. This is the most effective way to use this plugin. The following ports are used by this plugin :\nSignal level: " + String(getProcessor().portNumberSignalLevel) + ". Impulse: " + String(getProcessor().portNumberImpulse) + ". TimeInfo: " + String(getProcessor().portNumberTimeInfo) + ". FFT Data: " + String(getProcessor().portNumberFFT));
+
     
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
@@ -181,23 +196,28 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferLabel.attachToComponent (&averagingBufferSlider, false);
     averagingBufferLabel.setFont(smallFont);
     averagingBufferLabel.setColour(Label::textColourId, Colours::white);
-
+    averagingBufferLabel.setTooltip("Change this parameter to adjust the instant signal value's averaging window. Shorter values mean more precise signal values, and more messages sent");
+    
     fftBufferLabel.attachToComponent (&fftBufferSlider, false);
     fftBufferLabel.setFont(smallFont);
     fftBufferLabel.setColour(Label::textColourId, Colours::white);
+    fftBufferLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages.Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT");
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);
     inputSensitivityLabel.setColour(Label::textColourId, Colours::white);
+    inputSensitivityLabel.setTooltip("Change this parameter to adjust the instant signal's level. This is useful if you want to keep a track's volume low in your DAW, but the program consuming this data expects a normal signal");
     
     beatDetectionWindowLabel.attachToComponent (&beatDetectionWindowSlider, false);
     beatDetectionWindowLabel.setFont(smallFont);
     beatDetectionWindowLabel.setColour(Label::textColourId, Colours::white);
+    beatDetectionWindowLabel.setTooltip("Change this parameter to adjust the beat detection's window size. Lower values mean the analysis will be more reactive, but also more prone to false detections due to the sound's release. Tip : for highly rhythmic and precise sources, use low values (ex: short kicks, snares), whereas for sources with a long sustain (ex: bass, guitar), use higher values");
     
     channelLabel.attachToComponent (&channelComboBox, false);
     channelLabel.setFont(smallFont);
     channelLabel.setColour(Label::textColourId, Colours::white);
-
+    channelLabel.setTooltip("Set the channel ID for the source to analyze. This is used by the remote application to know what kind of data is processed (ie 'is it a kick or a snare ?')");
+    
     logoImage = ImageCache::getFromMemory (BinaryData::logo_white_png, BinaryData::logo_white_pngSize);
     logoButton.setImages (true, true, true,
                   logoImage, 1.0f, Colours::transparentBlack,
@@ -396,9 +416,11 @@ void SignalProcessorAudioProcessorEditor::setupSquareLookAndFeelColours (LookAnd
     laf.setColour (ComboBox::backgroundColourId, baseColour);
     laf.setColour (ComboBox::buttonColourId, Colours::black);
     laf.setColour (ComboBox::outlineColourId, Colours::transparentWhite);
+    
+    laf.setColour(TooltipWindow::textColourId, Colours::black);
+    laf.setColour(TooltipWindow::backgroundColourId, Colour::fromRGB(192, 0, 0));
 
 }
- 
 
 
 //==============================================================================

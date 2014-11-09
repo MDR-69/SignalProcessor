@@ -544,6 +544,8 @@ void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
     timeInfo.set_position(0.0);
     timeInfo.set_tempo(120.0);
     
+    //This is heavily subject to change !
+    
     fft.set_signalid(channel);
     fft.set_band1(0.0);
     fft.set_band2(0.0);
@@ -564,10 +566,6 @@ void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     //It is possible to pre-serialize impulse messages here, as the message will never change
     impulse.set_signalid(channel);
     impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
-    
-    
-    //Contact SNCF Kung fu
-    //paul.favier@sncf.fr
     
 }
 
