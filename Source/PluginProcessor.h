@@ -29,18 +29,7 @@
 #include <Accelerate/Accelerate.h>          // the Accelerate headers are needed to use vDSP
 
 
-//// vDSP related definitions
-//// Calculate the number of elements in an array.
-//#define	NumberOf(a)	(sizeof (a) / sizeof *(a))
-//// Number of signal samples to use.
-//#define	SampleLength		320
-//// Sampling frequency (in Hz) - Valid lengths for vDSP_DFT_zrop_CreateSetup in Mac OS X 10.7 are f * 2**n, where f is 3, 5, or 15, and 5 <= n.
-//#define	SamplingFrequency	3266
-
-#define	N		4096	// Number of elements.
-
-static const double_t TwoPi = 0x3.243f6a8885a308d313198a2e03707344ap1;
-
+#define	N		4096	// Number of samples the FFT should be calculated on
 
 //==============================================================================
 /**
@@ -108,12 +97,13 @@ public:
     //==============================================================================
     // Default parameter values
     const int defaultAveragingBufferSize     = 2048;
-    const int defaultFftBufferSize           = 4096;
+    const int defaultfftBandNb               = N/2;
     const bool defaultSendTimeInfo           = false;
     const bool defaultSendSignalLevel        = true;
     const bool defaultSendImpulse            = true;
     const bool defaultsendFFT                = false;
-    const bool defaultMonoStereo             = false;        //Mono processing
+    const bool defaultMonoStereo             = false;
+    const bool defaultLogarithmicFFT         = true;
     const bool defaultSendBinaryUDP          = true;
     const bool defaultSendOSC                = false;
     const float defaultInputSensitivity      = 1.0;
@@ -124,7 +114,7 @@ public:
     enum Parameters
     {
         averagingBufferSizeParam = 0,
-        fftBufferSizeParam,
+        fftBandNbParam,
         inputSensitivityParam,
         sendTimeInfoParam,
         sendSignalLevelParam,
@@ -132,6 +122,7 @@ public:
         sendFFTParam,
         channelParam,
         monoStereoParam,
+        logarithmicFFTParam,
         averageEnergyBufferSizeParam,
         sendOSCParam,
         sendBinaryUDPParam,
@@ -140,7 +131,7 @@ public:
     
     int channel;
     int averagingBufferSize;
-    int fftBufferSize;
+    int fftBandNb;
     float inputSensitivity;
     
     bool sendBinaryUDP   = true;
@@ -150,11 +141,13 @@ public:
     bool sendSignalLevel = true;
     bool sendImpulse     = true;
     bool sendFFT         = false;
-    bool monoStereo;         //false -> mono
+    bool monoStereo      = false;         //false -> mono
+    bool logarithmicFFT  = true;
     int averageEnergyBufferSize;
     
     //==============================================================================
     // Variables used by the audio algorithm
+    
     int nbBufValProcessed = 0;
     float signalSum = 0;
     // Used for beat detection
@@ -168,20 +161,28 @@ public:
     
     // Used by FFT computations
     //--------------------------
-    // Define the state for the pseudo-random number generator.
-    float* fftBuffer;                                           // Buffer used to store any incoming input data
-    int fftBufferIndex = 0;                                     // Index where the data should be written
-//    UInt32 log2N          = 10; // 1024 samples
-//    UInt32 N              = (1 << log2N);
-    const vDSP_Stride Stride = 1;
+    void computeFFT();                              // Execute the FFT computation sequence
+    void computeLogFFT();
+    float findSignalFrequency();                    // Extract the signal's fundamental frequency
+    
+    float* fftBuffer;                               // Buffer used to store any incoming input data
+    int fftBufferIndex = 0;                         // Index where the data should be written in the temp fftBuffer
+    const vDSP_Stride Stride = 1;                   // All the samples are to be processed -> stride = 1
+//    float *BufferMemory;                            // Memory used by the DSPSplitComplex objects
+//    float *ObservedMemory;                          // Memory used by the DSPSplitComplex objects
+    float *logFFTResult;                            // Array to hold the log result of the computed FFT
+    const int logFFTNbOfBands = 12;                 // Number of bands to have in the logFFTResult
     DSPSplitComplex Buffer;
     DSPSplitComplex Observed;
-    
-    //FFTSetup FFTSettings;
-    //COMPLEX_SPLIT FFTData;
     vDSP_DFT_Setup zop_Setup;
     vDSP_DFT_Setup zrop_Setup;
-    float * hammingWindow;
+
+    //==============================================================================
+    // Functions used to output the different available messages
+    void sendImpulseMsg();
+    void sendSignalLevelMsg();
+    void sendTimeinfoMsg();
+    void sendFFTMsg();
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it
@@ -190,7 +191,7 @@ public:
     const int portNumberTimeInfo    = 7003;
     const int portNumberFFT         = 7004;
     const int nbOfSamplesToSkip     = 6;
-    const int timeInfoCycle         = 2048;       //Send the time info message every 2048 samples, that's about 50ms
+    const int timeInfoCycle         = 2048;         // Send the time info message every 2048 samples, that's about 50ms
     const String udpIpAddress       = "127.0.0.1";
     
     //==============================================================================
@@ -221,14 +222,16 @@ public:
     char* dataArrayTimeInfo;
     char* dataArrayImpulse;
     char* dataArrayLevel;
-    char* dataArrayFFT;
+    char* dataArrayLogFFT;
+    char* dataArrayLinearFFT;
     
     //==============================================================================
-    // Small optimisation : always use the same SignalMessages objects, it saves creating a new one every time
+    // Small optimisation : always use the same SignalMessages objects, it saves allocating a new one every time
     Impulse impulse;
     SignalLevel signal;
     TimeInfo timeInfo;
-    FFT fft;
+    LinearFFT linearFft;
+    LogFFT logFft;
     
     
 private:

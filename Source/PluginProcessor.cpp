@@ -20,7 +20,7 @@
 SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 : channel(defaultChannel),
   averagingBufferSize(defaultAveragingBufferSize),
-  fftBufferSize(defaultFftBufferSize),
+  fftBandNb(defaultfftBandNb),
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
@@ -30,38 +30,17 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   udpClientImpulse("127.0.0.1", portNumberImpulse),
   udpClientFFT("127.0.0.1", portNumberFFT)
 {
-    //Initialize the FFT data buffer
-//    fftBuffer             = new float[fftBufferSize];
-//    fftBuffer             = new float[N];
-    fftBuffer               = (float *) malloc(sizeof(float) * N);
+    // FFT-related initialization
+    // Initialize the FFT data buffer - used to store the input data provided by the DAW
+    fftBuffer           = (float *) malloc(sizeof(float) * N);
 
-    //FFTSettings           = vDSP_create_fftsetup(log2N, kFFTRadix2);
-    
+    // Setup the DFT routines
     zop_Setup = vDSP_DFT_zop_CreateSetup(0, N, vDSP_DFT_FORWARD);
-	if (zop_Setup == NULL)
-	{
-		fprintf(stderr, "Error, vDSP_zop_CreateSetup failed.\n");
-		exit (EXIT_FAILURE);
-	}
-    
     zrop_Setup = vDSP_DFT_zrop_CreateSetup(zop_Setup, N, vDSP_DFT_FORWARD);
-	if (zrop_Setup == NULL)
-	{
-		fprintf(stderr, "Error, vDSP_zop_CreateSetup failed.\n");
-		exit (EXIT_FAILURE);
-	}
-
     
-    
-    // Allocate memory for the arrays.
-    float *BufferMemory = (float *) malloc(N * sizeof *BufferMemory);
-    float *ObservedMemory = (float *) malloc(N * sizeof *ObservedMemory);
-    
-    if (ObservedMemory == NULL || BufferMemory == NULL)
-    {
-        fprintf(stderr, "Error, failed to allocate memory.\n");
-        exit(EXIT_FAILURE);
-    }
+    // Allocate memory for the arrays. Malloc is more appropriated in this case because it ensures the data is contiguous
+    float *BufferMemory     = (float *) malloc(N * sizeof *BufferMemory);
+    float *ObservedMemory   = (float *) malloc(N * sizeof *ObservedMemory);
     
     // Assign half of BufferMemory to reals and half to imaginaries.
     Buffer = { BufferMemory, BufferMemory + N/2 };
@@ -69,13 +48,8 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     // Assign half of ObservedMemory to reals and half to imaginaries.
     Observed = { ObservedMemory, ObservedMemory + N/2 };
     
-    
-    
-//    FFTData.realp         = (float *) malloc(sizeof(float) * N/2);
-//    FFTData.imagp         = (float *) malloc(sizeof(float) * N/2);
-//    hammingWindow         = (float *) malloc(sizeof(float) * N);
-//    // create an array of floats to represent a hamming window
-//    vDSP_hamm_window(hammingWindow, N, 0);
+    // Allocate memory for the FFT log buffer
+    logFFTResult      = (float *) malloc(sizeof(float) * logFFTNbOfBands);
     
     //Initialize the OSC output buffer
     oscOutputBuffer   = new char[oscOutputBufferSize];
@@ -84,10 +58,11 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
     defineDefaultSignalMessages();
     
-    dataArrayImpulse  = new char[impulse.ByteSize()];
-    dataArrayLevel    = new char[signal.ByteSize()];
-    dataArrayTimeInfo = new char[timeInfo.ByteSize()];
-    dataArrayFFT      = new char[fft.ByteSize()];
+    dataArrayImpulse   = new char[impulse.ByteSize()];
+    dataArrayLevel     = new char[signal.ByteSize()];
+    dataArrayTimeInfo  = new char[timeInfo.ByteSize()];
+    dataArrayLogFFT    = new char[logFft.ByteSize()];
+    dataArrayLinearFFT = new char[linearFft.ByteSize()];
     
     lastPosInfo.resetToDefault();
 
@@ -95,24 +70,19 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
 
 SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
 {
-    
+    // Release all allocated memory
     delete [] dataArrayImpulse;
     delete [] dataArrayLevel;
     delete [] dataArrayTimeInfo;
-    delete [] dataArrayFFT;
+    delete [] dataArrayLogFFT;
+    delete [] dataArrayLinearFFT;
     delete [] oscOutputBuffer;
-//    delete [] fftBuffer;
     delete oscOutputStream;
     
-//    vDSP_destroy_fftsetup(FFTSettings);
-//    free(FFTData.realp);
-//    free(FFTData.imagp);
-
     free(fftBuffer);
+    free(logFFTResult);
 	vDSP_DFT_DestroySetup(zop_Setup);
 	vDSP_DFT_DestroySetup(zrop_Setup);
-    
-//    free(hammingWindow);
 }
 
 
@@ -138,7 +108,7 @@ float SignalProcessorAudioProcessor::getParameter (int index)
     switch (index)
     {
         case averagingBufferSizeParam:      return averagingBufferSize;
-        case fftBufferSizeParam:            return fftBufferSize;
+        case fftBandNbParam:                return fftBandNb;
         case inputSensitivityParam:         return inputSensitivity;
         case sendTimeInfoParam:             return sendTimeInfo;
         case sendSignalLevelParam:          return sendSignalLevel;
@@ -146,6 +116,7 @@ float SignalProcessorAudioProcessor::getParameter (int index)
         case sendFFTParam:                  return sendFFT;
         case channelParam:                  return channel;
         case monoStereoParam:               return monoStereo;
+        case logarithmicFFTParam:           return logarithmicFFT;
         case averageEnergyBufferSizeParam:  return averageEnergyBufferSize;
         case sendOSCParam:                  return sendOSC;
         case sendBinaryUDPParam:            return sendBinaryUDP;
@@ -158,7 +129,7 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
     switch (index)
     {
         case averagingBufferSizeParam:      return defaultAveragingBufferSize;
-        case fftBufferSizeParam:            return defaultFftBufferSize;
+        case fftBandNbParam:                return defaultfftBandNb;
         case inputSensitivityParam:         return defaultInputSensitivity;
         case sendTimeInfoParam:             return defaultSendTimeInfo;
         case sendSignalLevelParam:          return defaultSendSignalLevel;
@@ -166,6 +137,7 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
         case sendFFTParam:                  return defaultsendFFT;
         case channelParam:                  return defaultChannel;
         case monoStereoParam:               return defaultMonoStereo;
+        case logarithmicFFTParam:           return defaultLogarithmicFFT;
         case averageEnergyBufferSizeParam:  return defaultAverageEnergyBufferSize;
         case sendOSCParam:                  return defaultSendOSC;
         case sendBinaryUDPParam:            return defaultSendBinaryUDP;
@@ -183,7 +155,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     switch (index)
     {
         case averagingBufferSizeParam:      averagingBufferSize     = newValue;  break;
-        case fftBufferSizeParam:            fftBufferSize           = newValue;  break;
+        case fftBandNbParam:                fftBandNb               = newValue;  break;
         case inputSensitivityParam:         inputSensitivity        = newValue;  break;
         case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
         case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
@@ -191,6 +163,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
         case sendFFTParam:                  sendFFT                 = newValue;  break;
         case channelParam:                  channel                 = newValue;  defineSignalMessagesChannel();  break;
         case monoStereoParam:               monoStereo              = newValue;  break;
+        case logarithmicFFTParam:           logarithmicFFT          = newValue;  break;
         case averageEnergyBufferSizeParam:  averageEnergyBufferSize = newValue;  break;
         case sendOSCParam:                  sendOSC                 = newValue;  break;
         case sendBinaryUDPParam:            sendBinaryUDP           = newValue;  break;
@@ -203,7 +176,7 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
     switch (index)
     {
         case averagingBufferSizeParam:     return "Averaging Buffer Size"; break;
-        case fftBufferSizeParam:           return "FFT Buffer Size";       break;
+        case fftBandNbParam:               return "Number of FFT Bands";   break;
         case inputSensitivityParam:        return "Input Sensitivity";     break;
         case sendTimeInfoParam:            return "Send Time Info";        break;
         case sendSignalLevelParam:         return "Send Signal Level";     break;
@@ -211,6 +184,7 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
         case sendFFTParam:                 return "Send FFT Analysis";     break;
         case channelParam:                 return "Channel Number";        break;
         case monoStereoParam:              return "Mono / Stereo";         break;
+        case logarithmicFFTParam:          return "Logarithmic FFT";       break;
         case averageEnergyBufferSizeParam: return "Beat Detection Window"; break;
         case sendOSCParam:                 return "Send Data Using OSC";   break;
         case sendBinaryUDPParam:           return "Send Data Using UDP";   break;
@@ -317,86 +291,13 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
 //    Vector multiply with scalar
 //    vDSP_zvzsml
     
+
+    
     // If the signal is defined by the user as mono, no need to check the second channel
     int numberOfChannels = (monoStereo==false) ? 1 : getNumInputChannels();
     for (int channel = 0; channel < numberOfChannels; channel++)
     {
         const float* channelData = buffer.getReadPointer (channel);
-        
-        // Move the available buffer in the processed data buffer (for FFT)
-        for (int i=0; i<buffer.getNumSamples(); i+=1) {
-//            if (fftBufferIndex < fftBufferSize) {
-            if (fftBufferIndex < N) {
-                *(fftBuffer + fftBufferIndex) = channelData[i];
-                fftBufferIndex += 1;
-            }
-        }
-        
-//        if (fftBufferIndex >= fftBufferSize) {
-        if (fftBufferIndex >= N) {
-
-            printf("\n\tOne-dimensional real DFT of %lu elements.\n",
-                   (unsigned long) N);
-            
-            /*	Reinterpret the real signal as an interleaved-data complex
-             vector and use vDSP_ctoz to move the data to a separated-data
-             complex vector.  This puts the even-indexed elements of Signal
-             in Observed.realp and the odd-indexed elements in
-             Observed.imagp.
-             
-             Note that we pass vDSP_ctoz two times Signal's normal stride,
-             because ctoz skips through a complex vector from real to real,
-             skipping imaginary elements.  Considering this as a stride of
-             two real-sized elements rather than one complex element is a
-             legacy use.
-             
-             In the destination array, a stride of one is used regardless of
-             the source stride.  Since the destination is a buffer allocated
-             just for this purpose, there is no point in replicating the
-             source stride. and the DFT routines work best with unit
-             strides.  (In fact, the routine we use here, vDSP_DFT_Execute,
-             uses only a unit stride and has no parameter for anything
-             else.)
-             */
-            vDSP_ctoz((DSPComplex *) fftBuffer, 2*Stride, &Buffer, 1, N/2);
-            
-            // Perform a real-to-complex DFT.
-            vDSP_DFT_Execute(zrop_Setup,
-                             Buffer.realp, Buffer.imagp,
-                             Observed.realp, Observed.imagp);
-            
-            std::cout << "I just did a DFT !\n";
-            float maxVal = 0;
-            int maxValPos = 0;
-            for (int i=0; i < N/2; i += 1) {
-                if (maxVal < *(Observed.realp + i)) {
-                    maxVal = *(Observed.realp + i);
-                    maxValPos = i;
-                }
-                //std::cout << i << ":";
-                //std::cout << *(FFTData.realp + i);
-                //std::cout << ", ";
-            }
-            float estimatedFreq;
-            float fftBandWidth;         //Width of an FFT band (in Hz), ie the FFT result array contains N/2 bands of X Hz
-            fftBandWidth = getSampleRate() / N;
-            if (*(Observed.realp + maxValPos - 1) > *(Observed.realp + maxValPos + 1)) {
-                estimatedFreq = fftBandWidth *
-                                (maxValPos*(*(Observed.realp + maxValPos)) + (maxValPos-1)*(*(Observed.realp + maxValPos-1))) /
-                                 (*(Observed.realp + maxValPos - 1) + *(Observed.realp + maxValPos)) ;
-            }
-            else {
-                estimatedFreq = fftBandWidth *
-                (maxValPos*(*(Observed.realp + maxValPos)) + (maxValPos+1)*(*(Observed.realp + maxValPos+1))) /
-                (*(Observed.realp + maxValPos + 1) + *(Observed.realp + maxValPos)) ;
-            }
-            //std::cout << maxValPos << ": " << maxVal << "\n";
-            std::cout << "Estimated frequency : " << estimatedFreq << "\n";
-            fftBufferIndex = 0;
-            
-            
-        }
-        
         
         //Only read one value out of nbOfSamplesToSkip, it's faster this way
         for (int i=0; i<buffer.getNumSamples(); i+=nbOfSamplesToSkip) {
@@ -413,7 +314,15 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     samplesSinceLastTimeInfoTransmission += buffer.getNumSamples();
 
     if (sendFFT == true) {
-
+        // For the FFT, only check the left channel (mono), it's not very useful the work twice. This could be changed in the future if a case where this is needed were to appear
+        for (int i=0; i<buffer.getNumSamples(); i+=1) {
+            // Move the available buffer in the processed data buffer (for FFT)
+            *(fftBuffer + fftBufferIndex) = *(buffer.getReadPointer(0) + i);
+            fftBufferIndex += 1;
+            if (fftBufferIndex >= N) {
+                computeFFT();
+            }
+        }
     }
     
     //Must be calculated before the instant signal, or else the beat effect will be minimized
@@ -441,39 +350,14 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
         signalAverageEnergy = signalInstantEnergy;
         
         if (sendImpulse == true) {
-            beatIntensity = 1.0f;
             //Send the impulse message (which was pre-generated earlier)
-            if (sendBinaryUDP) {
-                udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
-            }
-            if (sendOSC) {
-                oscOutputStream->Clear();
-                *oscOutputStream << osc::BeginBundleImmediate
-                << osc::BeginMessage( "IMPLS" )
-                << channel << osc::EndMessage
-                << osc::EndBundle;
-                oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
-            }
+            sendImpulseMsg();
         }
     }
     
     if (nbBufValProcessed >= averagingBufferSize) {
         if (sendSignalLevel == true) {
-            if (sendBinaryUDP) {
-                signal.set_signallevel(inputSensitivity * signalInstantEnergy);
-                signal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
-                udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
-            }
-            if (sendOSC) {
-                //Example of an OSC signal level message : SIGLVL1/0.23245
-                oscOutputStream->Clear();
-                *oscOutputStream << osc::BeginBundleImmediate
-                << osc::BeginMessage( "SIGLVL" )
-                << channel << "/"
-                << (inputSensitivity * signalInstantEnergy) << osc::EndMessage
-                << osc::EndBundle;
-                oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
-            }
+            sendSignalLevelMsg();
         }
         
         nbBufValProcessed = 0;
@@ -484,31 +368,7 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     if (samplesSinceLastTimeInfoTransmission >= timeInfoCycle) {
         // Ask the host for the current time
         if (sendTimeInfo == true) {
-            AudioPlayHead::CurrentPositionInfo currentTime;
-            if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
-            {
-                // Update the variable used to display the latest time in the GUI
-                lastPosInfo = currentTime;
-                
-                // Successfully got the current time from the host, set the pulses-per-quarter-note value inside the timeInfo message
-                if (sendBinaryUDP) {
-                    timeInfo.set_position((float)currentTime.ppqPosition);
-                    timeInfo.set_isplaying(currentTime.isPlaying);
-                    timeInfo.set_tempo((float)currentTime.bpm);
-                    timeInfo.SerializeToArray(dataArrayTimeInfo, timeInfo.GetCachedSize());
-                    udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
-                }
-                if (sendOSC) {
-                    oscOutputStream->Clear();
-                    *oscOutputStream << osc::BeginBundleImmediate
-                    << osc::BeginMessage( "TIME" )
-                    << ((float)currentTime.ppqPosition) << osc::EndMessage
-                    << osc::BeginMessage( "BPM" )
-                    << ((float)currentTime.bpm) << osc::EndMessage
-                    << osc::EndBundle;
-                    oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
-                }
-            }
+            sendTimeinfoMsg();
         }
         else {
             // Don't send the current time, set the GUI info to a default value
@@ -526,7 +386,75 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 //==============================================================================
 // FFT Functions
 
+void SignalProcessorAudioProcessor::computeFFT() {
 
+    // Reinterpret the signal in fftBuffer as an interleaved-data complex vector and use vDSP_ctoz to move the data to a separated-data complex vector. The stride is equal to 2 because the imaginary elements are skipped
+    vDSP_ctoz((DSPComplex *) fftBuffer, 2*Stride, &Buffer, 1, N/2);
+    
+    // Perform a real-to-complex DFT.
+    vDSP_DFT_Execute(zrop_Setup,
+                     Buffer.realp, Buffer.imagp,
+                     Observed.realp, Observed.imagp);
+
+    // Send the FFT message over the network
+    sendFFTMsg();
+    
+    // Reinitialize fftBufferIndex to start writing the temp data back from the start of the table
+    fftBufferIndex = 0;
+    
+    // If the FFT is set to logarithmic, transform the linear result array in a new log one
+    if (logarithmicFFT) {
+        computeLogFFT();
+    }
+    
+}
+
+float SignalProcessorAudioProcessor::findSignalFrequency() {
+    
+    float maxVal = 0;
+    int maxValPos = 0;
+    for (int i=0; i < N/2; i += 1) {
+        if (maxVal < *(Observed.realp + i)) {
+            maxVal = *(Observed.realp + i);
+            maxValPos = i;
+        }
+        else {
+            // This function aims to find the approximate fundamental
+        }
+    }
+    
+    if (abs(*(Observed.realp + maxValPos - 1)) > abs(*(Observed.realp + maxValPos + 1))) {
+        return (getSampleRate() / N) *
+        (abs(maxValPos*(*(Observed.realp + maxValPos))) + abs((maxValPos-1)*(*(Observed.realp + maxValPos-1)))) /
+        (abs(*(Observed.realp + maxValPos - 1)) + abs(*(Observed.realp + maxValPos))) ;            }
+    else {
+        return (getSampleRate() / N) *
+        (abs(maxValPos*(*(Observed.realp + maxValPos))) + abs((maxValPos+1)*(*(Observed.realp + maxValPos+1)))) /
+        (abs(*(Observed.realp + maxValPos + 1)) + abs(*(Observed.realp + maxValPos))) ;
+    }
+}
+
+// Calculate the intensity for the 12 frequency bands
+void SignalProcessorAudioProcessor::computeLogFFT() {
+    
+    //First, reinitialize the array
+    for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) = 0; }
+    
+    //Every element inside Observed.realp contains the energy for a frequency band with (getSampleRate() / N) Hz width (10.76Hz at a 44100Hz sample rate)
+    *(logFFTResult + 0)         = *(Observed.realp + 0);                                  //Energy in the 0 to 11 Hz band
+    *(logFFTResult + 1)         = *(Observed.realp + 1);                                  //Energy in the 11 to 22 Hz band
+    for (int i=2;i<4;i++)       { *(logFFTResult + 2) += *(Observed.realp + i); }         //Energy in the 22 to 43 Hz band
+    for (int i=4;i<8;i++)       { *(logFFTResult + 3) += *(Observed.realp + i); }         //Energy in the 43 to 86 Hz band
+    for (int i=8;i<16;i++)      { *(logFFTResult + 4) += *(Observed.realp + i); }         //Energy in the 86 to 172 Hz band
+    for (int i=16;i<32;i++)     { *(logFFTResult + 5) += *(Observed.realp + i); }         //Energy in the 172 to 344 Hz band
+    for (int i=32;i<64;i++)     { *(logFFTResult + 6) += *(Observed.realp + i); }         //Energy in the 344 to 689 Hz band
+    for (int i=64;i<128;i++)    { *(logFFTResult + 7) += *(Observed.realp + i); }         //Energy in the 689 to 1378 Hz band
+    for (int i=128;i<256;i++)   { *(logFFTResult + 8) += *(Observed.realp + i); }         //Energy in the 1378 to 2756 Hz band
+    for (int i=256;i<512;i++)   { *(logFFTResult + 9) += *(Observed.realp + i); }         //Energy in the 2756 to 5512 Hz band
+    for (int i=512;i<1024;i++)  { *(logFFTResult + 10) += *(Observed.realp + i); }        //Energy in the 5512 to 11025 Hz band
+    for (int i=1024;i<2048;i++) { *(logFFTResult + 11) += *(Observed.realp + i); }        //Energy in the 11025 to 22050 Hz band
+    
+}
 
 //==============================================================================
 
@@ -544,29 +472,148 @@ void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
     timeInfo.set_position(0.0);
     timeInfo.set_tempo(120.0);
     
-    //This is heavily subject to change !
+    logFft.set_signalid(channel);
+    logFft.set_fundamentalfreq(0.0);
+    logFft.set_band1(0.0);
+    logFft.set_band2(0.0);
+    logFft.set_band3(0.0);
+    logFft.set_band4(0.0);
+    logFft.set_band5(0.0);
+    logFft.set_band6(0.0);
+    logFft.set_band7(0.0);
+    logFft.set_band8(0.0);
+    logFft.set_band9(0.0);
+    logFft.set_band10(0.0);
+    logFft.set_band11(0.0);
+    logFft.set_band12(0.0);
     
-    fft.set_signalid(channel);
-    fft.set_band1(0.0);
-    fft.set_band2(0.0);
-    fft.set_band3(0.0);
-    fft.set_band4(0.0);
-    fft.set_band5(0.0);
-    fft.set_band6(0.0);
-    fft.set_band7(0.0);
-    fft.set_band8(0.0);
-    
+    linearFft.set_signalid(channel);
+    linearFft.set_fundamentalfreq(0.0);
+    for (int i=0; i<N/2; i++) {             //Initialize the char array with the max size
+        linearFft.add_data(0.0);
+    }
 }
 
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     
     signal.set_signalid(channel);
-    fft.set_signalid(channel);
+    logFft.set_signalid(channel);
+    linearFft.set_signalid(channel);
     
     //It is possible to pre-serialize impulse messages here, as the message will never change
     impulse.set_signalid(channel);
     impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
     
+}
+
+//==============================================================================
+void SignalProcessorAudioProcessor::sendImpulseMsg() {
+    beatIntensity = 1.0f;
+    if (sendBinaryUDP) {
+        udpClientImpulse.send(dataArrayImpulse, impulse.GetCachedSize());
+    }
+    if (sendOSC) {
+        oscOutputStream->Clear();
+        *oscOutputStream << osc::BeginBundleImmediate
+        << osc::BeginMessage( "IMPLS" )
+        << channel << osc::EndMessage
+        << osc::EndBundle;
+        oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+    }
+}
+
+void SignalProcessorAudioProcessor::sendSignalLevelMsg() {
+    if (sendBinaryUDP) {
+        signal.set_signallevel(inputSensitivity * signalInstantEnergy);
+        signal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
+        udpClientSignalLevel.send(dataArrayLevel, signal.GetCachedSize());
+    }
+    if (sendOSC) {
+        //Example of an OSC signal level message : SIGLVL1/0.23245
+        oscOutputStream->Clear();
+        *oscOutputStream << osc::BeginBundleImmediate
+        << osc::BeginMessage( "SIGLVL" )
+        << channel << "/"
+        << (inputSensitivity * signalInstantEnergy) << osc::EndMessage
+        << osc::EndBundle;
+        oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+    }
+}
+
+void SignalProcessorAudioProcessor::sendTimeinfoMsg() {
+    AudioPlayHead::CurrentPositionInfo currentTime;
+    if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (currentTime))
+    {
+        // Update the variable used to display the latest time in the GUI
+        lastPosInfo = currentTime;
+        
+        // Successfully got the current time from the host, set the pulses-per-quarter-note value inside the timeInfo message
+        if (sendBinaryUDP) {
+            timeInfo.set_position((float)currentTime.ppqPosition);
+            timeInfo.set_isplaying(currentTime.isPlaying);
+            timeInfo.set_tempo((float)currentTime.bpm);
+            timeInfo.SerializeToArray(dataArrayTimeInfo, timeInfo.GetCachedSize());
+            udpClientTimeInfo.send(dataArrayTimeInfo, timeInfo.GetCachedSize());
+        }
+        if (sendOSC) {
+            oscOutputStream->Clear();
+            *oscOutputStream << osc::BeginBundleImmediate
+            << osc::BeginMessage( "TIME" )
+            << ((float)currentTime.ppqPosition) << osc::EndMessage
+            << osc::BeginMessage( "BPM" )
+            << ((float)currentTime.bpm) << osc::EndMessage
+            << osc::EndBundle;
+            oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+        }
+    }
+}
+
+void SignalProcessorAudioProcessor::sendFFTMsg() {
+
+    if (logarithmicFFT) {
+        if (sendBinaryUDP) {
+            logFft.set_fundamentalfreq(findSignalFrequency());
+            logFft.set_band1(*(logFFTResult + 0));
+            logFft.set_band2(*(logFFTResult + 1));
+            logFft.set_band3(*(logFFTResult + 2));
+            logFft.set_band4(*(logFFTResult + 3));
+            logFft.set_band5(*(logFFTResult + 4));
+            logFft.set_band6(*(logFFTResult + 5));
+            logFft.set_band7(*(logFFTResult + 6));
+            logFft.set_band8(*(logFFTResult + 7));
+            logFft.set_band9(*(logFFTResult + 8));
+            logFft.set_band10(*(logFFTResult + 9));
+            logFft.set_band11(*(logFFTResult + 10));
+            logFft.set_band12(*(logFFTResult + 11));
+            logFft.SerializeToArray(dataArrayLogFFT, logFft.GetCachedSize());
+            udpClientFFT.send(dataArrayTimeInfo, logFft.GetCachedSize());
+        }
+        if (sendOSC) {
+            oscOutputStream->Clear();
+            *oscOutputStream << osc::BeginBundleImmediate
+            << osc::BeginMessage( "FFT/" )
+            << channel << "/"
+            << (*(logFFTResult + 0))
+            << (*(logFFTResult + 1))
+            << (*(logFFTResult + 2))
+            << (*(logFFTResult + 3))
+            << (*(logFFTResult + 4))
+            << (*(logFFTResult + 5))
+            << (*(logFFTResult + 6))
+            << (*(logFFTResult + 7))
+            << (*(logFFTResult + 8))
+            << (*(logFFTResult + 9))
+            << (*(logFFTResult + 10))
+            << (*(logFFTResult + 11))
+            << osc::EndMessage
+            << osc::EndBundle;
+            oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+        }
+    }
+    // Linear FFT
+    else {
+        std::cout << "Trying to send an linear FFT message, TBIL\n";
+    }
 }
 
 //==============================================================================
@@ -588,7 +635,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     
     // add some attributes to it..
     xml.setAttribute ("averagingBufferSize", averagingBufferSize);
-    xml.setAttribute ("fftBufferSize", fftBufferSize);
+    xml.setAttribute ("fftBandNb", fftBandNb);
     xml.setAttribute ("inputSensitivity", inputSensitivity);
     xml.setAttribute ("sendTimeInfo", sendTimeInfo);
     xml.setAttribute ("sendSignalLevel", sendSignalLevel);
@@ -596,6 +643,7 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("sendFFT", sendFFT);
     xml.setAttribute ("channel", channel);
     xml.setAttribute ("monoStereo", monoStereo);
+    xml.setAttribute ("logarithmicFFT", logarithmicFFT);
     xml.setAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
     xml.setAttribute ("sendOSC", sendOSC);
     xml.setAttribute ("sendBinaryUDP", sendBinaryUDP);
@@ -614,20 +662,21 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
     
     if (xmlState != nullptr)
     {
-        // make sure that it's actually our type of XML object..
+        // make sure that it's actually our type of XML object
         if (xmlState->hasTagName ("MYPLUGINSETTINGS"))
         {
             // now pull out our parameters..
-            averagingBufferSize     = xmlState->getIntAttribute ("averagingBufferSize", averagingBufferSize);
-            fftBufferSize           = xmlState->getIntAttribute ("fftBufferSize", fftBufferSize);
+            averagingBufferSize     = xmlState->getIntAttribute  ("averagingBufferSize", averagingBufferSize);
+            fftBandNb               = xmlState->getIntAttribute  ("fftBandNb", fftBandNb);
             inputSensitivity        = (float) xmlState->getDoubleAttribute ("inputSensitivity", inputSensitivity);
             sendTimeInfo            = xmlState->getBoolAttribute ("sendTimeInfo", sendTimeInfo);
             sendSignalLevel         = xmlState->getBoolAttribute ("sendSignalLevel", sendSignalLevel);
             sendImpulse             = xmlState->getBoolAttribute ("sendImpulse", sendImpulse);
             sendFFT                 = xmlState->getBoolAttribute ("sendFFT", sendFFT);
-            channel                 = xmlState->getIntAttribute ("channel", channel);
+            channel                 = xmlState->getIntAttribute  ("channel", channel);
             monoStereo              = xmlState->getBoolAttribute ("monoStereo", monoStereo);
-            averageEnergyBufferSize = xmlState->getIntAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
+            logarithmicFFT          = xmlState->getBoolAttribute ("logarithmicFFT", logarithmicFFT);
+            averageEnergyBufferSize = xmlState->getIntAttribute  ("averageEnergyBufferSize", averageEnergyBufferSize);
             sendOSC                 = xmlState->getBoolAttribute ("sendOSC", sendOSC);
             sendBinaryUDP           = xmlState->getBoolAttribute ("sendBinaryUDP", sendBinaryUDP);
         }

@@ -17,13 +17,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       audioProcessorInstance(owner),
       tooltipWindow(nullptr, 700),
       infoLabel (String::empty),
-      averagingBufferLabel ("", "Averaging Buffer Size (samples):"),
-      fftBufferLabel ("", "FFT Buffer Size (samples):"),
+      averagingBufferLabel ("", "Averaging Buffer Size:"),
+      fftBandNbLabel ("", "Number Of FFT Bands:"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
       beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
       averagingBufferSlider ("averagingBuffer"),
-      fftBufferSlider ("fftBuffer"),
+      fftBandNbSlider ("fftBandNb"),
       inputSensitivitySlider ("inputSensitivity"),
       beatDetectionWindowSlider ("beatDetectionWindow"),
       sendTimeInfoButton("Send TimeInfo"),
@@ -31,6 +31,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendImpulseButton("Send Impulse"),
       sendFFTButton("Send Signal FFT"),
       monoStereoButton ("Stereo Processing"),
+      logarithmicFFTButton("Logarithmic FFT"),
       sendOSCButton("Send OSC Data"),
       sendBinaryUDPButton("Send UDP Data"),
       sendTimeInfoButtonLabel ("", "Send Time Info"),
@@ -38,6 +39,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendImpulseButtonLabel ("", "Send Impulse"),
       sendFFTButtonLabel ("", "Send Signal FFT "),
       monoStereoButtonLabel ("", "Stereo Processing"),
+      logarithmicFFTButtonLabel("", "Logarithmic FFT"),
       sendOSCButtonLabel ("", "Send Data Using OSC"),
       sendBinaryUDPButtonLabel ("", "Send Data Using UDP"),
       logoButton("PlayMe Signal Processor"),
@@ -65,13 +67,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     averagingBufferSlider.setBounds (20, 230, 150, 20);
     
-    addAndMakeVisible (fftBufferSlider);
-    fftBufferSlider.setLookAndFeel(slaf);
-    fftBufferSlider.setSliderStyle (Slider::LinearBar);
-    fftBufferSlider.addListener (this);
-    fftBufferSlider.setRange (512, 16384, 64);
-    fftBufferSlider.setValue(getProcessor().averagingBufferSize);
-    fftBufferSlider.setBounds (20, 270, 150, 20);
+    addAndMakeVisible (fftBandNbSlider);
+    fftBandNbSlider.setLookAndFeel(slaf);
+    fftBandNbSlider.setSliderStyle (Slider::LinearBar);
+    fftBandNbSlider.addListener (this);
+    fftBandNbSlider.setRange (4, N/2, 2);
+    fftBandNbSlider.setValue(getProcessor().fftBandNb);
+    fftBandNbSlider.setBounds (20, 270, 150, 20);
     
     addAndMakeVisible (inputSensitivitySlider);
     inputSensitivitySlider.setLookAndFeel(slaf);
@@ -132,11 +134,20 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     monoStereoButton.setButtonText("");
     monoStereoButton.setTooltip("Check this to consider the input source as a stereo source for the signal level analysis. To use less resources, the default behaviour only checks the left input. Considering your source stereo is only useful if you have very agressive left/right panning effects");
 
+    addAndMakeVisible (logarithmicFFTButton);
+    logarithmicFFTButton.addListener (this);
+    logarithmicFFTButton.changeWidthToFitText();
+    logarithmicFFTButton.setBounds (getWidth() - 50, 280, 18, 18);
+    logarithmicFFTButton.setColour (Label::textColourId, Colours::white);
+    logarithmicFFTButton.setLookAndFeel(slaf);
+    logarithmicFFTButton.setButtonText("");
+    logarithmicFFTButton.setTooltip("Check this to reorganize the FFT in a logarithmic way. By checking this, the message will always contain 12 bands :\n11025 to 22050 Hz\n5512 to 11025 Hz\n2756 to 5512 Hz\n1378 to 2756 Hz\n689 to 1378 Hz\n344 to 689 Hz\n172 to 344 Hz\n86 to 172 Hz\n43 to 86 Hz\n22 to 43 Hz\n11 to 22 Hz\n0 to 11 Hz");
+    
     addAndMakeVisible (sendOSCButton);
     sendOSCButton.setLookAndFeel(slaf);
     sendOSCButton.addListener (this);
     sendOSCButton.changeWidthToFitText();
-    sendOSCButton.setBounds (getWidth() - 50, 320, 18, 18);
+    sendOSCButton.setBounds (getWidth() - 50, 330, 18, 18);
     sendOSCButton.setColour (Label::textColourId, Colours::white);
     sendOSCButton.setButtonText("");
     sendOSCButton.setTooltip("Check this to consider the input source as a stereo source for the signal level analysis. To use less resources, the default behaviour only checks the left input. Considering your source stereo is only useful if you have very agressive left/right panning effects");
@@ -145,7 +156,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendBinaryUDPButton.setLookAndFeel(slaf);
     sendBinaryUDPButton.addListener (this);
     sendBinaryUDPButton.changeWidthToFitText();
-    sendBinaryUDPButton.setBounds (getWidth() - 50, 342, 18, 18);
+    sendBinaryUDPButton.setBounds (getWidth() - 50, 352, 18, 18);
     sendBinaryUDPButton.setColour (Label::textColourId, Colours::white);
     sendBinaryUDPButton.setButtonText("");
     sendBinaryUDPButton.setTooltip("Send data using raw binary UDP. This is the most effective way to use this plugin. The following ports are used by this plugin :\nSignal level: " + String(getProcessor().portNumberSignalLevel) + ". Impulse: " + String(getProcessor().portNumberImpulse) + ". TimeInfo: " + String(getProcessor().portNumberTimeInfo) + ". FFT Data: " + String(getProcessor().portNumberFFT));
@@ -174,6 +185,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     monoStereoButtonLabel.attachToComponent (&monoStereoButton, true);
     monoStereoButtonLabel.setFont(smallFont);
     monoStereoButtonLabel.setColour(Label::textColourId, Colours::white);
+    logarithmicFFTButtonLabel.attachToComponent (&logarithmicFFTButton, true);
+    logarithmicFFTButtonLabel.setFont(smallFont);
+    logarithmicFFTButtonLabel.setColour(Label::textColourId, Colours::white);
     sendOSCButtonLabel.attachToComponent (&sendOSCButton, true);
     sendOSCButtonLabel.setFont(smallFont);
     sendOSCButtonLabel.setColour(Label::textColourId, Colours::white);
@@ -198,10 +212,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferLabel.setColour(Label::textColourId, Colours::white);
     averagingBufferLabel.setTooltip("Change this parameter to adjust the instant signal value's averaging window. Shorter values mean more precise signal values, and more messages sent");
     
-    fftBufferLabel.attachToComponent (&fftBufferSlider, false);
-    fftBufferLabel.setFont(smallFont);
-    fftBufferLabel.setColour(Label::textColourId, Colours::white);
-    fftBufferLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages.Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT");
+    fftBandNbLabel.attachToComponent (&fftBandNbSlider, false);
+    fftBandNbLabel.setFont(smallFont);
+    fftBandNbLabel.setColour(Label::textColourId, Colours::white);
+    fftBandNbLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages.Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT.\nThis slider is only active if the requested FFT is linear (logarithmic FFT is unchecked)");
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);
@@ -286,7 +300,7 @@ void SignalProcessorAudioProcessorEditor::timerCallback()
     //To be set later, to update any parameter !!!
     averagingBufferSlider.setValue (ourProcessor.averagingBufferSize, dontSendNotification);
     inputSensitivitySlider.setValue (ourProcessor.inputSensitivity, dontSendNotification);
-    fftBufferSlider.setValue (ourProcessor.fftBufferSize, dontSendNotification);
+    fftBandNbSlider.setValue (ourProcessor.fftBandNb, dontSendNotification);
     
     float newBeatIntensity = ourProcessor.beatIntensity;
     if (lastDisplayedBeatIntensity != newBeatIntensity) {
@@ -317,10 +331,10 @@ void SignalProcessorAudioProcessorEditor::sliderValueChanged (Slider* slider)
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::averageEnergyBufferSizeParam,
                                                   (int) beatDetectionWindowSlider.getValue());
     }
-    else if (slider == &fftBufferSlider)
+    else if (slider == &fftBandNbSlider)
     {
-        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftBufferSizeParam,
-                                                  (int) fftBufferSlider.getValue());
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftBandNbParam,
+                                                  (int) fftBandNbSlider.getValue());
     }
 }
 
@@ -330,6 +344,11 @@ void SignalProcessorAudioProcessorEditor::buttonClicked (Button* button)
     if (button == &monoStereoButton)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::monoStereoParam,
+                                                  button->getToggleState());
+    }
+    if (button == &logarithmicFFTButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::logarithmicFFTParam,
                                                   button->getToggleState());
     }
     else if (button == &sendTimeInfoButton)

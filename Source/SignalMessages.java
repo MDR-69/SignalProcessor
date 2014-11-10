@@ -935,7 +935,7 @@ public final class SignalMessages {
     // @@protoc_insertion_point(class_scope:Impulse)
   }
 
-  public interface FFTOrBuilder
+  public interface LinearFFTOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required int32 signalID = 1 [default = 1];
@@ -948,105 +948,69 @@ public final class SignalMessages {
      */
     int getSignalID();
 
-    // required float band1 = 2 [default = 0];
+    // required float fundamentalFreq = 2 [default = 0];
     /**
-     * <code>required float band1 = 2 [default = 0];</code>
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
      */
-    boolean hasBand1();
+    boolean hasFundamentalFreq();
     /**
-     * <code>required float band1 = 2 [default = 0];</code>
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
      */
-    float getBand1();
+    float getFundamentalFreq();
 
-    // required float band2 = 3 [default = 0];
+    // repeated float data = 3 [packed = true];
     /**
-     * <code>required float band2 = 3 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    boolean hasBand2();
+    java.util.List<java.lang.Float> getDataList();
     /**
-     * <code>required float band2 = 3 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    float getBand2();
-
-    // required float band3 = 4 [default = 0];
+    int getDataCount();
     /**
-     * <code>required float band3 = 4 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    boolean hasBand3();
-    /**
-     * <code>required float band3 = 4 [default = 0];</code>
-     */
-    float getBand3();
-
-    // required float band4 = 5 [default = 0];
-    /**
-     * <code>required float band4 = 5 [default = 0];</code>
-     */
-    boolean hasBand4();
-    /**
-     * <code>required float band4 = 5 [default = 0];</code>
-     */
-    float getBand4();
-
-    // required float band5 = 6 [default = 0];
-    /**
-     * <code>required float band5 = 6 [default = 0];</code>
-     */
-    boolean hasBand5();
-    /**
-     * <code>required float band5 = 6 [default = 0];</code>
-     */
-    float getBand5();
-
-    // required float band6 = 7 [default = 0];
-    /**
-     * <code>required float band6 = 7 [default = 0];</code>
-     */
-    boolean hasBand6();
-    /**
-     * <code>required float band6 = 7 [default = 0];</code>
-     */
-    float getBand6();
-
-    // required float band7 = 8 [default = 0];
-    /**
-     * <code>required float band7 = 8 [default = 0];</code>
-     */
-    boolean hasBand7();
-    /**
-     * <code>required float band7 = 8 [default = 0];</code>
-     */
-    float getBand7();
-
-    // required float band8 = 9 [default = 0];
-    /**
-     * <code>required float band8 = 9 [default = 0];</code>
-     */
-    boolean hasBand8();
-    /**
-     * <code>required float band8 = 9 [default = 0];</code>
-     */
-    float getBand8();
+    float getData(int index);
   }
   /**
-   * Protobuf type {@code FFT}
+   * Protobuf type {@code LinearFFT}
    */
-  public static final class FFT extends
+  public static final class LinearFFT extends
       com.google.protobuf.GeneratedMessage
-      implements FFTOrBuilder {
-    // Use FFT.newBuilder() to construct.
-    private FFT(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements LinearFFTOrBuilder {
+    // Use LinearFFT.newBuilder() to construct.
+    private LinearFFT(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private FFT(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private LinearFFT(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final FFT defaultInstance;
-    public static FFT getDefaultInstance() {
+    private static final LinearFFT defaultInstance;
+    public static LinearFFT getDefaultInstance() {
       return defaultInstance;
     }
 
-    public FFT getDefaultInstanceForType() {
+    public LinearFFT getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -1056,7 +1020,7 @@ public final class SignalMessages {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private FFT(
+    private LinearFFT(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1086,42 +1050,28 @@ public final class SignalMessages {
             }
             case 21: {
               bitField0_ |= 0x00000002;
-              band1_ = input.readFloat();
+              fundamentalFreq_ = input.readFloat();
               break;
             }
             case 29: {
-              bitField0_ |= 0x00000004;
-              band2_ = input.readFloat();
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                data_ = new java.util.ArrayList<java.lang.Float>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              data_.add(input.readFloat());
               break;
             }
-            case 37: {
-              bitField0_ |= 0x00000008;
-              band3_ = input.readFloat();
-              break;
-            }
-            case 45: {
-              bitField0_ |= 0x00000010;
-              band4_ = input.readFloat();
-              break;
-            }
-            case 53: {
-              bitField0_ |= 0x00000020;
-              band5_ = input.readFloat();
-              break;
-            }
-            case 61: {
-              bitField0_ |= 0x00000040;
-              band6_ = input.readFloat();
-              break;
-            }
-            case 69: {
-              bitField0_ |= 0x00000080;
-              band7_ = input.readFloat();
-              break;
-            }
-            case 77: {
-              bitField0_ |= 0x00000100;
-              band8_ = input.readFloat();
+            case 26: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
+                data_ = new java.util.ArrayList<java.lang.Float>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                data_.add(input.readFloat());
+              }
+              input.popLimit(limit);
               break;
             }
           }
@@ -1132,34 +1082,37 @@ public final class SignalMessages {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          data_ = java.util.Collections.unmodifiableList(data_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return SignalMessages.internal_static_FFT_descriptor;
+      return SignalMessages.internal_static_LinearFFT_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return SignalMessages.internal_static_FFT_fieldAccessorTable
+      return SignalMessages.internal_static_LinearFFT_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              SignalMessages.FFT.class, SignalMessages.FFT.Builder.class);
+              SignalMessages.LinearFFT.class, SignalMessages.LinearFFT.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<FFT> PARSER =
-        new com.google.protobuf.AbstractParser<FFT>() {
-      public FFT parsePartialFrom(
+    public static com.google.protobuf.Parser<LinearFFT> PARSER =
+        new com.google.protobuf.AbstractParser<LinearFFT>() {
+      public LinearFFT parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FFT(input, extensionRegistry);
+        return new LinearFFT(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<FFT> getParserForType() {
+    public com.google.protobuf.Parser<LinearFFT> getParserForType() {
       return PARSER;
     }
 
@@ -1180,144 +1133,70 @@ public final class SignalMessages {
       return signalID_;
     }
 
-    // required float band1 = 2 [default = 0];
-    public static final int BAND1_FIELD_NUMBER = 2;
-    private float band1_;
+    // required float fundamentalFreq = 2 [default = 0];
+    public static final int FUNDAMENTALFREQ_FIELD_NUMBER = 2;
+    private float fundamentalFreq_;
     /**
-     * <code>required float band1 = 2 [default = 0];</code>
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
      */
-    public boolean hasBand1() {
+    public boolean hasFundamentalFreq() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required float band1 = 2 [default = 0];</code>
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
      */
-    public float getBand1() {
-      return band1_;
+    public float getFundamentalFreq() {
+      return fundamentalFreq_;
     }
 
-    // required float band2 = 3 [default = 0];
-    public static final int BAND2_FIELD_NUMBER = 3;
-    private float band2_;
+    // repeated float data = 3 [packed = true];
+    public static final int DATA_FIELD_NUMBER = 3;
+    private java.util.List<java.lang.Float> data_;
     /**
-     * <code>required float band2 = 3 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    public boolean hasBand2() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+    public java.util.List<java.lang.Float>
+        getDataList() {
+      return data_;
     }
     /**
-     * <code>required float band2 = 3 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    public float getBand2() {
-      return band2_;
-    }
-
-    // required float band3 = 4 [default = 0];
-    public static final int BAND3_FIELD_NUMBER = 4;
-    private float band3_;
-    /**
-     * <code>required float band3 = 4 [default = 0];</code>
-     */
-    public boolean hasBand3() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+    public int getDataCount() {
+      return data_.size();
     }
     /**
-     * <code>required float band3 = 4 [default = 0];</code>
+     * <code>repeated float data = 3 [packed = true];</code>
+     *
+     * <pre>
+     *Array of floats, one for each signal band (up to 2048 bands)
+     * </pre>
      */
-    public float getBand3() {
-      return band3_;
+    public float getData(int index) {
+      return data_.get(index);
     }
-
-    // required float band4 = 5 [default = 0];
-    public static final int BAND4_FIELD_NUMBER = 5;
-    private float band4_;
-    /**
-     * <code>required float band4 = 5 [default = 0];</code>
-     */
-    public boolean hasBand4() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>required float band4 = 5 [default = 0];</code>
-     */
-    public float getBand4() {
-      return band4_;
-    }
-
-    // required float band5 = 6 [default = 0];
-    public static final int BAND5_FIELD_NUMBER = 6;
-    private float band5_;
-    /**
-     * <code>required float band5 = 6 [default = 0];</code>
-     */
-    public boolean hasBand5() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>required float band5 = 6 [default = 0];</code>
-     */
-    public float getBand5() {
-      return band5_;
-    }
-
-    // required float band6 = 7 [default = 0];
-    public static final int BAND6_FIELD_NUMBER = 7;
-    private float band6_;
-    /**
-     * <code>required float band6 = 7 [default = 0];</code>
-     */
-    public boolean hasBand6() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>required float band6 = 7 [default = 0];</code>
-     */
-    public float getBand6() {
-      return band6_;
-    }
-
-    // required float band7 = 8 [default = 0];
-    public static final int BAND7_FIELD_NUMBER = 8;
-    private float band7_;
-    /**
-     * <code>required float band7 = 8 [default = 0];</code>
-     */
-    public boolean hasBand7() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>required float band7 = 8 [default = 0];</code>
-     */
-    public float getBand7() {
-      return band7_;
-    }
-
-    // required float band8 = 9 [default = 0];
-    public static final int BAND8_FIELD_NUMBER = 9;
-    private float band8_;
-    /**
-     * <code>required float band8 = 9 [default = 0];</code>
-     */
-    public boolean hasBand8() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>required float band8 = 9 [default = 0];</code>
-     */
-    public float getBand8() {
-      return band8_;
-    }
+    private int dataMemoizedSerializedSize = -1;
 
     private void initFields() {
       signalID_ = 1;
-      band1_ = 0F;
-      band2_ = 0F;
-      band3_ = 0F;
-      band4_ = 0F;
-      band5_ = 0F;
-      band6_ = 0F;
-      band7_ = 0F;
-      band8_ = 0F;
+      fundamentalFreq_ = 0F;
+      data_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1328,35 +1207,7 @@ public final class SignalMessages {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasBand1()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand2()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand3()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand4()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand5()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand6()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand7()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand8()) {
+      if (!hasFundamentalFreq()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1371,28 +1222,14 @@ public final class SignalMessages {
         output.writeInt32(1, signalID_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeFloat(2, band1_);
+        output.writeFloat(2, fundamentalFreq_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeFloat(3, band2_);
+      if (getDataList().size() > 0) {
+        output.writeRawVarint32(26);
+        output.writeRawVarint32(dataMemoizedSerializedSize);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeFloat(4, band3_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeFloat(5, band4_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeFloat(6, band5_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeFloat(7, band6_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeFloat(8, band7_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeFloat(9, band8_);
+      for (int i = 0; i < data_.size(); i++) {
+        output.writeFloatNoTag(data_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1409,35 +1246,18 @@ public final class SignalMessages {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(2, band1_);
+          .computeFloatSize(2, fundamentalFreq_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(3, band2_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(4, band3_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(5, band4_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(6, band5_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(7, band6_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(8, band7_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(9, band8_);
+      {
+        int dataSize = 0;
+        dataSize = 4 * getDataList().size();
+        size += dataSize;
+        if (!getDataList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        dataMemoizedSerializedSize = dataSize;
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1451,53 +1271,53 @@ public final class SignalMessages {
       return super.writeReplace();
     }
 
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static SignalMessages.FFT parseFrom(byte[] data)
+    public static SignalMessages.LinearFFT parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static SignalMessages.FFT parseFrom(java.io.InputStream input)
+    public static SignalMessages.LinearFFT parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static SignalMessages.FFT parseDelimitedFrom(java.io.InputStream input)
+    public static SignalMessages.LinearFFT parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static SignalMessages.FFT parseDelimitedFrom(
+    public static SignalMessages.LinearFFT parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static SignalMessages.FFT parseFrom(
+    public static SignalMessages.LinearFFT parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1506,7 +1326,7 @@ public final class SignalMessages {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(SignalMessages.FFT prototype) {
+    public static Builder newBuilder(SignalMessages.LinearFFT prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1518,24 +1338,24 @@ public final class SignalMessages {
       return builder;
     }
     /**
-     * Protobuf type {@code FFT}
+     * Protobuf type {@code LinearFFT}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements SignalMessages.FFTOrBuilder {
+       implements SignalMessages.LinearFFTOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return SignalMessages.internal_static_FFT_descriptor;
+        return SignalMessages.internal_static_LinearFFT_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return SignalMessages.internal_static_FFT_fieldAccessorTable
+        return SignalMessages.internal_static_LinearFFT_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                SignalMessages.FFT.class, SignalMessages.FFT.Builder.class);
+                SignalMessages.LinearFFT.class, SignalMessages.LinearFFT.Builder.class);
       }
 
-      // Construct using SignalMessages.FFT.newBuilder()
+      // Construct using SignalMessages.LinearFFT.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1557,22 +1377,10 @@ public final class SignalMessages {
         super.clear();
         signalID_ = 1;
         bitField0_ = (bitField0_ & ~0x00000001);
-        band1_ = 0F;
+        fundamentalFreq_ = 0F;
         bitField0_ = (bitField0_ & ~0x00000002);
-        band2_ = 0F;
+        data_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
-        band3_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        band4_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        band5_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        band6_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        band7_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        band8_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -1582,23 +1390,23 @@ public final class SignalMessages {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return SignalMessages.internal_static_FFT_descriptor;
+        return SignalMessages.internal_static_LinearFFT_descriptor;
       }
 
-      public SignalMessages.FFT getDefaultInstanceForType() {
-        return SignalMessages.FFT.getDefaultInstance();
+      public SignalMessages.LinearFFT getDefaultInstanceForType() {
+        return SignalMessages.LinearFFT.getDefaultInstance();
       }
 
-      public SignalMessages.FFT build() {
-        SignalMessages.FFT result = buildPartial();
+      public SignalMessages.LinearFFT build() {
+        SignalMessages.LinearFFT result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public SignalMessages.FFT buildPartial() {
-        SignalMessages.FFT result = new SignalMessages.FFT(this);
+      public SignalMessages.LinearFFT buildPartial() {
+        SignalMessages.LinearFFT result = new SignalMessages.LinearFFT(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1608,77 +1416,43 @@ public final class SignalMessages {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.band1_ = band1_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
+        result.fundamentalFreq_ = fundamentalFreq_;
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          data_ = java.util.Collections.unmodifiableList(data_);
+          bitField0_ = (bitField0_ & ~0x00000004);
         }
-        result.band2_ = band2_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.band3_ = band3_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.band4_ = band4_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.band5_ = band5_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.band6_ = band6_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.band7_ = band7_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.band8_ = band8_;
+        result.data_ = data_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof SignalMessages.FFT) {
-          return mergeFrom((SignalMessages.FFT)other);
+        if (other instanceof SignalMessages.LinearFFT) {
+          return mergeFrom((SignalMessages.LinearFFT)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(SignalMessages.FFT other) {
-        if (other == SignalMessages.FFT.getDefaultInstance()) return this;
+      public Builder mergeFrom(SignalMessages.LinearFFT other) {
+        if (other == SignalMessages.LinearFFT.getDefaultInstance()) return this;
         if (other.hasSignalID()) {
           setSignalID(other.getSignalID());
         }
-        if (other.hasBand1()) {
-          setBand1(other.getBand1());
+        if (other.hasFundamentalFreq()) {
+          setFundamentalFreq(other.getFundamentalFreq());
         }
-        if (other.hasBand2()) {
-          setBand2(other.getBand2());
-        }
-        if (other.hasBand3()) {
-          setBand3(other.getBand3());
-        }
-        if (other.hasBand4()) {
-          setBand4(other.getBand4());
-        }
-        if (other.hasBand5()) {
-          setBand5(other.getBand5());
-        }
-        if (other.hasBand6()) {
-          setBand6(other.getBand6());
-        }
-        if (other.hasBand7()) {
-          setBand7(other.getBand7());
-        }
-        if (other.hasBand8()) {
-          setBand8(other.getBand8());
+        if (!other.data_.isEmpty()) {
+          if (data_.isEmpty()) {
+            data_ = other.data_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureDataIsMutable();
+            data_.addAll(other.data_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1689,35 +1463,7 @@ public final class SignalMessages {
           
           return false;
         }
-        if (!hasBand1()) {
-          
-          return false;
-        }
-        if (!hasBand2()) {
-          
-          return false;
-        }
-        if (!hasBand3()) {
-          
-          return false;
-        }
-        if (!hasBand4()) {
-          
-          return false;
-        }
-        if (!hasBand5()) {
-          
-          return false;
-        }
-        if (!hasBand6()) {
-          
-          return false;
-        }
-        if (!hasBand7()) {
-          
-          return false;
-        }
-        if (!hasBand8()) {
+        if (!hasFundamentalFreq()) {
           
           return false;
         }
@@ -1728,11 +1474,11 @@ public final class SignalMessages {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        SignalMessages.FFT parsedMessage = null;
+        SignalMessages.LinearFFT parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (SignalMessages.FFT) e.getUnfinishedMessage();
+          parsedMessage = (SignalMessages.LinearFFT) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1776,279 +1522,2135 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band1 = 2 [default = 0];
-      private float band1_ ;
+      // required float fundamentalFreq = 2 [default = 0];
+      private float fundamentalFreq_ ;
       /**
-       * <code>required float band1 = 2 [default = 0];</code>
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
        */
-      public boolean hasBand1() {
+      public boolean hasFundamentalFreq() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required float band1 = 2 [default = 0];</code>
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public float getFundamentalFreq() {
+        return fundamentalFreq_;
+      }
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public Builder setFundamentalFreq(float value) {
+        bitField0_ |= 0x00000002;
+        fundamentalFreq_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public Builder clearFundamentalFreq() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fundamentalFreq_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // repeated float data = 3 [packed = true];
+      private java.util.List<java.lang.Float> data_ = java.util.Collections.emptyList();
+      private void ensureDataIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          data_ = new java.util.ArrayList<java.lang.Float>(data_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public java.util.List<java.lang.Float>
+          getDataList() {
+        return java.util.Collections.unmodifiableList(data_);
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public int getDataCount() {
+        return data_.size();
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public float getData(int index) {
+        return data_.get(index);
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public Builder setData(
+          int index, float value) {
+        ensureDataIsMutable();
+        data_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public Builder addData(float value) {
+        ensureDataIsMutable();
+        data_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public Builder addAllData(
+          java.lang.Iterable<? extends java.lang.Float> values) {
+        ensureDataIsMutable();
+        super.addAll(values, data_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float data = 3 [packed = true];</code>
+       *
+       * <pre>
+       *Array of floats, one for each signal band (up to 2048 bands)
+       * </pre>
+       */
+      public Builder clearData() {
+        data_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:LinearFFT)
+    }
+
+    static {
+      defaultInstance = new LinearFFT(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:LinearFFT)
+  }
+
+  public interface LogFFTOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int32 signalID = 1 [default = 1];
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    boolean hasSignalID();
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    int getSignalID();
+
+    // required float fundamentalFreq = 2 [default = 0];
+    /**
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
+     */
+    boolean hasFundamentalFreq();
+    /**
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
+     */
+    float getFundamentalFreq();
+
+    // required float band1 = 3 [default = 0];
+    /**
+     * <code>required float band1 = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 0 to 11 Hz band
+     * </pre>
+     */
+    boolean hasBand1();
+    /**
+     * <code>required float band1 = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 0 to 11 Hz band
+     * </pre>
+     */
+    float getBand1();
+
+    // required float band2 = 4 [default = 0];
+    /**
+     * <code>required float band2 = 4 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11 to 22 Hz band
+     * </pre>
+     */
+    boolean hasBand2();
+    /**
+     * <code>required float band2 = 4 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11 to 22 Hz band
+     * </pre>
+     */
+    float getBand2();
+
+    // required float band3 = 5 [default = 0];
+    /**
+     * <code>required float band3 = 5 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 22 to 43 Hz band
+     * </pre>
+     */
+    boolean hasBand3();
+    /**
+     * <code>required float band3 = 5 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 22 to 43 Hz band
+     * </pre>
+     */
+    float getBand3();
+
+    // required float band4 = 6 [default = 0];
+    /**
+     * <code>required float band4 = 6 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 43 to 86 Hz band
+     * </pre>
+     */
+    boolean hasBand4();
+    /**
+     * <code>required float band4 = 6 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 43 to 86 Hz band
+     * </pre>
+     */
+    float getBand4();
+
+    // required float band5 = 7 [default = 0];
+    /**
+     * <code>required float band5 = 7 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 86 to 172 Hz band
+     * </pre>
+     */
+    boolean hasBand5();
+    /**
+     * <code>required float band5 = 7 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 86 to 172 Hz band
+     * </pre>
+     */
+    float getBand5();
+
+    // required float band6 = 8 [default = 0];
+    /**
+     * <code>required float band6 = 8 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 172 to 344 Hz band
+     * </pre>
+     */
+    boolean hasBand6();
+    /**
+     * <code>required float band6 = 8 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 172 to 344 Hz band
+     * </pre>
+     */
+    float getBand6();
+
+    // required float band7 = 9 [default = 0];
+    /**
+     * <code>required float band7 = 9 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 344 to 689 Hz band
+     * </pre>
+     */
+    boolean hasBand7();
+    /**
+     * <code>required float band7 = 9 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 344 to 689 Hz band
+     * </pre>
+     */
+    float getBand7();
+
+    // required float band8 = 10 [default = 0];
+    /**
+     * <code>required float band8 = 10 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 689 to 1378 Hz band
+     * </pre>
+     */
+    boolean hasBand8();
+    /**
+     * <code>required float band8 = 10 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 689 to 1378 Hz band
+     * </pre>
+     */
+    float getBand8();
+
+    // required float band9 = 11 [default = 0];
+    /**
+     * <code>required float band9 = 11 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 1378 to 2756 Hz band
+     * </pre>
+     */
+    boolean hasBand9();
+    /**
+     * <code>required float band9 = 11 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 1378 to 2756 Hz band
+     * </pre>
+     */
+    float getBand9();
+
+    // required float band10 = 12 [default = 0];
+    /**
+     * <code>required float band10 = 12 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 2756 to 5512 Hz band
+     * </pre>
+     */
+    boolean hasBand10();
+    /**
+     * <code>required float band10 = 12 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 2756 to 5512 Hz band
+     * </pre>
+     */
+    float getBand10();
+
+    // required float band11 = 13 [default = 0];
+    /**
+     * <code>required float band11 = 13 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 5512 to 11025 Hz band
+     * </pre>
+     */
+    boolean hasBand11();
+    /**
+     * <code>required float band11 = 13 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 5512 to 11025 Hz band
+     * </pre>
+     */
+    float getBand11();
+
+    // required float band12 = 14 [default = 0];
+    /**
+     * <code>required float band12 = 14 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11025 to 22050 Hz band
+     * </pre>
+     */
+    boolean hasBand12();
+    /**
+     * <code>required float band12 = 14 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11025 to 22050 Hz band
+     * </pre>
+     */
+    float getBand12();
+  }
+  /**
+   * Protobuf type {@code LogFFT}
+   */
+  public static final class LogFFT extends
+      com.google.protobuf.GeneratedMessage
+      implements LogFFTOrBuilder {
+    // Use LogFFT.newBuilder() to construct.
+    private LogFFT(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LogFFT(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LogFFT defaultInstance;
+    public static LogFFT getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LogFFT getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LogFFT(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              signalID_ = input.readInt32();
+              break;
+            }
+            case 21: {
+              bitField0_ |= 0x00000002;
+              fundamentalFreq_ = input.readFloat();
+              break;
+            }
+            case 29: {
+              bitField0_ |= 0x00000004;
+              band1_ = input.readFloat();
+              break;
+            }
+            case 37: {
+              bitField0_ |= 0x00000008;
+              band2_ = input.readFloat();
+              break;
+            }
+            case 45: {
+              bitField0_ |= 0x00000010;
+              band3_ = input.readFloat();
+              break;
+            }
+            case 53: {
+              bitField0_ |= 0x00000020;
+              band4_ = input.readFloat();
+              break;
+            }
+            case 61: {
+              bitField0_ |= 0x00000040;
+              band5_ = input.readFloat();
+              break;
+            }
+            case 69: {
+              bitField0_ |= 0x00000080;
+              band6_ = input.readFloat();
+              break;
+            }
+            case 77: {
+              bitField0_ |= 0x00000100;
+              band7_ = input.readFloat();
+              break;
+            }
+            case 85: {
+              bitField0_ |= 0x00000200;
+              band8_ = input.readFloat();
+              break;
+            }
+            case 93: {
+              bitField0_ |= 0x00000400;
+              band9_ = input.readFloat();
+              break;
+            }
+            case 101: {
+              bitField0_ |= 0x00000800;
+              band10_ = input.readFloat();
+              break;
+            }
+            case 109: {
+              bitField0_ |= 0x00001000;
+              band11_ = input.readFloat();
+              break;
+            }
+            case 117: {
+              bitField0_ |= 0x00002000;
+              band12_ = input.readFloat();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return SignalMessages.internal_static_LogFFT_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return SignalMessages.internal_static_LogFFT_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              SignalMessages.LogFFT.class, SignalMessages.LogFFT.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LogFFT> PARSER =
+        new com.google.protobuf.AbstractParser<LogFFT>() {
+      public LogFFT parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LogFFT(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LogFFT> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required int32 signalID = 1 [default = 1];
+    public static final int SIGNALID_FIELD_NUMBER = 1;
+    private int signalID_;
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    public boolean hasSignalID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    public int getSignalID() {
+      return signalID_;
+    }
+
+    // required float fundamentalFreq = 2 [default = 0];
+    public static final int FUNDAMENTALFREQ_FIELD_NUMBER = 2;
+    private float fundamentalFreq_;
+    /**
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
+     */
+    public boolean hasFundamentalFreq() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     *
+     * <pre>
+     *Fundamental frequency detected in the FFT result
+     * </pre>
+     */
+    public float getFundamentalFreq() {
+      return fundamentalFreq_;
+    }
+
+    // required float band1 = 3 [default = 0];
+    public static final int BAND1_FIELD_NUMBER = 3;
+    private float band1_;
+    /**
+     * <code>required float band1 = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 0 to 11 Hz band
+     * </pre>
+     */
+    public boolean hasBand1() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required float band1 = 3 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 0 to 11 Hz band
+     * </pre>
+     */
+    public float getBand1() {
+      return band1_;
+    }
+
+    // required float band2 = 4 [default = 0];
+    public static final int BAND2_FIELD_NUMBER = 4;
+    private float band2_;
+    /**
+     * <code>required float band2 = 4 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11 to 22 Hz band
+     * </pre>
+     */
+    public boolean hasBand2() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required float band2 = 4 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11 to 22 Hz band
+     * </pre>
+     */
+    public float getBand2() {
+      return band2_;
+    }
+
+    // required float band3 = 5 [default = 0];
+    public static final int BAND3_FIELD_NUMBER = 5;
+    private float band3_;
+    /**
+     * <code>required float band3 = 5 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 22 to 43 Hz band
+     * </pre>
+     */
+    public boolean hasBand3() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required float band3 = 5 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 22 to 43 Hz band
+     * </pre>
+     */
+    public float getBand3() {
+      return band3_;
+    }
+
+    // required float band4 = 6 [default = 0];
+    public static final int BAND4_FIELD_NUMBER = 6;
+    private float band4_;
+    /**
+     * <code>required float band4 = 6 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 43 to 86 Hz band
+     * </pre>
+     */
+    public boolean hasBand4() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>required float band4 = 6 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 43 to 86 Hz band
+     * </pre>
+     */
+    public float getBand4() {
+      return band4_;
+    }
+
+    // required float band5 = 7 [default = 0];
+    public static final int BAND5_FIELD_NUMBER = 7;
+    private float band5_;
+    /**
+     * <code>required float band5 = 7 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 86 to 172 Hz band
+     * </pre>
+     */
+    public boolean hasBand5() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>required float band5 = 7 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 86 to 172 Hz band
+     * </pre>
+     */
+    public float getBand5() {
+      return band5_;
+    }
+
+    // required float band6 = 8 [default = 0];
+    public static final int BAND6_FIELD_NUMBER = 8;
+    private float band6_;
+    /**
+     * <code>required float band6 = 8 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 172 to 344 Hz band
+     * </pre>
+     */
+    public boolean hasBand6() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>required float band6 = 8 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 172 to 344 Hz band
+     * </pre>
+     */
+    public float getBand6() {
+      return band6_;
+    }
+
+    // required float band7 = 9 [default = 0];
+    public static final int BAND7_FIELD_NUMBER = 9;
+    private float band7_;
+    /**
+     * <code>required float band7 = 9 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 344 to 689 Hz band
+     * </pre>
+     */
+    public boolean hasBand7() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>required float band7 = 9 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 344 to 689 Hz band
+     * </pre>
+     */
+    public float getBand7() {
+      return band7_;
+    }
+
+    // required float band8 = 10 [default = 0];
+    public static final int BAND8_FIELD_NUMBER = 10;
+    private float band8_;
+    /**
+     * <code>required float band8 = 10 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 689 to 1378 Hz band
+     * </pre>
+     */
+    public boolean hasBand8() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>required float band8 = 10 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 689 to 1378 Hz band
+     * </pre>
+     */
+    public float getBand8() {
+      return band8_;
+    }
+
+    // required float band9 = 11 [default = 0];
+    public static final int BAND9_FIELD_NUMBER = 11;
+    private float band9_;
+    /**
+     * <code>required float band9 = 11 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 1378 to 2756 Hz band
+     * </pre>
+     */
+    public boolean hasBand9() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>required float band9 = 11 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 1378 to 2756 Hz band
+     * </pre>
+     */
+    public float getBand9() {
+      return band9_;
+    }
+
+    // required float band10 = 12 [default = 0];
+    public static final int BAND10_FIELD_NUMBER = 12;
+    private float band10_;
+    /**
+     * <code>required float band10 = 12 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 2756 to 5512 Hz band
+     * </pre>
+     */
+    public boolean hasBand10() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>required float band10 = 12 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 2756 to 5512 Hz band
+     * </pre>
+     */
+    public float getBand10() {
+      return band10_;
+    }
+
+    // required float band11 = 13 [default = 0];
+    public static final int BAND11_FIELD_NUMBER = 13;
+    private float band11_;
+    /**
+     * <code>required float band11 = 13 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 5512 to 11025 Hz band
+     * </pre>
+     */
+    public boolean hasBand11() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>required float band11 = 13 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 5512 to 11025 Hz band
+     * </pre>
+     */
+    public float getBand11() {
+      return band11_;
+    }
+
+    // required float band12 = 14 [default = 0];
+    public static final int BAND12_FIELD_NUMBER = 14;
+    private float band12_;
+    /**
+     * <code>required float band12 = 14 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11025 to 22050 Hz band
+     * </pre>
+     */
+    public boolean hasBand12() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>required float band12 = 14 [default = 0];</code>
+     *
+     * <pre>
+     *Energy in the 11025 to 22050 Hz band
+     * </pre>
+     */
+    public float getBand12() {
+      return band12_;
+    }
+
+    private void initFields() {
+      signalID_ = 1;
+      fundamentalFreq_ = 0F;
+      band1_ = 0F;
+      band2_ = 0F;
+      band3_ = 0F;
+      band4_ = 0F;
+      band5_ = 0F;
+      band6_ = 0F;
+      band7_ = 0F;
+      band8_ = 0F;
+      band9_ = 0F;
+      band10_ = 0F;
+      band11_ = 0F;
+      band12_ = 0F;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSignalID()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasFundamentalFreq()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand1()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand2()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand3()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand4()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand5()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand6()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand7()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand8()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand9()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand10()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand11()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBand12()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, signalID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeFloat(2, fundamentalFreq_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeFloat(3, band1_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeFloat(4, band2_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeFloat(5, band3_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeFloat(6, band4_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeFloat(7, band5_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeFloat(8, band6_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeFloat(9, band7_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeFloat(10, band8_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeFloat(11, band9_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeFloat(12, band10_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeFloat(13, band11_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeFloat(14, band12_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, signalID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, fundamentalFreq_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, band1_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(4, band2_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(5, band3_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(6, band4_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(7, band5_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(8, band6_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(9, band7_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(10, band8_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(11, band9_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(12, band10_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(13, band11_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(14, band12_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static SignalMessages.LogFFT parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.LogFFT parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.LogFFT parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.LogFFT parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.LogFFT parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.LogFFT parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.LogFFT parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static SignalMessages.LogFFT parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.LogFFT parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.LogFFT parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(SignalMessages.LogFFT prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code LogFFT}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements SignalMessages.LogFFTOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return SignalMessages.internal_static_LogFFT_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return SignalMessages.internal_static_LogFFT_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                SignalMessages.LogFFT.class, SignalMessages.LogFFT.Builder.class);
+      }
+
+      // Construct using SignalMessages.LogFFT.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        signalID_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fundamentalFreq_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        band1_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        band2_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        band3_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        band4_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        band5_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        band6_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        band7_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        band8_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        band9_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        band10_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000800);
+        band11_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        band12_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return SignalMessages.internal_static_LogFFT_descriptor;
+      }
+
+      public SignalMessages.LogFFT getDefaultInstanceForType() {
+        return SignalMessages.LogFFT.getDefaultInstance();
+      }
+
+      public SignalMessages.LogFFT build() {
+        SignalMessages.LogFFT result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public SignalMessages.LogFFT buildPartial() {
+        SignalMessages.LogFFT result = new SignalMessages.LogFFT(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.signalID_ = signalID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.fundamentalFreq_ = fundamentalFreq_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.band1_ = band1_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.band2_ = band2_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.band3_ = band3_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.band4_ = band4_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.band5_ = band5_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.band6_ = band6_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.band7_ = band7_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.band8_ = band8_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.band9_ = band9_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.band10_ = band10_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.band11_ = band11_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.band12_ = band12_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof SignalMessages.LogFFT) {
+          return mergeFrom((SignalMessages.LogFFT)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(SignalMessages.LogFFT other) {
+        if (other == SignalMessages.LogFFT.getDefaultInstance()) return this;
+        if (other.hasSignalID()) {
+          setSignalID(other.getSignalID());
+        }
+        if (other.hasFundamentalFreq()) {
+          setFundamentalFreq(other.getFundamentalFreq());
+        }
+        if (other.hasBand1()) {
+          setBand1(other.getBand1());
+        }
+        if (other.hasBand2()) {
+          setBand2(other.getBand2());
+        }
+        if (other.hasBand3()) {
+          setBand3(other.getBand3());
+        }
+        if (other.hasBand4()) {
+          setBand4(other.getBand4());
+        }
+        if (other.hasBand5()) {
+          setBand5(other.getBand5());
+        }
+        if (other.hasBand6()) {
+          setBand6(other.getBand6());
+        }
+        if (other.hasBand7()) {
+          setBand7(other.getBand7());
+        }
+        if (other.hasBand8()) {
+          setBand8(other.getBand8());
+        }
+        if (other.hasBand9()) {
+          setBand9(other.getBand9());
+        }
+        if (other.hasBand10()) {
+          setBand10(other.getBand10());
+        }
+        if (other.hasBand11()) {
+          setBand11(other.getBand11());
+        }
+        if (other.hasBand12()) {
+          setBand12(other.getBand12());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSignalID()) {
+          
+          return false;
+        }
+        if (!hasFundamentalFreq()) {
+          
+          return false;
+        }
+        if (!hasBand1()) {
+          
+          return false;
+        }
+        if (!hasBand2()) {
+          
+          return false;
+        }
+        if (!hasBand3()) {
+          
+          return false;
+        }
+        if (!hasBand4()) {
+          
+          return false;
+        }
+        if (!hasBand5()) {
+          
+          return false;
+        }
+        if (!hasBand6()) {
+          
+          return false;
+        }
+        if (!hasBand7()) {
+          
+          return false;
+        }
+        if (!hasBand8()) {
+          
+          return false;
+        }
+        if (!hasBand9()) {
+          
+          return false;
+        }
+        if (!hasBand10()) {
+          
+          return false;
+        }
+        if (!hasBand11()) {
+          
+          return false;
+        }
+        if (!hasBand12()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        SignalMessages.LogFFT parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (SignalMessages.LogFFT) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int32 signalID = 1 [default = 1];
+      private int signalID_ = 1;
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public boolean hasSignalID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public int getSignalID() {
+        return signalID_;
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public Builder setSignalID(int value) {
+        bitField0_ |= 0x00000001;
+        signalID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public Builder clearSignalID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        signalID_ = 1;
+        onChanged();
+        return this;
+      }
+
+      // required float fundamentalFreq = 2 [default = 0];
+      private float fundamentalFreq_ ;
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public boolean hasFundamentalFreq() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public float getFundamentalFreq() {
+        return fundamentalFreq_;
+      }
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public Builder setFundamentalFreq(float value) {
+        bitField0_ |= 0x00000002;
+        fundamentalFreq_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       *
+       * <pre>
+       *Fundamental frequency detected in the FFT result
+       * </pre>
+       */
+      public Builder clearFundamentalFreq() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fundamentalFreq_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // required float band1 = 3 [default = 0];
+      private float band1_ ;
+      /**
+       * <code>required float band1 = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 0 to 11 Hz band
+       * </pre>
+       */
+      public boolean hasBand1() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required float band1 = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 0 to 11 Hz band
+       * </pre>
        */
       public float getBand1() {
         return band1_;
       }
       /**
-       * <code>required float band1 = 2 [default = 0];</code>
+       * <code>required float band1 = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 0 to 11 Hz band
+       * </pre>
        */
       public Builder setBand1(float value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         band1_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band1 = 2 [default = 0];</code>
+       * <code>required float band1 = 3 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 0 to 11 Hz band
+       * </pre>
        */
       public Builder clearBand1() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         band1_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band2 = 3 [default = 0];
+      // required float band2 = 4 [default = 0];
       private float band2_ ;
       /**
-       * <code>required float band2 = 3 [default = 0];</code>
+       * <code>required float band2 = 4 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11 to 22 Hz band
+       * </pre>
        */
       public boolean hasBand2() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required float band2 = 3 [default = 0];</code>
+       * <code>required float band2 = 4 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11 to 22 Hz band
+       * </pre>
        */
       public float getBand2() {
         return band2_;
       }
       /**
-       * <code>required float band2 = 3 [default = 0];</code>
+       * <code>required float band2 = 4 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11 to 22 Hz band
+       * </pre>
        */
       public Builder setBand2(float value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         band2_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band2 = 3 [default = 0];</code>
+       * <code>required float band2 = 4 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11 to 22 Hz band
+       * </pre>
        */
       public Builder clearBand2() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         band2_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band3 = 4 [default = 0];
+      // required float band3 = 5 [default = 0];
       private float band3_ ;
       /**
-       * <code>required float band3 = 4 [default = 0];</code>
+       * <code>required float band3 = 5 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 22 to 43 Hz band
+       * </pre>
        */
       public boolean hasBand3() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required float band3 = 4 [default = 0];</code>
+       * <code>required float band3 = 5 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 22 to 43 Hz band
+       * </pre>
        */
       public float getBand3() {
         return band3_;
       }
       /**
-       * <code>required float band3 = 4 [default = 0];</code>
+       * <code>required float band3 = 5 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 22 to 43 Hz band
+       * </pre>
        */
       public Builder setBand3(float value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         band3_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band3 = 4 [default = 0];</code>
+       * <code>required float band3 = 5 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 22 to 43 Hz band
+       * </pre>
        */
       public Builder clearBand3() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         band3_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band4 = 5 [default = 0];
+      // required float band4 = 6 [default = 0];
       private float band4_ ;
       /**
-       * <code>required float band4 = 5 [default = 0];</code>
+       * <code>required float band4 = 6 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 43 to 86 Hz band
+       * </pre>
        */
       public boolean hasBand4() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>required float band4 = 5 [default = 0];</code>
+       * <code>required float band4 = 6 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 43 to 86 Hz band
+       * </pre>
        */
       public float getBand4() {
         return band4_;
       }
       /**
-       * <code>required float band4 = 5 [default = 0];</code>
+       * <code>required float band4 = 6 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 43 to 86 Hz band
+       * </pre>
        */
       public Builder setBand4(float value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         band4_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band4 = 5 [default = 0];</code>
+       * <code>required float band4 = 6 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 43 to 86 Hz band
+       * </pre>
        */
       public Builder clearBand4() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         band4_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band5 = 6 [default = 0];
+      // required float band5 = 7 [default = 0];
       private float band5_ ;
       /**
-       * <code>required float band5 = 6 [default = 0];</code>
+       * <code>required float band5 = 7 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 86 to 172 Hz band
+       * </pre>
        */
       public boolean hasBand5() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>required float band5 = 6 [default = 0];</code>
+       * <code>required float band5 = 7 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 86 to 172 Hz band
+       * </pre>
        */
       public float getBand5() {
         return band5_;
       }
       /**
-       * <code>required float band5 = 6 [default = 0];</code>
+       * <code>required float band5 = 7 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 86 to 172 Hz band
+       * </pre>
        */
       public Builder setBand5(float value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         band5_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band5 = 6 [default = 0];</code>
+       * <code>required float band5 = 7 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 86 to 172 Hz band
+       * </pre>
        */
       public Builder clearBand5() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         band5_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band6 = 7 [default = 0];
+      // required float band6 = 8 [default = 0];
       private float band6_ ;
       /**
-       * <code>required float band6 = 7 [default = 0];</code>
+       * <code>required float band6 = 8 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 172 to 344 Hz band
+       * </pre>
        */
       public boolean hasBand6() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>required float band6 = 7 [default = 0];</code>
+       * <code>required float band6 = 8 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 172 to 344 Hz band
+       * </pre>
        */
       public float getBand6() {
         return band6_;
       }
       /**
-       * <code>required float band6 = 7 [default = 0];</code>
+       * <code>required float band6 = 8 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 172 to 344 Hz band
+       * </pre>
        */
       public Builder setBand6(float value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         band6_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band6 = 7 [default = 0];</code>
+       * <code>required float band6 = 8 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 172 to 344 Hz band
+       * </pre>
        */
       public Builder clearBand6() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         band6_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band7 = 8 [default = 0];
+      // required float band7 = 9 [default = 0];
       private float band7_ ;
       /**
-       * <code>required float band7 = 8 [default = 0];</code>
+       * <code>required float band7 = 9 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 344 to 689 Hz band
+       * </pre>
        */
       public boolean hasBand7() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>required float band7 = 8 [default = 0];</code>
+       * <code>required float band7 = 9 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 344 to 689 Hz band
+       * </pre>
        */
       public float getBand7() {
         return band7_;
       }
       /**
-       * <code>required float band7 = 8 [default = 0];</code>
+       * <code>required float band7 = 9 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 344 to 689 Hz band
+       * </pre>
        */
       public Builder setBand7(float value) {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         band7_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band7 = 8 [default = 0];</code>
+       * <code>required float band7 = 9 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 344 to 689 Hz band
+       * </pre>
        */
       public Builder clearBand7() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         band7_ = 0F;
         onChanged();
         return this;
       }
 
-      // required float band8 = 9 [default = 0];
+      // required float band8 = 10 [default = 0];
       private float band8_ ;
       /**
-       * <code>required float band8 = 9 [default = 0];</code>
+       * <code>required float band8 = 10 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 689 to 1378 Hz band
+       * </pre>
        */
       public boolean hasBand8() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>required float band8 = 9 [default = 0];</code>
+       * <code>required float band8 = 10 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 689 to 1378 Hz band
+       * </pre>
        */
       public float getBand8() {
         return band8_;
       }
       /**
-       * <code>required float band8 = 9 [default = 0];</code>
+       * <code>required float band8 = 10 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 689 to 1378 Hz band
+       * </pre>
        */
       public Builder setBand8(float value) {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         band8_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required float band8 = 9 [default = 0];</code>
+       * <code>required float band8 = 10 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 689 to 1378 Hz band
+       * </pre>
        */
       public Builder clearBand8() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         band8_ = 0F;
         onChanged();
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:FFT)
+      // required float band9 = 11 [default = 0];
+      private float band9_ ;
+      /**
+       * <code>required float band9 = 11 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 1378 to 2756 Hz band
+       * </pre>
+       */
+      public boolean hasBand9() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>required float band9 = 11 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 1378 to 2756 Hz band
+       * </pre>
+       */
+      public float getBand9() {
+        return band9_;
+      }
+      /**
+       * <code>required float band9 = 11 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 1378 to 2756 Hz band
+       * </pre>
+       */
+      public Builder setBand9(float value) {
+        bitField0_ |= 0x00000400;
+        band9_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float band9 = 11 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 1378 to 2756 Hz band
+       * </pre>
+       */
+      public Builder clearBand9() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        band9_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // required float band10 = 12 [default = 0];
+      private float band10_ ;
+      /**
+       * <code>required float band10 = 12 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 2756 to 5512 Hz band
+       * </pre>
+       */
+      public boolean hasBand10() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>required float band10 = 12 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 2756 to 5512 Hz band
+       * </pre>
+       */
+      public float getBand10() {
+        return band10_;
+      }
+      /**
+       * <code>required float band10 = 12 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 2756 to 5512 Hz band
+       * </pre>
+       */
+      public Builder setBand10(float value) {
+        bitField0_ |= 0x00000800;
+        band10_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float band10 = 12 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 2756 to 5512 Hz band
+       * </pre>
+       */
+      public Builder clearBand10() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        band10_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // required float band11 = 13 [default = 0];
+      private float band11_ ;
+      /**
+       * <code>required float band11 = 13 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 5512 to 11025 Hz band
+       * </pre>
+       */
+      public boolean hasBand11() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>required float band11 = 13 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 5512 to 11025 Hz band
+       * </pre>
+       */
+      public float getBand11() {
+        return band11_;
+      }
+      /**
+       * <code>required float band11 = 13 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 5512 to 11025 Hz band
+       * </pre>
+       */
+      public Builder setBand11(float value) {
+        bitField0_ |= 0x00001000;
+        band11_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float band11 = 13 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 5512 to 11025 Hz band
+       * </pre>
+       */
+      public Builder clearBand11() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        band11_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // required float band12 = 14 [default = 0];
+      private float band12_ ;
+      /**
+       * <code>required float band12 = 14 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11025 to 22050 Hz band
+       * </pre>
+       */
+      public boolean hasBand12() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>required float band12 = 14 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11025 to 22050 Hz band
+       * </pre>
+       */
+      public float getBand12() {
+        return band12_;
+      }
+      /**
+       * <code>required float band12 = 14 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11025 to 22050 Hz band
+       * </pre>
+       */
+      public Builder setBand12(float value) {
+        bitField0_ |= 0x00002000;
+        band12_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float band12 = 14 [default = 0];</code>
+       *
+       * <pre>
+       *Energy in the 11025 to 22050 Hz band
+       * </pre>
+       */
+      public Builder clearBand12() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        band12_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:LogFFT)
     }
 
     static {
-      defaultInstance = new FFT(true);
+      defaultInstance = new LogFFT(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:FFT)
+    // @@protoc_insertion_point(class_scope:LogFFT)
   }
 
   public interface TimeInfoOrBuilder
@@ -2676,10 +4278,15 @@ public final class SignalMessages {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Impulse_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_FFT_descriptor;
+    internal_static_LinearFFT_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_FFT_fieldAccessorTable;
+      internal_static_LinearFFT_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LogFFT_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_LogFFT_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_TimeInfo_descriptor;
   private static
@@ -2696,14 +4303,19 @@ public final class SignalMessages {
     java.lang.String[] descriptorData = {
       "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n" +
       "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:" +
-      "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"\252\001\n\003F" +
-      "FT\022\023\n\010signalID\030\001 \002(\005:\0011\022\020\n\005band1\030\002 \002(\002:\001" +
-      "0\022\020\n\005band2\030\003 \002(\002:\0010\022\020\n\005band3\030\004 \002(\002:\0010\022\020\n" +
-      "\005band4\030\005 \002(\002:\0010\022\020\n\005band5\030\006 \002(\002:\0010\022\020\n\005ban" +
-      "d6\030\007 \002(\002:\0010\022\020\n\005band7\030\010 \002(\002:\0010\022\020\n\005band8\030\t" +
-      " \002(\002:\0010\"K\n\010TimeInfo\022\030\n\tisPlaying\030\001 \002(\010:\005" +
-      "false\022\020\n\005tempo\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(" +
-      "\002:\0010B\020B\016SignalMessages"
+      "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLi" +
+      "nearFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamen" +
+      "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\224\002\n\006L" +
+      "ogFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamenta" +
+      "lFreq\030\002 \002(\002:\0010\022\020\n\005band1\030\003 \002(\002:\0010\022\020\n\005band" +
+      "2\030\004 \002(\002:\0010\022\020\n\005band3\030\005 \002(\002:\0010\022\020\n\005band4\030\006 " +
+      "\002(\002:\0010\022\020\n\005band5\030\007 \002(\002:\0010\022\020\n\005band6\030\010 \002(\002:" +
+      "\0010\022\020\n\005band7\030\t \002(\002:\0010\022\020\n\005band8\030\n \002(\002:\0010\022\020",
+      "\n\005band9\030\013 \002(\002:\0010\022\021\n\006band10\030\014 \002(\002:\0010\022\021\n\006b" +
+      "and11\030\r \002(\002:\0010\022\021\n\006band12\030\016 \002(\002:\0010\"K\n\010Tim" +
+      "eInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005tempo" +
+      "\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signal" +
+      "Messages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2722,14 +4334,20 @@ public final class SignalMessages {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Impulse_descriptor,
               new java.lang.String[] { "SignalID", });
-          internal_static_FFT_descriptor =
+          internal_static_LinearFFT_descriptor =
             getDescriptor().getMessageTypes().get(2);
-          internal_static_FFT_fieldAccessorTable = new
+          internal_static_LinearFFT_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_FFT_descriptor,
-              new java.lang.String[] { "SignalID", "Band1", "Band2", "Band3", "Band4", "Band5", "Band6", "Band7", "Band8", });
-          internal_static_TimeInfo_descriptor =
+              internal_static_LinearFFT_descriptor,
+              new java.lang.String[] { "SignalID", "FundamentalFreq", "Data", });
+          internal_static_LogFFT_descriptor =
             getDescriptor().getMessageTypes().get(3);
+          internal_static_LogFFT_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LogFFT_descriptor,
+              new java.lang.String[] { "SignalID", "FundamentalFreq", "Band1", "Band2", "Band3", "Band4", "Band5", "Band6", "Band7", "Band8", "Band9", "Band10", "Band11", "Band12", });
+          internal_static_TimeInfo_descriptor =
+            getDescriptor().getMessageTypes().get(4);
           internal_static_TimeInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_TimeInfo_descriptor,

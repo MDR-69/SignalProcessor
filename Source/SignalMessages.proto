@@ -12,9 +12,27 @@ message Impulse {
   required int32 signalID = 1 [default=1];
 }
 
-message FFT {
+message LinearFFT {
   required int32 signalID = 1 [default=1];
-  repeated float data = 4 [packed=true];            //Array of floats, one for each signal band
+  required float fundamentalFreq = 2 [default=0];   //Fundamental frequency detected in the FFT result
+  repeated float data = 3 [packed=true];            //Array of floats, one for each signal band (up to 2048 bands)
+}
+
+message LogFFT {
+  required int32 signalID = 1 [default=1];
+  required float fundamentalFreq = 2 [default=0];   //Fundamental frequency detected in the FFT result
+  required float band1 = 3 [default=0];             //Energy in the 0 to 11 Hz band
+  required float band2 = 4 [default=0];             //Energy in the 11 to 22 Hz band
+  required float band3 = 5 [default=0];             //Energy in the 22 to 43 Hz band
+  required float band4 = 6 [default=0];             //Energy in the 43 to 86 Hz band
+  required float band5 = 7 [default=0];             //Energy in the 86 to 172 Hz band
+  required float band6 = 8 [default=0];             //Energy in the 172 to 344 Hz band
+  required float band7 = 9 [default=0];             //Energy in the 344 to 689 Hz band
+  required float band8 = 10 [default=0];            //Energy in the 689 to 1378 Hz band
+  required float band9 = 11 [default=0];            //Energy in the 1378 to 2756 Hz band
+  required float band10 = 12 [default=0];           //Energy in the 2756 to 5512 Hz band
+  required float band11 = 13 [default=0];           //Energy in the 5512 to 11025 Hz band
+  required float band12 = 14 [default=0];           //Energy in the 11025 to 22050 Hz band
 }
 
 message TimeInfo {
