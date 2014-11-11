@@ -373,98 +373,98 @@ class LogFFT : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 signalID = 1 [default = 1];
+  // optional int32 signalID = 1 [default = 1];
   inline bool has_signalid() const;
   inline void clear_signalid();
   static const int kSignalIDFieldNumber = 1;
   inline ::google_public::protobuf::int32 signalid() const;
   inline void set_signalid(::google_public::protobuf::int32 value);
 
-  // required float fundamentalFreq = 2 [default = 0];
+  // optional float fundamentalFreq = 2;
   inline bool has_fundamentalfreq() const;
   inline void clear_fundamentalfreq();
   static const int kFundamentalFreqFieldNumber = 2;
   inline float fundamentalfreq() const;
   inline void set_fundamentalfreq(float value);
 
-  // required float band1 = 3 [default = 0];
+  // optional float band1 = 3;
   inline bool has_band1() const;
   inline void clear_band1();
   static const int kBand1FieldNumber = 3;
   inline float band1() const;
   inline void set_band1(float value);
 
-  // required float band2 = 4 [default = 0];
+  // optional float band2 = 4;
   inline bool has_band2() const;
   inline void clear_band2();
   static const int kBand2FieldNumber = 4;
   inline float band2() const;
   inline void set_band2(float value);
 
-  // required float band3 = 5 [default = 0];
+  // optional float band3 = 5;
   inline bool has_band3() const;
   inline void clear_band3();
   static const int kBand3FieldNumber = 5;
   inline float band3() const;
   inline void set_band3(float value);
 
-  // required float band4 = 6 [default = 0];
+  // optional float band4 = 6;
   inline bool has_band4() const;
   inline void clear_band4();
   static const int kBand4FieldNumber = 6;
   inline float band4() const;
   inline void set_band4(float value);
 
-  // required float band5 = 7 [default = 0];
+  // optional float band5 = 7;
   inline bool has_band5() const;
   inline void clear_band5();
   static const int kBand5FieldNumber = 7;
   inline float band5() const;
   inline void set_band5(float value);
 
-  // required float band6 = 8 [default = 0];
+  // optional float band6 = 8;
   inline bool has_band6() const;
   inline void clear_band6();
   static const int kBand6FieldNumber = 8;
   inline float band6() const;
   inline void set_band6(float value);
 
-  // required float band7 = 9 [default = 0];
+  // optional float band7 = 9;
   inline bool has_band7() const;
   inline void clear_band7();
   static const int kBand7FieldNumber = 9;
   inline float band7() const;
   inline void set_band7(float value);
 
-  // required float band8 = 10 [default = 0];
+  // optional float band8 = 10;
   inline bool has_band8() const;
   inline void clear_band8();
   static const int kBand8FieldNumber = 10;
   inline float band8() const;
   inline void set_band8(float value);
 
-  // required float band9 = 11 [default = 0];
+  // optional float band9 = 11;
   inline bool has_band9() const;
   inline void clear_band9();
   static const int kBand9FieldNumber = 11;
   inline float band9() const;
   inline void set_band9(float value);
 
-  // required float band10 = 12 [default = 0];
+  // optional float band10 = 12;
   inline bool has_band10() const;
   inline void clear_band10();
   static const int kBand10FieldNumber = 12;
   inline float band10() const;
   inline void set_band10(float value);
 
-  // required float band11 = 13 [default = 0];
+  // optional float band11 = 13;
   inline bool has_band11() const;
   inline void clear_band11();
   static const int kBand11FieldNumber = 13;
   inline float band11() const;
   inline void set_band11(float value);
 
-  // required float band12 = 14 [default = 0];
+  // optional float band12 = 14;
   inline bool has_band12() const;
   inline void clear_band12();
   static const int kBand12FieldNumber = 14;
@@ -785,7 +785,7 @@ LinearFFT::mutable_data() {
 
 // LogFFT
 
-// required int32 signalID = 1 [default = 1];
+// optional int32 signalID = 1 [default = 1];
 inline bool LogFFT::has_signalid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -807,7 +807,7 @@ inline void LogFFT::set_signalid(::google_public::protobuf::int32 value) {
   signalid_ = value;
 }
 
-// required float fundamentalFreq = 2 [default = 0];
+// optional float fundamentalFreq = 2;
 inline bool LogFFT::has_fundamentalfreq() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -829,7 +829,7 @@ inline void LogFFT::set_fundamentalfreq(float value) {
   fundamentalfreq_ = value;
 }
 
-// required float band1 = 3 [default = 0];
+// optional float band1 = 3;
 inline bool LogFFT::has_band1() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -851,7 +851,7 @@ inline void LogFFT::set_band1(float value) {
   band1_ = value;
 }
 
-// required float band2 = 4 [default = 0];
+// optional float band2 = 4;
 inline bool LogFFT::has_band2() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -873,7 +873,7 @@ inline void LogFFT::set_band2(float value) {
   band2_ = value;
 }
 
-// required float band3 = 5 [default = 0];
+// optional float band3 = 5;
 inline bool LogFFT::has_band3() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -895,7 +895,7 @@ inline void LogFFT::set_band3(float value) {
   band3_ = value;
 }
 
-// required float band4 = 6 [default = 0];
+// optional float band4 = 6;
 inline bool LogFFT::has_band4() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -917,7 +917,7 @@ inline void LogFFT::set_band4(float value) {
   band4_ = value;
 }
 
-// required float band5 = 7 [default = 0];
+// optional float band5 = 7;
 inline bool LogFFT::has_band5() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -939,7 +939,7 @@ inline void LogFFT::set_band5(float value) {
   band5_ = value;
 }
 
-// required float band6 = 8 [default = 0];
+// optional float band6 = 8;
 inline bool LogFFT::has_band6() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -961,7 +961,7 @@ inline void LogFFT::set_band6(float value) {
   band6_ = value;
 }
 
-// required float band7 = 9 [default = 0];
+// optional float band7 = 9;
 inline bool LogFFT::has_band7() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }
@@ -983,7 +983,7 @@ inline void LogFFT::set_band7(float value) {
   band7_ = value;
 }
 
-// required float band8 = 10 [default = 0];
+// optional float band8 = 10;
 inline bool LogFFT::has_band8() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
@@ -1005,7 +1005,7 @@ inline void LogFFT::set_band8(float value) {
   band8_ = value;
 }
 
-// required float band9 = 11 [default = 0];
+// optional float band9 = 11;
 inline bool LogFFT::has_band9() const {
   return (_has_bits_[0] & 0x00000400u) != 0;
 }
@@ -1027,7 +1027,7 @@ inline void LogFFT::set_band9(float value) {
   band9_ = value;
 }
 
-// required float band10 = 12 [default = 0];
+// optional float band10 = 12;
 inline bool LogFFT::has_band10() const {
   return (_has_bits_[0] & 0x00000800u) != 0;
 }
@@ -1049,7 +1049,7 @@ inline void LogFFT::set_band10(float value) {
   band10_ = value;
 }
 
-// required float band11 = 13 [default = 0];
+// optional float band11 = 13;
 inline bool LogFFT::has_band11() const {
   return (_has_bits_[0] & 0x00001000u) != 0;
 }
@@ -1071,7 +1071,7 @@ inline void LogFFT::set_band11(float value) {
   band11_ = value;
 }
 
-// required float band12 = 14 [default = 0];
+// optional float band12 = 14;
 inline bool LogFFT::has_band12() const {
   return (_has_bits_[0] & 0x00002000u) != 0;
 }

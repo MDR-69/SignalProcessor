@@ -29,7 +29,9 @@
 #include <Accelerate/Accelerate.h>          // the Accelerate headers are needed to use vDSP
 
 
-#define	N		4096	// Number of samples the FFT should be calculated on
+//#define	N		4096	// Number of samples the FFT should be calculated on
+#define Log2N	12u		// Base-two logarithm of number of elements.
+#define	N	(1u<<Log2N)	// Number of elements.
 
 //==============================================================================
 /**
@@ -168,8 +170,6 @@ public:
     float* fftBuffer;                               // Buffer used to store any incoming input data
     int fftBufferIndex = 0;                         // Index where the data should be written in the temp fftBuffer
     const vDSP_Stride Stride = 1;                   // All the samples are to be processed -> stride = 1
-//    float *BufferMemory;                            // Memory used by the DSPSplitComplex objects
-//    float *ObservedMemory;                          // Memory used by the DSPSplitComplex objects
     float *logFFTResult;                            // Array to hold the log result of the computed FFT
     const int logFFTNbOfBands = 12;                 // Number of bands to have in the logFFTResult
     DSPSplitComplex Buffer;

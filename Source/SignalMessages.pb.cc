@@ -186,17 +186,16 @@ void protobuf_AddDesc_SignalMessages_2eproto() {
     "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:"
     "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLi"
     "nearFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamen"
-    "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\224\002\n\006L"
-    "ogFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamenta"
-    "lFreq\030\002 \002(\002:\0010\022\020\n\005band1\030\003 \002(\002:\0010\022\020\n\005band"
-    "2\030\004 \002(\002:\0010\022\020\n\005band3\030\005 \002(\002:\0010\022\020\n\005band4\030\006 "
-    "\002(\002:\0010\022\020\n\005band5\030\007 \002(\002:\0010\022\020\n\005band6\030\010 \002(\002:"
-    "\0010\022\020\n\005band7\030\t \002(\002:\0010\022\020\n\005band8\030\n \002(\002:\0010\022\020"
-    "\n\005band9\030\013 \002(\002:\0010\022\021\n\006band10\030\014 \002(\002:\0010\022\021\n\006b"
-    "and11\030\r \002(\002:\0010\022\021\n\006band12\030\016 \002(\002:\0010\"K\n\010Tim"
-    "eInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005tempo"
-    "\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signal"
-    "Messages", 568);
+    "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006L"
+    "ogFFT\022\023\n\010signalID\030\001 \001(\005:\0011\022\027\n\017fundamenta"
+    "lFreq\030\002 \001(\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001("
+    "\002\022\r\n\005band3\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5"
+    "\030\007 \001(\002\022\r\n\005band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005"
+    "band8\030\n \001(\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001"
+    "(\002\022\016\n\006band11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010Ti"
+    "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp"
+    "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa"
+    "lMessages", 529);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SignalMessages.proto", &protobuf_RegisterTypes);
   SignalLevel::default_instance_ = new SignalLevel();
@@ -1096,7 +1095,7 @@ bool LogFFT::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 signalID = 1 [default = 1];
+      // optional int32 signalID = 1 [default = 1];
       case 1: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1111,7 +1110,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float fundamentalFreq = 2 [default = 0];
+      // optional float fundamentalFreq = 2;
       case 2: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1127,7 +1126,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band1 = 3 [default = 0];
+      // optional float band1 = 3;
       case 3: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1143,7 +1142,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band2 = 4 [default = 0];
+      // optional float band2 = 4;
       case 4: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1159,7 +1158,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band3 = 5 [default = 0];
+      // optional float band3 = 5;
       case 5: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1175,7 +1174,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band4 = 6 [default = 0];
+      // optional float band4 = 6;
       case 6: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1191,7 +1190,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band5 = 7 [default = 0];
+      // optional float band5 = 7;
       case 7: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1207,7 +1206,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band6 = 8 [default = 0];
+      // optional float band6 = 8;
       case 8: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1223,7 +1222,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band7 = 9 [default = 0];
+      // optional float band7 = 9;
       case 9: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1239,7 +1238,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band8 = 10 [default = 0];
+      // optional float band8 = 10;
       case 10: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1255,7 +1254,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band9 = 11 [default = 0];
+      // optional float band9 = 11;
       case 11: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1271,7 +1270,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band10 = 12 [default = 0];
+      // optional float band10 = 12;
       case 12: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1287,7 +1286,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band11 = 13 [default = 0];
+      // optional float band11 = 13;
       case 13: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1303,7 +1302,7 @@ bool LogFFT::MergePartialFromCodedStream(
         break;
       }
 
-      // required float band12 = 14 [default = 0];
+      // optional float band12 = 14;
       case 14: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
@@ -1337,72 +1336,72 @@ bool LogFFT::MergePartialFromCodedStream(
 
 void LogFFT::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required int32 signalID = 1 [default = 1];
+  // optional int32 signalID = 1 [default = 1];
   if (has_signalid()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteInt32(1, this->signalid(), output);
   }
 
-  // required float fundamentalFreq = 2 [default = 0];
+  // optional float fundamentalFreq = 2;
   if (has_fundamentalfreq()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(2, this->fundamentalfreq(), output);
   }
 
-  // required float band1 = 3 [default = 0];
+  // optional float band1 = 3;
   if (has_band1()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(3, this->band1(), output);
   }
 
-  // required float band2 = 4 [default = 0];
+  // optional float band2 = 4;
   if (has_band2()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(4, this->band2(), output);
   }
 
-  // required float band3 = 5 [default = 0];
+  // optional float band3 = 5;
   if (has_band3()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(5, this->band3(), output);
   }
 
-  // required float band4 = 6 [default = 0];
+  // optional float band4 = 6;
   if (has_band4()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(6, this->band4(), output);
   }
 
-  // required float band5 = 7 [default = 0];
+  // optional float band5 = 7;
   if (has_band5()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(7, this->band5(), output);
   }
 
-  // required float band6 = 8 [default = 0];
+  // optional float band6 = 8;
   if (has_band6()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(8, this->band6(), output);
   }
 
-  // required float band7 = 9 [default = 0];
+  // optional float band7 = 9;
   if (has_band7()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(9, this->band7(), output);
   }
 
-  // required float band8 = 10 [default = 0];
+  // optional float band8 = 10;
   if (has_band8()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(10, this->band8(), output);
   }
 
-  // required float band9 = 11 [default = 0];
+  // optional float band9 = 11;
   if (has_band9()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(11, this->band9(), output);
   }
 
-  // required float band10 = 12 [default = 0];
+  // optional float band10 = 12;
   if (has_band10()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(12, this->band10(), output);
   }
 
-  // required float band11 = 13 [default = 0];
+  // optional float band11 = 13;
   if (has_band11()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(13, this->band11(), output);
   }
 
-  // required float band12 = 14 [default = 0];
+  // optional float band12 = 14;
   if (has_band12()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteFloat(14, this->band12(), output);
   }
@@ -1415,72 +1414,72 @@ void LogFFT::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* LogFFT::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required int32 signalID = 1 [default = 1];
+  // optional int32 signalID = 1 [default = 1];
   if (has_signalid()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->signalid(), target);
   }
 
-  // required float fundamentalFreq = 2 [default = 0];
+  // optional float fundamentalFreq = 2;
   if (has_fundamentalfreq()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->fundamentalfreq(), target);
   }
 
-  // required float band1 = 3 [default = 0];
+  // optional float band1 = 3;
   if (has_band1()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->band1(), target);
   }
 
-  // required float band2 = 4 [default = 0];
+  // optional float band2 = 4;
   if (has_band2()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->band2(), target);
   }
 
-  // required float band3 = 5 [default = 0];
+  // optional float band3 = 5;
   if (has_band3()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(5, this->band3(), target);
   }
 
-  // required float band4 = 6 [default = 0];
+  // optional float band4 = 6;
   if (has_band4()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->band4(), target);
   }
 
-  // required float band5 = 7 [default = 0];
+  // optional float band5 = 7;
   if (has_band5()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(7, this->band5(), target);
   }
 
-  // required float band6 = 8 [default = 0];
+  // optional float band6 = 8;
   if (has_band6()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(8, this->band6(), target);
   }
 
-  // required float band7 = 9 [default = 0];
+  // optional float band7 = 9;
   if (has_band7()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(9, this->band7(), target);
   }
 
-  // required float band8 = 10 [default = 0];
+  // optional float band8 = 10;
   if (has_band8()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(10, this->band8(), target);
   }
 
-  // required float band9 = 11 [default = 0];
+  // optional float band9 = 11;
   if (has_band9()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(11, this->band9(), target);
   }
 
-  // required float band10 = 12 [default = 0];
+  // optional float band10 = 12;
   if (has_band10()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(12, this->band10(), target);
   }
 
-  // required float band11 = 13 [default = 0];
+  // optional float band11 = 13;
   if (has_band11()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(13, this->band11(), target);
   }
 
-  // required float band12 = 14 [default = 0];
+  // optional float band12 = 14;
   if (has_band12()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(14, this->band12(), target);
   }
@@ -1496,76 +1495,76 @@ int LogFFT::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int32 signalID = 1 [default = 1];
+    // optional int32 signalID = 1 [default = 1];
     if (has_signalid()) {
       total_size += 1 +
         ::google_public::protobuf::internal::WireFormatLite::Int32Size(
           this->signalid());
     }
 
-    // required float fundamentalFreq = 2 [default = 0];
+    // optional float fundamentalFreq = 2;
     if (has_fundamentalfreq()) {
       total_size += 1 + 4;
     }
 
-    // required float band1 = 3 [default = 0];
+    // optional float band1 = 3;
     if (has_band1()) {
       total_size += 1 + 4;
     }
 
-    // required float band2 = 4 [default = 0];
+    // optional float band2 = 4;
     if (has_band2()) {
       total_size += 1 + 4;
     }
 
-    // required float band3 = 5 [default = 0];
+    // optional float band3 = 5;
     if (has_band3()) {
       total_size += 1 + 4;
     }
 
-    // required float band4 = 6 [default = 0];
+    // optional float band4 = 6;
     if (has_band4()) {
       total_size += 1 + 4;
     }
 
-    // required float band5 = 7 [default = 0];
+    // optional float band5 = 7;
     if (has_band5()) {
       total_size += 1 + 4;
     }
 
-    // required float band6 = 8 [default = 0];
+    // optional float band6 = 8;
     if (has_band6()) {
       total_size += 1 + 4;
     }
 
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // required float band7 = 9 [default = 0];
+    // optional float band7 = 9;
     if (has_band7()) {
       total_size += 1 + 4;
     }
 
-    // required float band8 = 10 [default = 0];
+    // optional float band8 = 10;
     if (has_band8()) {
       total_size += 1 + 4;
     }
 
-    // required float band9 = 11 [default = 0];
+    // optional float band9 = 11;
     if (has_band9()) {
       total_size += 1 + 4;
     }
 
-    // required float band10 = 12 [default = 0];
+    // optional float band10 = 12;
     if (has_band10()) {
       total_size += 1 + 4;
     }
 
-    // required float band11 = 13 [default = 0];
+    // optional float band11 = 13;
     if (has_band11()) {
       total_size += 1 + 4;
     }
 
-    // required float band12 = 14 [default = 0];
+    // optional float band12 = 14;
     if (has_band12()) {
       total_size += 1 + 4;
     }
@@ -1658,7 +1657,6 @@ void LogFFT::CopyFrom(const LogFFT& from) {
 }
 
 bool LogFFT::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00003fff) != 0x00003fff) return false;
 
   return true;
 }

@@ -1679,19 +1679,19 @@ public final class SignalMessages {
   public interface LogFFTOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required int32 signalID = 1 [default = 1];
+    // optional int32 signalID = 1 [default = 1];
     /**
-     * <code>required int32 signalID = 1 [default = 1];</code>
+     * <code>optional int32 signalID = 1 [default = 1];</code>
      */
     boolean hasSignalID();
     /**
-     * <code>required int32 signalID = 1 [default = 1];</code>
+     * <code>optional int32 signalID = 1 [default = 1];</code>
      */
     int getSignalID();
 
-    // required float fundamentalFreq = 2 [default = 0];
+    // optional float fundamentalFreq = 2;
     /**
-     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     * <code>optional float fundamentalFreq = 2;</code>
      *
      * <pre>
      *Fundamental frequency detected in the FFT result
@@ -1699,7 +1699,7 @@ public final class SignalMessages {
      */
     boolean hasFundamentalFreq();
     /**
-     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     * <code>optional float fundamentalFreq = 2;</code>
      *
      * <pre>
      *Fundamental frequency detected in the FFT result
@@ -1707,9 +1707,9 @@ public final class SignalMessages {
      */
     float getFundamentalFreq();
 
-    // required float band1 = 3 [default = 0];
+    // optional float band1 = 3;
     /**
-     * <code>required float band1 = 3 [default = 0];</code>
+     * <code>optional float band1 = 3;</code>
      *
      * <pre>
      *Energy in the 0 to 11 Hz band
@@ -1717,7 +1717,7 @@ public final class SignalMessages {
      */
     boolean hasBand1();
     /**
-     * <code>required float band1 = 3 [default = 0];</code>
+     * <code>optional float band1 = 3;</code>
      *
      * <pre>
      *Energy in the 0 to 11 Hz band
@@ -1725,9 +1725,9 @@ public final class SignalMessages {
      */
     float getBand1();
 
-    // required float band2 = 4 [default = 0];
+    // optional float band2 = 4;
     /**
-     * <code>required float band2 = 4 [default = 0];</code>
+     * <code>optional float band2 = 4;</code>
      *
      * <pre>
      *Energy in the 11 to 22 Hz band
@@ -1735,7 +1735,7 @@ public final class SignalMessages {
      */
     boolean hasBand2();
     /**
-     * <code>required float band2 = 4 [default = 0];</code>
+     * <code>optional float band2 = 4;</code>
      *
      * <pre>
      *Energy in the 11 to 22 Hz band
@@ -1743,9 +1743,9 @@ public final class SignalMessages {
      */
     float getBand2();
 
-    // required float band3 = 5 [default = 0];
+    // optional float band3 = 5;
     /**
-     * <code>required float band3 = 5 [default = 0];</code>
+     * <code>optional float band3 = 5;</code>
      *
      * <pre>
      *Energy in the 22 to 43 Hz band
@@ -1753,7 +1753,7 @@ public final class SignalMessages {
      */
     boolean hasBand3();
     /**
-     * <code>required float band3 = 5 [default = 0];</code>
+     * <code>optional float band3 = 5;</code>
      *
      * <pre>
      *Energy in the 22 to 43 Hz band
@@ -1761,9 +1761,9 @@ public final class SignalMessages {
      */
     float getBand3();
 
-    // required float band4 = 6 [default = 0];
+    // optional float band4 = 6;
     /**
-     * <code>required float band4 = 6 [default = 0];</code>
+     * <code>optional float band4 = 6;</code>
      *
      * <pre>
      *Energy in the 43 to 86 Hz band
@@ -1771,7 +1771,7 @@ public final class SignalMessages {
      */
     boolean hasBand4();
     /**
-     * <code>required float band4 = 6 [default = 0];</code>
+     * <code>optional float band4 = 6;</code>
      *
      * <pre>
      *Energy in the 43 to 86 Hz band
@@ -1779,9 +1779,9 @@ public final class SignalMessages {
      */
     float getBand4();
 
-    // required float band5 = 7 [default = 0];
+    // optional float band5 = 7;
     /**
-     * <code>required float band5 = 7 [default = 0];</code>
+     * <code>optional float band5 = 7;</code>
      *
      * <pre>
      *Energy in the 86 to 172 Hz band
@@ -1789,7 +1789,7 @@ public final class SignalMessages {
      */
     boolean hasBand5();
     /**
-     * <code>required float band5 = 7 [default = 0];</code>
+     * <code>optional float band5 = 7;</code>
      *
      * <pre>
      *Energy in the 86 to 172 Hz band
@@ -1797,9 +1797,9 @@ public final class SignalMessages {
      */
     float getBand5();
 
-    // required float band6 = 8 [default = 0];
+    // optional float band6 = 8;
     /**
-     * <code>required float band6 = 8 [default = 0];</code>
+     * <code>optional float band6 = 8;</code>
      *
      * <pre>
      *Energy in the 172 to 344 Hz band
@@ -1807,7 +1807,7 @@ public final class SignalMessages {
      */
     boolean hasBand6();
     /**
-     * <code>required float band6 = 8 [default = 0];</code>
+     * <code>optional float band6 = 8;</code>
      *
      * <pre>
      *Energy in the 172 to 344 Hz band
@@ -1815,9 +1815,9 @@ public final class SignalMessages {
      */
     float getBand6();
 
-    // required float band7 = 9 [default = 0];
+    // optional float band7 = 9;
     /**
-     * <code>required float band7 = 9 [default = 0];</code>
+     * <code>optional float band7 = 9;</code>
      *
      * <pre>
      *Energy in the 344 to 689 Hz band
@@ -1825,7 +1825,7 @@ public final class SignalMessages {
      */
     boolean hasBand7();
     /**
-     * <code>required float band7 = 9 [default = 0];</code>
+     * <code>optional float band7 = 9;</code>
      *
      * <pre>
      *Energy in the 344 to 689 Hz band
@@ -1833,9 +1833,9 @@ public final class SignalMessages {
      */
     float getBand7();
 
-    // required float band8 = 10 [default = 0];
+    // optional float band8 = 10;
     /**
-     * <code>required float band8 = 10 [default = 0];</code>
+     * <code>optional float band8 = 10;</code>
      *
      * <pre>
      *Energy in the 689 to 1378 Hz band
@@ -1843,7 +1843,7 @@ public final class SignalMessages {
      */
     boolean hasBand8();
     /**
-     * <code>required float band8 = 10 [default = 0];</code>
+     * <code>optional float band8 = 10;</code>
      *
      * <pre>
      *Energy in the 689 to 1378 Hz band
@@ -1851,9 +1851,9 @@ public final class SignalMessages {
      */
     float getBand8();
 
-    // required float band9 = 11 [default = 0];
+    // optional float band9 = 11;
     /**
-     * <code>required float band9 = 11 [default = 0];</code>
+     * <code>optional float band9 = 11;</code>
      *
      * <pre>
      *Energy in the 1378 to 2756 Hz band
@@ -1861,7 +1861,7 @@ public final class SignalMessages {
      */
     boolean hasBand9();
     /**
-     * <code>required float band9 = 11 [default = 0];</code>
+     * <code>optional float band9 = 11;</code>
      *
      * <pre>
      *Energy in the 1378 to 2756 Hz band
@@ -1869,9 +1869,9 @@ public final class SignalMessages {
      */
     float getBand9();
 
-    // required float band10 = 12 [default = 0];
+    // optional float band10 = 12;
     /**
-     * <code>required float band10 = 12 [default = 0];</code>
+     * <code>optional float band10 = 12;</code>
      *
      * <pre>
      *Energy in the 2756 to 5512 Hz band
@@ -1879,7 +1879,7 @@ public final class SignalMessages {
      */
     boolean hasBand10();
     /**
-     * <code>required float band10 = 12 [default = 0];</code>
+     * <code>optional float band10 = 12;</code>
      *
      * <pre>
      *Energy in the 2756 to 5512 Hz band
@@ -1887,9 +1887,9 @@ public final class SignalMessages {
      */
     float getBand10();
 
-    // required float band11 = 13 [default = 0];
+    // optional float band11 = 13;
     /**
-     * <code>required float band11 = 13 [default = 0];</code>
+     * <code>optional float band11 = 13;</code>
      *
      * <pre>
      *Energy in the 5512 to 11025 Hz band
@@ -1897,7 +1897,7 @@ public final class SignalMessages {
      */
     boolean hasBand11();
     /**
-     * <code>required float band11 = 13 [default = 0];</code>
+     * <code>optional float band11 = 13;</code>
      *
      * <pre>
      *Energy in the 5512 to 11025 Hz band
@@ -1905,9 +1905,9 @@ public final class SignalMessages {
      */
     float getBand11();
 
-    // required float band12 = 14 [default = 0];
+    // optional float band12 = 14;
     /**
-     * <code>required float band12 = 14 [default = 0];</code>
+     * <code>optional float band12 = 14;</code>
      *
      * <pre>
      *Energy in the 11025 to 22050 Hz band
@@ -1915,7 +1915,7 @@ public final class SignalMessages {
      */
     boolean hasBand12();
     /**
-     * <code>required float band12 = 14 [default = 0];</code>
+     * <code>optional float band12 = 14;</code>
      *
      * <pre>
      *Energy in the 11025 to 22050 Hz band
@@ -2084,27 +2084,27 @@ public final class SignalMessages {
     }
 
     private int bitField0_;
-    // required int32 signalID = 1 [default = 1];
+    // optional int32 signalID = 1 [default = 1];
     public static final int SIGNALID_FIELD_NUMBER = 1;
     private int signalID_;
     /**
-     * <code>required int32 signalID = 1 [default = 1];</code>
+     * <code>optional int32 signalID = 1 [default = 1];</code>
      */
     public boolean hasSignalID() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 signalID = 1 [default = 1];</code>
+     * <code>optional int32 signalID = 1 [default = 1];</code>
      */
     public int getSignalID() {
       return signalID_;
     }
 
-    // required float fundamentalFreq = 2 [default = 0];
+    // optional float fundamentalFreq = 2;
     public static final int FUNDAMENTALFREQ_FIELD_NUMBER = 2;
     private float fundamentalFreq_;
     /**
-     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     * <code>optional float fundamentalFreq = 2;</code>
      *
      * <pre>
      *Fundamental frequency detected in the FFT result
@@ -2114,7 +2114,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required float fundamentalFreq = 2 [default = 0];</code>
+     * <code>optional float fundamentalFreq = 2;</code>
      *
      * <pre>
      *Fundamental frequency detected in the FFT result
@@ -2124,11 +2124,11 @@ public final class SignalMessages {
       return fundamentalFreq_;
     }
 
-    // required float band1 = 3 [default = 0];
+    // optional float band1 = 3;
     public static final int BAND1_FIELD_NUMBER = 3;
     private float band1_;
     /**
-     * <code>required float band1 = 3 [default = 0];</code>
+     * <code>optional float band1 = 3;</code>
      *
      * <pre>
      *Energy in the 0 to 11 Hz band
@@ -2138,7 +2138,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required float band1 = 3 [default = 0];</code>
+     * <code>optional float band1 = 3;</code>
      *
      * <pre>
      *Energy in the 0 to 11 Hz band
@@ -2148,11 +2148,11 @@ public final class SignalMessages {
       return band1_;
     }
 
-    // required float band2 = 4 [default = 0];
+    // optional float band2 = 4;
     public static final int BAND2_FIELD_NUMBER = 4;
     private float band2_;
     /**
-     * <code>required float band2 = 4 [default = 0];</code>
+     * <code>optional float band2 = 4;</code>
      *
      * <pre>
      *Energy in the 11 to 22 Hz band
@@ -2162,7 +2162,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required float band2 = 4 [default = 0];</code>
+     * <code>optional float band2 = 4;</code>
      *
      * <pre>
      *Energy in the 11 to 22 Hz band
@@ -2172,11 +2172,11 @@ public final class SignalMessages {
       return band2_;
     }
 
-    // required float band3 = 5 [default = 0];
+    // optional float band3 = 5;
     public static final int BAND3_FIELD_NUMBER = 5;
     private float band3_;
     /**
-     * <code>required float band3 = 5 [default = 0];</code>
+     * <code>optional float band3 = 5;</code>
      *
      * <pre>
      *Energy in the 22 to 43 Hz band
@@ -2186,7 +2186,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>required float band3 = 5 [default = 0];</code>
+     * <code>optional float band3 = 5;</code>
      *
      * <pre>
      *Energy in the 22 to 43 Hz band
@@ -2196,11 +2196,11 @@ public final class SignalMessages {
       return band3_;
     }
 
-    // required float band4 = 6 [default = 0];
+    // optional float band4 = 6;
     public static final int BAND4_FIELD_NUMBER = 6;
     private float band4_;
     /**
-     * <code>required float band4 = 6 [default = 0];</code>
+     * <code>optional float band4 = 6;</code>
      *
      * <pre>
      *Energy in the 43 to 86 Hz band
@@ -2210,7 +2210,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>required float band4 = 6 [default = 0];</code>
+     * <code>optional float band4 = 6;</code>
      *
      * <pre>
      *Energy in the 43 to 86 Hz band
@@ -2220,11 +2220,11 @@ public final class SignalMessages {
       return band4_;
     }
 
-    // required float band5 = 7 [default = 0];
+    // optional float band5 = 7;
     public static final int BAND5_FIELD_NUMBER = 7;
     private float band5_;
     /**
-     * <code>required float band5 = 7 [default = 0];</code>
+     * <code>optional float band5 = 7;</code>
      *
      * <pre>
      *Energy in the 86 to 172 Hz band
@@ -2234,7 +2234,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>required float band5 = 7 [default = 0];</code>
+     * <code>optional float band5 = 7;</code>
      *
      * <pre>
      *Energy in the 86 to 172 Hz band
@@ -2244,11 +2244,11 @@ public final class SignalMessages {
       return band5_;
     }
 
-    // required float band6 = 8 [default = 0];
+    // optional float band6 = 8;
     public static final int BAND6_FIELD_NUMBER = 8;
     private float band6_;
     /**
-     * <code>required float band6 = 8 [default = 0];</code>
+     * <code>optional float band6 = 8;</code>
      *
      * <pre>
      *Energy in the 172 to 344 Hz band
@@ -2258,7 +2258,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>required float band6 = 8 [default = 0];</code>
+     * <code>optional float band6 = 8;</code>
      *
      * <pre>
      *Energy in the 172 to 344 Hz band
@@ -2268,11 +2268,11 @@ public final class SignalMessages {
       return band6_;
     }
 
-    // required float band7 = 9 [default = 0];
+    // optional float band7 = 9;
     public static final int BAND7_FIELD_NUMBER = 9;
     private float band7_;
     /**
-     * <code>required float band7 = 9 [default = 0];</code>
+     * <code>optional float band7 = 9;</code>
      *
      * <pre>
      *Energy in the 344 to 689 Hz band
@@ -2282,7 +2282,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>required float band7 = 9 [default = 0];</code>
+     * <code>optional float band7 = 9;</code>
      *
      * <pre>
      *Energy in the 344 to 689 Hz band
@@ -2292,11 +2292,11 @@ public final class SignalMessages {
       return band7_;
     }
 
-    // required float band8 = 10 [default = 0];
+    // optional float band8 = 10;
     public static final int BAND8_FIELD_NUMBER = 10;
     private float band8_;
     /**
-     * <code>required float band8 = 10 [default = 0];</code>
+     * <code>optional float band8 = 10;</code>
      *
      * <pre>
      *Energy in the 689 to 1378 Hz band
@@ -2306,7 +2306,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>required float band8 = 10 [default = 0];</code>
+     * <code>optional float band8 = 10;</code>
      *
      * <pre>
      *Energy in the 689 to 1378 Hz band
@@ -2316,11 +2316,11 @@ public final class SignalMessages {
       return band8_;
     }
 
-    // required float band9 = 11 [default = 0];
+    // optional float band9 = 11;
     public static final int BAND9_FIELD_NUMBER = 11;
     private float band9_;
     /**
-     * <code>required float band9 = 11 [default = 0];</code>
+     * <code>optional float band9 = 11;</code>
      *
      * <pre>
      *Energy in the 1378 to 2756 Hz band
@@ -2330,7 +2330,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>required float band9 = 11 [default = 0];</code>
+     * <code>optional float band9 = 11;</code>
      *
      * <pre>
      *Energy in the 1378 to 2756 Hz band
@@ -2340,11 +2340,11 @@ public final class SignalMessages {
       return band9_;
     }
 
-    // required float band10 = 12 [default = 0];
+    // optional float band10 = 12;
     public static final int BAND10_FIELD_NUMBER = 12;
     private float band10_;
     /**
-     * <code>required float band10 = 12 [default = 0];</code>
+     * <code>optional float band10 = 12;</code>
      *
      * <pre>
      *Energy in the 2756 to 5512 Hz band
@@ -2354,7 +2354,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
-     * <code>required float band10 = 12 [default = 0];</code>
+     * <code>optional float band10 = 12;</code>
      *
      * <pre>
      *Energy in the 2756 to 5512 Hz band
@@ -2364,11 +2364,11 @@ public final class SignalMessages {
       return band10_;
     }
 
-    // required float band11 = 13 [default = 0];
+    // optional float band11 = 13;
     public static final int BAND11_FIELD_NUMBER = 13;
     private float band11_;
     /**
-     * <code>required float band11 = 13 [default = 0];</code>
+     * <code>optional float band11 = 13;</code>
      *
      * <pre>
      *Energy in the 5512 to 11025 Hz band
@@ -2378,7 +2378,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>required float band11 = 13 [default = 0];</code>
+     * <code>optional float band11 = 13;</code>
      *
      * <pre>
      *Energy in the 5512 to 11025 Hz band
@@ -2388,11 +2388,11 @@ public final class SignalMessages {
       return band11_;
     }
 
-    // required float band12 = 14 [default = 0];
+    // optional float band12 = 14;
     public static final int BAND12_FIELD_NUMBER = 14;
     private float band12_;
     /**
-     * <code>required float band12 = 14 [default = 0];</code>
+     * <code>optional float band12 = 14;</code>
      *
      * <pre>
      *Energy in the 11025 to 22050 Hz band
@@ -2402,7 +2402,7 @@ public final class SignalMessages {
       return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>required float band12 = 14 [default = 0];</code>
+     * <code>optional float band12 = 14;</code>
      *
      * <pre>
      *Energy in the 11025 to 22050 Hz band
@@ -2433,62 +2433,6 @@ public final class SignalMessages {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasSignalID()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFundamentalFreq()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand1()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand2()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand3()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand4()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand5()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand6()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand7()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand8()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand9()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand10()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand11()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBand12()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -2894,62 +2838,6 @@ public final class SignalMessages {
       }
 
       public final boolean isInitialized() {
-        if (!hasSignalID()) {
-          
-          return false;
-        }
-        if (!hasFundamentalFreq()) {
-          
-          return false;
-        }
-        if (!hasBand1()) {
-          
-          return false;
-        }
-        if (!hasBand2()) {
-          
-          return false;
-        }
-        if (!hasBand3()) {
-          
-          return false;
-        }
-        if (!hasBand4()) {
-          
-          return false;
-        }
-        if (!hasBand5()) {
-          
-          return false;
-        }
-        if (!hasBand6()) {
-          
-          return false;
-        }
-        if (!hasBand7()) {
-          
-          return false;
-        }
-        if (!hasBand8()) {
-          
-          return false;
-        }
-        if (!hasBand9()) {
-          
-          return false;
-        }
-        if (!hasBand10()) {
-          
-          return false;
-        }
-        if (!hasBand11()) {
-          
-          return false;
-        }
-        if (!hasBand12()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -2972,22 +2860,22 @@ public final class SignalMessages {
       }
       private int bitField0_;
 
-      // required int32 signalID = 1 [default = 1];
+      // optional int32 signalID = 1 [default = 1];
       private int signalID_ = 1;
       /**
-       * <code>required int32 signalID = 1 [default = 1];</code>
+       * <code>optional int32 signalID = 1 [default = 1];</code>
        */
       public boolean hasSignalID() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 signalID = 1 [default = 1];</code>
+       * <code>optional int32 signalID = 1 [default = 1];</code>
        */
       public int getSignalID() {
         return signalID_;
       }
       /**
-       * <code>required int32 signalID = 1 [default = 1];</code>
+       * <code>optional int32 signalID = 1 [default = 1];</code>
        */
       public Builder setSignalID(int value) {
         bitField0_ |= 0x00000001;
@@ -2996,7 +2884,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required int32 signalID = 1 [default = 1];</code>
+       * <code>optional int32 signalID = 1 [default = 1];</code>
        */
       public Builder clearSignalID() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -3005,10 +2893,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float fundamentalFreq = 2 [default = 0];
+      // optional float fundamentalFreq = 2;
       private float fundamentalFreq_ ;
       /**
-       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       * <code>optional float fundamentalFreq = 2;</code>
        *
        * <pre>
        *Fundamental frequency detected in the FFT result
@@ -3018,7 +2906,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       * <code>optional float fundamentalFreq = 2;</code>
        *
        * <pre>
        *Fundamental frequency detected in the FFT result
@@ -3028,7 +2916,7 @@ public final class SignalMessages {
         return fundamentalFreq_;
       }
       /**
-       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       * <code>optional float fundamentalFreq = 2;</code>
        *
        * <pre>
        *Fundamental frequency detected in the FFT result
@@ -3041,7 +2929,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float fundamentalFreq = 2 [default = 0];</code>
+       * <code>optional float fundamentalFreq = 2;</code>
        *
        * <pre>
        *Fundamental frequency detected in the FFT result
@@ -3054,10 +2942,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band1 = 3 [default = 0];
+      // optional float band1 = 3;
       private float band1_ ;
       /**
-       * <code>required float band1 = 3 [default = 0];</code>
+       * <code>optional float band1 = 3;</code>
        *
        * <pre>
        *Energy in the 0 to 11 Hz band
@@ -3067,7 +2955,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required float band1 = 3 [default = 0];</code>
+       * <code>optional float band1 = 3;</code>
        *
        * <pre>
        *Energy in the 0 to 11 Hz band
@@ -3077,7 +2965,7 @@ public final class SignalMessages {
         return band1_;
       }
       /**
-       * <code>required float band1 = 3 [default = 0];</code>
+       * <code>optional float band1 = 3;</code>
        *
        * <pre>
        *Energy in the 0 to 11 Hz band
@@ -3090,7 +2978,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band1 = 3 [default = 0];</code>
+       * <code>optional float band1 = 3;</code>
        *
        * <pre>
        *Energy in the 0 to 11 Hz band
@@ -3103,10 +2991,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band2 = 4 [default = 0];
+      // optional float band2 = 4;
       private float band2_ ;
       /**
-       * <code>required float band2 = 4 [default = 0];</code>
+       * <code>optional float band2 = 4;</code>
        *
        * <pre>
        *Energy in the 11 to 22 Hz band
@@ -3116,7 +3004,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required float band2 = 4 [default = 0];</code>
+       * <code>optional float band2 = 4;</code>
        *
        * <pre>
        *Energy in the 11 to 22 Hz band
@@ -3126,7 +3014,7 @@ public final class SignalMessages {
         return band2_;
       }
       /**
-       * <code>required float band2 = 4 [default = 0];</code>
+       * <code>optional float band2 = 4;</code>
        *
        * <pre>
        *Energy in the 11 to 22 Hz band
@@ -3139,7 +3027,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band2 = 4 [default = 0];</code>
+       * <code>optional float band2 = 4;</code>
        *
        * <pre>
        *Energy in the 11 to 22 Hz band
@@ -3152,10 +3040,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band3 = 5 [default = 0];
+      // optional float band3 = 5;
       private float band3_ ;
       /**
-       * <code>required float band3 = 5 [default = 0];</code>
+       * <code>optional float band3 = 5;</code>
        *
        * <pre>
        *Energy in the 22 to 43 Hz band
@@ -3165,7 +3053,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required float band3 = 5 [default = 0];</code>
+       * <code>optional float band3 = 5;</code>
        *
        * <pre>
        *Energy in the 22 to 43 Hz band
@@ -3175,7 +3063,7 @@ public final class SignalMessages {
         return band3_;
       }
       /**
-       * <code>required float band3 = 5 [default = 0];</code>
+       * <code>optional float band3 = 5;</code>
        *
        * <pre>
        *Energy in the 22 to 43 Hz band
@@ -3188,7 +3076,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band3 = 5 [default = 0];</code>
+       * <code>optional float band3 = 5;</code>
        *
        * <pre>
        *Energy in the 22 to 43 Hz band
@@ -3201,10 +3089,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band4 = 6 [default = 0];
+      // optional float band4 = 6;
       private float band4_ ;
       /**
-       * <code>required float band4 = 6 [default = 0];</code>
+       * <code>optional float band4 = 6;</code>
        *
        * <pre>
        *Energy in the 43 to 86 Hz band
@@ -3214,7 +3102,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>required float band4 = 6 [default = 0];</code>
+       * <code>optional float band4 = 6;</code>
        *
        * <pre>
        *Energy in the 43 to 86 Hz band
@@ -3224,7 +3112,7 @@ public final class SignalMessages {
         return band4_;
       }
       /**
-       * <code>required float band4 = 6 [default = 0];</code>
+       * <code>optional float band4 = 6;</code>
        *
        * <pre>
        *Energy in the 43 to 86 Hz band
@@ -3237,7 +3125,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band4 = 6 [default = 0];</code>
+       * <code>optional float band4 = 6;</code>
        *
        * <pre>
        *Energy in the 43 to 86 Hz band
@@ -3250,10 +3138,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band5 = 7 [default = 0];
+      // optional float band5 = 7;
       private float band5_ ;
       /**
-       * <code>required float band5 = 7 [default = 0];</code>
+       * <code>optional float band5 = 7;</code>
        *
        * <pre>
        *Energy in the 86 to 172 Hz band
@@ -3263,7 +3151,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>required float band5 = 7 [default = 0];</code>
+       * <code>optional float band5 = 7;</code>
        *
        * <pre>
        *Energy in the 86 to 172 Hz band
@@ -3273,7 +3161,7 @@ public final class SignalMessages {
         return band5_;
       }
       /**
-       * <code>required float band5 = 7 [default = 0];</code>
+       * <code>optional float band5 = 7;</code>
        *
        * <pre>
        *Energy in the 86 to 172 Hz band
@@ -3286,7 +3174,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band5 = 7 [default = 0];</code>
+       * <code>optional float band5 = 7;</code>
        *
        * <pre>
        *Energy in the 86 to 172 Hz band
@@ -3299,10 +3187,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band6 = 8 [default = 0];
+      // optional float band6 = 8;
       private float band6_ ;
       /**
-       * <code>required float band6 = 8 [default = 0];</code>
+       * <code>optional float band6 = 8;</code>
        *
        * <pre>
        *Energy in the 172 to 344 Hz band
@@ -3312,7 +3200,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>required float band6 = 8 [default = 0];</code>
+       * <code>optional float band6 = 8;</code>
        *
        * <pre>
        *Energy in the 172 to 344 Hz band
@@ -3322,7 +3210,7 @@ public final class SignalMessages {
         return band6_;
       }
       /**
-       * <code>required float band6 = 8 [default = 0];</code>
+       * <code>optional float band6 = 8;</code>
        *
        * <pre>
        *Energy in the 172 to 344 Hz band
@@ -3335,7 +3223,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band6 = 8 [default = 0];</code>
+       * <code>optional float band6 = 8;</code>
        *
        * <pre>
        *Energy in the 172 to 344 Hz band
@@ -3348,10 +3236,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band7 = 9 [default = 0];
+      // optional float band7 = 9;
       private float band7_ ;
       /**
-       * <code>required float band7 = 9 [default = 0];</code>
+       * <code>optional float band7 = 9;</code>
        *
        * <pre>
        *Energy in the 344 to 689 Hz band
@@ -3361,7 +3249,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>required float band7 = 9 [default = 0];</code>
+       * <code>optional float band7 = 9;</code>
        *
        * <pre>
        *Energy in the 344 to 689 Hz band
@@ -3371,7 +3259,7 @@ public final class SignalMessages {
         return band7_;
       }
       /**
-       * <code>required float band7 = 9 [default = 0];</code>
+       * <code>optional float band7 = 9;</code>
        *
        * <pre>
        *Energy in the 344 to 689 Hz band
@@ -3384,7 +3272,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band7 = 9 [default = 0];</code>
+       * <code>optional float band7 = 9;</code>
        *
        * <pre>
        *Energy in the 344 to 689 Hz band
@@ -3397,10 +3285,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band8 = 10 [default = 0];
+      // optional float band8 = 10;
       private float band8_ ;
       /**
-       * <code>required float band8 = 10 [default = 0];</code>
+       * <code>optional float band8 = 10;</code>
        *
        * <pre>
        *Energy in the 689 to 1378 Hz band
@@ -3410,7 +3298,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>required float band8 = 10 [default = 0];</code>
+       * <code>optional float band8 = 10;</code>
        *
        * <pre>
        *Energy in the 689 to 1378 Hz band
@@ -3420,7 +3308,7 @@ public final class SignalMessages {
         return band8_;
       }
       /**
-       * <code>required float band8 = 10 [default = 0];</code>
+       * <code>optional float band8 = 10;</code>
        *
        * <pre>
        *Energy in the 689 to 1378 Hz band
@@ -3433,7 +3321,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band8 = 10 [default = 0];</code>
+       * <code>optional float band8 = 10;</code>
        *
        * <pre>
        *Energy in the 689 to 1378 Hz band
@@ -3446,10 +3334,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band9 = 11 [default = 0];
+      // optional float band9 = 11;
       private float band9_ ;
       /**
-       * <code>required float band9 = 11 [default = 0];</code>
+       * <code>optional float band9 = 11;</code>
        *
        * <pre>
        *Energy in the 1378 to 2756 Hz band
@@ -3459,7 +3347,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>required float band9 = 11 [default = 0];</code>
+       * <code>optional float band9 = 11;</code>
        *
        * <pre>
        *Energy in the 1378 to 2756 Hz band
@@ -3469,7 +3357,7 @@ public final class SignalMessages {
         return band9_;
       }
       /**
-       * <code>required float band9 = 11 [default = 0];</code>
+       * <code>optional float band9 = 11;</code>
        *
        * <pre>
        *Energy in the 1378 to 2756 Hz band
@@ -3482,7 +3370,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band9 = 11 [default = 0];</code>
+       * <code>optional float band9 = 11;</code>
        *
        * <pre>
        *Energy in the 1378 to 2756 Hz band
@@ -3495,10 +3383,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band10 = 12 [default = 0];
+      // optional float band10 = 12;
       private float band10_ ;
       /**
-       * <code>required float band10 = 12 [default = 0];</code>
+       * <code>optional float band10 = 12;</code>
        *
        * <pre>
        *Energy in the 2756 to 5512 Hz band
@@ -3508,7 +3396,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>required float band10 = 12 [default = 0];</code>
+       * <code>optional float band10 = 12;</code>
        *
        * <pre>
        *Energy in the 2756 to 5512 Hz band
@@ -3518,7 +3406,7 @@ public final class SignalMessages {
         return band10_;
       }
       /**
-       * <code>required float band10 = 12 [default = 0];</code>
+       * <code>optional float band10 = 12;</code>
        *
        * <pre>
        *Energy in the 2756 to 5512 Hz band
@@ -3531,7 +3419,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band10 = 12 [default = 0];</code>
+       * <code>optional float band10 = 12;</code>
        *
        * <pre>
        *Energy in the 2756 to 5512 Hz band
@@ -3544,10 +3432,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band11 = 13 [default = 0];
+      // optional float band11 = 13;
       private float band11_ ;
       /**
-       * <code>required float band11 = 13 [default = 0];</code>
+       * <code>optional float band11 = 13;</code>
        *
        * <pre>
        *Energy in the 5512 to 11025 Hz band
@@ -3557,7 +3445,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
-       * <code>required float band11 = 13 [default = 0];</code>
+       * <code>optional float band11 = 13;</code>
        *
        * <pre>
        *Energy in the 5512 to 11025 Hz band
@@ -3567,7 +3455,7 @@ public final class SignalMessages {
         return band11_;
       }
       /**
-       * <code>required float band11 = 13 [default = 0];</code>
+       * <code>optional float band11 = 13;</code>
        *
        * <pre>
        *Energy in the 5512 to 11025 Hz band
@@ -3580,7 +3468,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band11 = 13 [default = 0];</code>
+       * <code>optional float band11 = 13;</code>
        *
        * <pre>
        *Energy in the 5512 to 11025 Hz band
@@ -3593,10 +3481,10 @@ public final class SignalMessages {
         return this;
       }
 
-      // required float band12 = 14 [default = 0];
+      // optional float band12 = 14;
       private float band12_ ;
       /**
-       * <code>required float band12 = 14 [default = 0];</code>
+       * <code>optional float band12 = 14;</code>
        *
        * <pre>
        *Energy in the 11025 to 22050 Hz band
@@ -3606,7 +3494,7 @@ public final class SignalMessages {
         return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>required float band12 = 14 [default = 0];</code>
+       * <code>optional float band12 = 14;</code>
        *
        * <pre>
        *Energy in the 11025 to 22050 Hz band
@@ -3616,7 +3504,7 @@ public final class SignalMessages {
         return band12_;
       }
       /**
-       * <code>required float band12 = 14 [default = 0];</code>
+       * <code>optional float band12 = 14;</code>
        *
        * <pre>
        *Energy in the 11025 to 22050 Hz band
@@ -3629,7 +3517,7 @@ public final class SignalMessages {
         return this;
       }
       /**
-       * <code>required float band12 = 14 [default = 0];</code>
+       * <code>optional float band12 = 14;</code>
        *
        * <pre>
        *Energy in the 11025 to 22050 Hz band
@@ -4305,17 +4193,16 @@ public final class SignalMessages {
       "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:" +
       "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLi" +
       "nearFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamen" +
-      "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\224\002\n\006L" +
-      "ogFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamenta" +
-      "lFreq\030\002 \002(\002:\0010\022\020\n\005band1\030\003 \002(\002:\0010\022\020\n\005band" +
-      "2\030\004 \002(\002:\0010\022\020\n\005band3\030\005 \002(\002:\0010\022\020\n\005band4\030\006 " +
-      "\002(\002:\0010\022\020\n\005band5\030\007 \002(\002:\0010\022\020\n\005band6\030\010 \002(\002:" +
-      "\0010\022\020\n\005band7\030\t \002(\002:\0010\022\020\n\005band8\030\n \002(\002:\0010\022\020",
-      "\n\005band9\030\013 \002(\002:\0010\022\021\n\006band10\030\014 \002(\002:\0010\022\021\n\006b" +
-      "and11\030\r \002(\002:\0010\022\021\n\006band12\030\016 \002(\002:\0010\"K\n\010Tim" +
-      "eInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005tempo" +
-      "\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signal" +
-      "Messages"
+      "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006L" +
+      "ogFFT\022\023\n\010signalID\030\001 \001(\005:\0011\022\027\n\017fundamenta" +
+      "lFreq\030\002 \001(\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001(" +
+      "\002\022\r\n\005band3\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5" +
+      "\030\007 \001(\002\022\r\n\005band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005" +
+      "band8\030\n \001(\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001",
+      "(\002\022\016\n\006band11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010Ti" +
+      "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp" +
+      "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa" +
+      "lMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

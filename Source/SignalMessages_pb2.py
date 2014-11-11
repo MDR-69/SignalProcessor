@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SignalMessages.proto',
   package='',
-  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"N\n\tLinearFFT\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1a\n\x0f\x66undamentalFreq\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x04\x64\x61ta\x18\x03 \x03(\x02\x42\x02\x10\x01\"\x94\x02\n\x06LogFFT\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1a\n\x0f\x66undamentalFreq\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd1\x18\x03 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd2\x18\x04 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd3\x18\x05 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd4\x18\x06 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd5\x18\x07 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd6\x18\x08 \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd7\x18\t \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd8\x18\n \x02(\x02:\x01\x30\x12\x10\n\x05\x62\x61nd9\x18\x0b \x02(\x02:\x01\x30\x12\x11\n\x06\x62\x61nd10\x18\x0c \x02(\x02:\x01\x30\x12\x11\n\x06\x62\x61nd11\x18\r \x02(\x02:\x01\x30\x12\x11\n\x06\x62\x61nd12\x18\x0e \x02(\x02:\x01\x30\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
+  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"N\n\tLinearFFT\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1a\n\x0f\x66undamentalFreq\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x04\x64\x61ta\x18\x03 \x03(\x02\x42\x02\x10\x01\"\xed\x01\n\x06LogFFT\x12\x13\n\x08signalID\x18\x01 \x01(\x05:\x01\x31\x12\x17\n\x0f\x66undamentalFreq\x18\x02 \x01(\x02\x12\r\n\x05\x62\x61nd1\x18\x03 \x01(\x02\x12\r\n\x05\x62\x61nd2\x18\x04 \x01(\x02\x12\r\n\x05\x62\x61nd3\x18\x05 \x01(\x02\x12\r\n\x05\x62\x61nd4\x18\x06 \x01(\x02\x12\r\n\x05\x62\x61nd5\x18\x07 \x01(\x02\x12\r\n\x05\x62\x61nd6\x18\x08 \x01(\x02\x12\r\n\x05\x62\x61nd7\x18\t \x01(\x02\x12\r\n\x05\x62\x61nd8\x18\n \x01(\x02\x12\r\n\x05\x62\x61nd9\x18\x0b \x01(\x02\x12\x0e\n\x06\x62\x61nd10\x18\x0c \x01(\x02\x12\x0e\n\x06\x62\x61nd11\x18\r \x01(\x02\x12\x0e\n\x06\x62\x61nd12\x18\x0e \x01(\x02\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
 
 
 
@@ -132,99 +132,99 @@ _LOGFFT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='signalID', full_name='LogFFT.signalID', index=0,
-      number=1, type=5, cpp_type=1, label=2,
+      number=1, type=5, cpp_type=1, label=1,
       has_default_value=True, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='fundamentalFreq', full_name='LogFFT.fundamentalFreq', index=1,
-      number=2, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band1', full_name='LogFFT.band1', index=2,
-      number=3, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band2', full_name='LogFFT.band2', index=3,
-      number=4, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band3', full_name='LogFFT.band3', index=4,
-      number=5, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band4', full_name='LogFFT.band4', index=5,
-      number=6, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band5', full_name='LogFFT.band5', index=6,
-      number=7, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=7, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band6', full_name='LogFFT.band6', index=7,
-      number=8, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band7', full_name='LogFFT.band7', index=8,
-      number=9, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=9, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band8', full_name='LogFFT.band8', index=9,
-      number=10, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=10, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band9', full_name='LogFFT.band9', index=10,
-      number=11, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=11, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band10', full_name='LogFFT.band10', index=11,
-      number=12, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=12, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band11', full_name='LogFFT.band11', index=12,
-      number=13, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=13, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='band12', full_name='LogFFT.band12', index=13,
-      number=14, type=2, cpp_type=6, label=2,
-      has_default_value=True, default_value=0,
+      number=14, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -238,7 +238,7 @@ _LOGFFT = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=197,
-  serialized_end=473,
+  serialized_end=434,
 )
 
 
@@ -279,8 +279,8 @@ _TIMEINFO = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=475,
-  serialized_end=550,
+  serialized_start=436,
+  serialized_end=511,
 )
 
 DESCRIPTOR.message_types_by_name['SignalLevel'] = _SIGNALLEVEL

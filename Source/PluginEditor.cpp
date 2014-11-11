@@ -141,7 +141,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     logarithmicFFTButton.setColour (Label::textColourId, Colours::white);
     logarithmicFFTButton.setLookAndFeel(slaf);
     logarithmicFFTButton.setButtonText("");
-    logarithmicFFTButton.setTooltip("Check this to reorganize the FFT in a logarithmic way. By checking this, the message will always contain 12 bands :\n11025 to 22050 Hz\n5512 to 11025 Hz\n2756 to 5512 Hz\n1378 to 2756 Hz\n689 to 1378 Hz\n344 to 689 Hz\n172 to 344 Hz\n86 to 172 Hz\n43 to 86 Hz\n22 to 43 Hz\n11 to 22 Hz\n0 to 11 Hz");
+    logarithmicFFTButton.setTooltip("Check this to reorganize the FFT in a logarithmic way, as well as normalize its values (the frequency band with the max intensity will have its intensity equal to 1). By checking this, the message will always contain 12 bands :\n11025 to 22050 Hz\n5512 to 11025 Hz\n2756 to 5512 Hz\n1378 to 2756 Hz\n689 to 1378 Hz\n344 to 689 Hz\n172 to 344 Hz\n86 to 172 Hz\n43 to 86 Hz\n22 to 43 Hz\n11 to 22 Hz\n0 to 11 Hz");
     
     addAndMakeVisible (sendOSCButton);
     sendOSCButton.setLookAndFeel(slaf);
@@ -167,6 +167,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
     sendFFTButton.setToggleState(getProcessor().sendFFT, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
+    logarithmicFFTButton.setToggleState(getProcessor().logarithmicFFT, dontSendNotification);
     sendOSCButton.setToggleState(getProcessor().sendOSC, dontSendNotification);
     sendBinaryUDPButton.setToggleState(getProcessor().sendBinaryUDP, dontSendNotification);
 
@@ -215,7 +216,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     fftBandNbLabel.attachToComponent (&fftBandNbSlider, false);
     fftBandNbLabel.setFont(smallFont);
     fftBandNbLabel.setColour(Label::textColourId, Colours::white);
-    fftBandNbLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages.Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT.\nThis slider is only active if the requested FFT is linear (logarithmic FFT is unchecked)");
+    fftBandNbLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages. Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT.\nThis slider is only active if the requested FFT is linear (logarithmic FFT is unchecked)");
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);

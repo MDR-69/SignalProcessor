@@ -23,6 +23,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   fftBandNb(defaultfftBandNb),
   inputSensitivity(defaultInputSensitivity),
   monoStereo(defaultMonoStereo),
+  logarithmicFFT(defaultLogarithmicFFT),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
   oscTransmissionSocket( IpEndpointName( "127.0.0.1", portNumberOSC )),
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
@@ -387,7 +388,7 @@ float SignalProcessorAudioProcessor::denormalize(float input) {
 // FFT Functions
 
 void SignalProcessorAudioProcessor::computeFFT() {
-
+    
     // Reinterpret the signal in fftBuffer as an interleaved-data complex vector and use vDSP_ctoz to move the data to a separated-data complex vector. The stride is equal to 2 because the imaginary elements are skipped
     vDSP_ctoz((DSPComplex *) fftBuffer, 2*Stride, &Buffer, 1, N/2);
     
@@ -420,10 +421,15 @@ float SignalProcessorAudioProcessor::findSignalFrequency() {
         }
         else {
             // This function aims to find the approximate fundamental
+            // The algorithm could be improved
         }
     }
     
-    if (abs(*(Observed.realp + maxValPos - 1)) > abs(*(Observed.realp + maxValPos + 1))) {
+    if (maxVal < 0.1) {
+        // No real frequency could be found (the source is silent)
+        return -1;
+    }
+    else if (abs(*(Observed.realp + maxValPos - 1)) > abs(*(Observed.realp + maxValPos + 1))) {
         return (getSampleRate() / N) *
         (abs(maxValPos*(*(Observed.realp + maxValPos))) + abs((maxValPos-1)*(*(Observed.realp + maxValPos-1)))) /
         (abs(*(Observed.realp + maxValPos - 1)) + abs(*(Observed.realp + maxValPos))) ;            }
@@ -434,25 +440,37 @@ float SignalProcessorAudioProcessor::findSignalFrequency() {
     }
 }
 
-// Calculate the intensity for the 12 frequency bands
+// Calculate a normalized intensity for the 12 frequency bands
 void SignalProcessorAudioProcessor::computeLogFFT() {
     
     //First, reinitialize the array
     for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) = 0; }
     
     //Every element inside Observed.realp contains the energy for a frequency band with (getSampleRate() / N) Hz width (10.76Hz at a 44100Hz sample rate)
-    *(logFFTResult + 0)         = *(Observed.realp + 0);                                  //Energy in the 0 to 11 Hz band
-    *(logFFTResult + 1)         = *(Observed.realp + 1);                                  //Energy in the 11 to 22 Hz band
-    for (int i=2;i<4;i++)       { *(logFFTResult + 2) += *(Observed.realp + i); }         //Energy in the 22 to 43 Hz band
-    for (int i=4;i<8;i++)       { *(logFFTResult + 3) += *(Observed.realp + i); }         //Energy in the 43 to 86 Hz band
-    for (int i=8;i<16;i++)      { *(logFFTResult + 4) += *(Observed.realp + i); }         //Energy in the 86 to 172 Hz band
-    for (int i=16;i<32;i++)     { *(logFFTResult + 5) += *(Observed.realp + i); }         //Energy in the 172 to 344 Hz band
-    for (int i=32;i<64;i++)     { *(logFFTResult + 6) += *(Observed.realp + i); }         //Energy in the 344 to 689 Hz band
-    for (int i=64;i<128;i++)    { *(logFFTResult + 7) += *(Observed.realp + i); }         //Energy in the 689 to 1378 Hz band
-    for (int i=128;i<256;i++)   { *(logFFTResult + 8) += *(Observed.realp + i); }         //Energy in the 1378 to 2756 Hz band
-    for (int i=256;i<512;i++)   { *(logFFTResult + 9) += *(Observed.realp + i); }         //Energy in the 2756 to 5512 Hz band
-    for (int i=512;i<1024;i++)  { *(logFFTResult + 10) += *(Observed.realp + i); }        //Energy in the 5512 to 11025 Hz band
-    for (int i=1024;i<2048;i++) { *(logFFTResult + 11) += *(Observed.realp + i); }        //Energy in the 11025 to 22050 Hz band
+    *(logFFTResult + 0)         = abs(*(Observed.realp + 0));                                  //Energy in the 0 to 11 Hz band
+    *(logFFTResult + 1)         = abs(*(Observed.realp + 1));                                  //Energy in the 11 to 22 Hz band
+    for (int i=2;i<4;i++)       { *(logFFTResult + 2) += abs(*(Observed.realp + i)); }         //Energy in the 22 to 43 Hz band
+    for (int i=4;i<8;i++)       { *(logFFTResult + 3) += abs(*(Observed.realp + i)); }         //Energy in the 43 to 86 Hz band
+    for (int i=8;i<16;i++)      { *(logFFTResult + 4) += abs(*(Observed.realp + i)); }         //Energy in the 86 to 172 Hz band
+    for (int i=16;i<32;i++)     { *(logFFTResult + 5) += abs(*(Observed.realp + i)); }         //Energy in the 172 to 344 Hz band
+    for (int i=32;i<64;i++)     { *(logFFTResult + 6) += abs(*(Observed.realp + i)); }         //Energy in the 344 to 689 Hz band
+    for (int i=64;i<128;i++)    { *(logFFTResult + 7) += abs(*(Observed.realp + i)); }         //Energy in the 689 to 1378 Hz band
+    for (int i=128;i<256;i++)   { *(logFFTResult + 8) += abs(*(Observed.realp + i)); }         //Energy in the 1378 to 2756 Hz band
+    for (int i=256;i<512;i++)   { *(logFFTResult + 9) += abs(*(Observed.realp + i)); }         //Energy in the 2756 to 5512 Hz band
+    for (int i=512;i<1024;i++)  { *(logFFTResult + 10) += abs(*(Observed.realp + i)); }        //Energy in the 5512 to 11025 Hz band
+    for (int i=1024;i<2048;i++) { *(logFFTResult + 11) += abs(*(Observed.realp + i)); }        //Energy in the 11025 to 22050 Hz band
+    
+    //Normalize the values
+    float maxVal = 0;
+    for (int j=0; j< 12; j++) {
+        maxVal = std::max(*(logFFTResult + j), maxVal);
+    }
+    if (maxVal > 50) {
+        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) /= maxVal; }
+    }
+    else {
+        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) = 0; }
+    }
     
 }
 
@@ -572,6 +590,7 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
 
     if (logarithmicFFT) {
         if (sendBinaryUDP) {
+            logFft.set_signalid(channel);
             logFft.set_fundamentalfreq(findSignalFrequency());
             logFft.set_band1(*(logFFTResult + 0));
             logFft.set_band2(*(logFFTResult + 1));
@@ -586,13 +605,14 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
             logFft.set_band11(*(logFFTResult + 10));
             logFft.set_band12(*(logFFTResult + 11));
             logFft.SerializeToArray(dataArrayLogFFT, logFft.GetCachedSize());
-            udpClientFFT.send(dataArrayTimeInfo, logFft.GetCachedSize());
+            
+            udpClientFFT.send(dataArrayLogFFT, logFft.GetCachedSize());
         }
         if (sendOSC) {
             oscOutputStream->Clear();
             *oscOutputStream << osc::BeginBundleImmediate
-            << osc::BeginMessage( "FFT/" )
-            << channel << "/"
+            << osc::BeginMessage( "FFT" )
+            << channel
             << (*(logFFTResult + 0))
             << (*(logFFTResult + 1))
             << (*(logFFTResult + 2))
@@ -612,7 +632,7 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
     }
     // Linear FFT
     else {
-        std::cout << "Trying to send an linear FFT message, TBIL\n";
+        std::cout << "Trying to send a linear FFT message, TBIL\n";
     }
 }
 
