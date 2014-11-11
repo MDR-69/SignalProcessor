@@ -397,16 +397,16 @@ void SignalProcessorAudioProcessor::computeFFT() {
                      Buffer.realp, Buffer.imagp,
                      Observed.realp, Observed.imagp);
 
+    // If the FFT is set to logarithmic, transform the linear result array in a new log one
+    if (logarithmicFFT) {
+        computeLogFFT();
+    }
+    
     // Send the FFT message over the network
     sendFFTMsg();
     
     // Reinitialize fftBufferIndex to start writing the temp data back from the start of the table
     fftBufferIndex = 0;
-    
-    // If the FFT is set to logarithmic, transform the linear result array in a new log one
-    if (logarithmicFFT) {
-        computeLogFFT();
-    }
     
 }
 
@@ -460,17 +460,17 @@ void SignalProcessorAudioProcessor::computeLogFFT() {
     for (int i=512;i<1024;i++)  { *(logFFTResult + 10) += abs(*(Observed.realp + i)); }        //Energy in the 5512 to 11025 Hz band
     for (int i=1024;i<2048;i++) { *(logFFTResult + 11) += abs(*(Observed.realp + i)); }        //Energy in the 11025 to 22050 Hz band
     
-    //Normalize the values
-    float maxVal = 0;
-    for (int j=0; j< 12; j++) {
-        maxVal = std::max(*(logFFTResult + j), maxVal);
-    }
-    if (maxVal > 50) {
-        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) /= maxVal; }
-    }
-    else {
-        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) = 0; }
-    }
+//    //Normalize the values
+//    float maxVal = 0;
+//    for (int j=0; j< 12; j++) {
+//        maxVal = std::max(*(logFFTResult + j), maxVal);
+//    }
+//    if (maxVal > 50) {
+//        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) /= maxVal; }
+//    }
+//    else {
+//        for (int i= 0; i<logFFTNbOfBands; i++)  { *(logFFTResult + i) = 0; }
+//    }
     
 }
 
@@ -589,21 +589,23 @@ void SignalProcessorAudioProcessor::sendTimeinfoMsg() {
 void SignalProcessorAudioProcessor::sendFFTMsg() {
 
     if (logarithmicFFT) {
+        
+        logFft.set_band1(logFft.band1()*0.90 + *(logFFTResult + 0)*0.10);
+        logFft.set_band2(logFft.band2()*0.90 + *(logFFTResult + 1)*0.10);
+        logFft.set_band3(logFft.band3()*0.90 + *(logFFTResult + 2)*0.10);
+        logFft.set_band4(logFft.band4()*0.90 + *(logFFTResult + 3)*0.10);
+        logFft.set_band5(logFft.band5()*0.90 + *(logFFTResult + 4)*0.10);
+        logFft.set_band6(logFft.band6()*0.90 + *(logFFTResult + 5)*0.10);
+        logFft.set_band7(logFft.band7()*0.90 + *(logFFTResult + 6)*0.10);
+        logFft.set_band8(logFft.band8()*0.90 + *(logFFTResult + 7)*0.10);
+        logFft.set_band9(logFft.band9()*0.90 + *(logFFTResult + 8)*0.10);
+        logFft.set_band10(logFft.band10()*0.90 + *(logFFTResult + 9)*0.10);
+        logFft.set_band11(logFft.band11()*0.90 + *(logFFTResult + 10)*0.10);
+        logFft.set_band12(logFft.band12()*0.90 + *(logFFTResult + 11)*0.10);
+        
         if (sendBinaryUDP) {
             logFft.set_signalid(channel);
             logFft.set_fundamentalfreq(findSignalFrequency());
-            logFft.set_band1(*(logFFTResult + 0));
-            logFft.set_band2(*(logFFTResult + 1));
-            logFft.set_band3(*(logFFTResult + 2));
-            logFft.set_band4(*(logFFTResult + 3));
-            logFft.set_band5(*(logFFTResult + 4));
-            logFft.set_band6(*(logFFTResult + 5));
-            logFft.set_band7(*(logFFTResult + 6));
-            logFft.set_band8(*(logFFTResult + 7));
-            logFft.set_band9(*(logFFTResult + 8));
-            logFft.set_band10(*(logFFTResult + 9));
-            logFft.set_band11(*(logFFTResult + 10));
-            logFft.set_band12(*(logFFTResult + 11));
             logFft.SerializeToArray(dataArrayLogFFT, logFft.GetCachedSize());
             
             udpClientFFT.send(dataArrayLogFFT, logFft.GetCachedSize());
@@ -613,18 +615,18 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
             *oscOutputStream << osc::BeginBundleImmediate
             << osc::BeginMessage( "FFT" )
             << channel
-            << (*(logFFTResult + 0))
-            << (*(logFFTResult + 1))
-            << (*(logFFTResult + 2))
-            << (*(logFFTResult + 3))
-            << (*(logFFTResult + 4))
-            << (*(logFFTResult + 5))
-            << (*(logFFTResult + 6))
-            << (*(logFFTResult + 7))
-            << (*(logFFTResult + 8))
-            << (*(logFFTResult + 9))
-            << (*(logFFTResult + 10))
-            << (*(logFFTResult + 11))
+            << logFft.band1()
+            << logFft.band2()
+            << logFft.band3()
+            << logFft.band4()
+            << logFft.band5()
+            << logFft.band6()
+            << logFft.band7()
+            << logFft.band8()
+            << logFft.band9()
+            << logFft.band10()
+            << logFft.band11()
+            << logFft.band12()
             << osc::EndMessage
             << osc::EndBundle;
             oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
