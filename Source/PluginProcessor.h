@@ -29,9 +29,8 @@
 #include <Accelerate/Accelerate.h>          // the Accelerate headers are needed to use vDSP
 
 
-//#define	N		4096	// Number of samples the FFT should be calculated on
 #define Log2N	12u		// Base-two logarithm of number of elements.
-#define	N	(1u<<Log2N)	// Number of elements.
+#define	N	(1u<<Log2N)	// Number of elements (4096 for Log2N=12)
 
 //==============================================================================
 /**
@@ -99,7 +98,7 @@ public:
     //==============================================================================
     // Default parameter values
     const int defaultAveragingBufferSize     = 2048;
-    const int defaultfftBandNb               = N/2;
+    const float defaultfftAveragingWindow    = 8;
     const bool defaultSendTimeInfo           = false;
     const bool defaultSendSignalLevel        = true;
     const bool defaultSendImpulse            = true;
@@ -116,7 +115,7 @@ public:
     enum Parameters
     {
         averagingBufferSizeParam = 0,
-        fftBandNbParam,
+        fftAveragingWindowParam,
         inputSensitivityParam,
         sendTimeInfoParam,
         sendSignalLevelParam,
@@ -133,7 +132,7 @@ public:
     
     int channel;
     int averagingBufferSize;
-    int fftBandNb;
+    float fftAveragingWindow;              //Defined as float to be able to divide by its value
     float inputSensitivity;
     
     bool sendBinaryUDP   = true;

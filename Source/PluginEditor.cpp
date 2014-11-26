@@ -18,12 +18,12 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       tooltipWindow(nullptr, 700),
       infoLabel (String::empty),
       averagingBufferLabel ("", "Averaging Buffer Size:"),
-      fftBandNbLabel ("", "Number Of FFT Bands:"),
+      fftAveragingWindowLabel ("", "Averaging FFT Window:"),
       inputSensitivityLabel ("", "Input Sensitivity:"),
       beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
       averagingBufferSlider ("averagingBuffer"),
-      fftBandNbSlider ("fftBandNb"),
+      fftAveragingWindowSlider ("fftAveragingWindow"),
       inputSensitivitySlider ("inputSensitivity"),
       beatDetectionWindowSlider ("beatDetectionWindow"),
       sendTimeInfoButton("Send TimeInfo"),
@@ -67,13 +67,13 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferSlider.setValue(getProcessor().averagingBufferSize);
     averagingBufferSlider.setBounds (20, 230, 150, 20);
     
-    addAndMakeVisible (fftBandNbSlider);
-    fftBandNbSlider.setLookAndFeel(slaf);
-    fftBandNbSlider.setSliderStyle (Slider::LinearBar);
-    fftBandNbSlider.addListener (this);
-    fftBandNbSlider.setRange (4, N/2, 2);
-    fftBandNbSlider.setValue(getProcessor().fftBandNb);
-    fftBandNbSlider.setBounds (20, 270, 150, 20);
+    addAndMakeVisible (fftAveragingWindowSlider);
+    fftAveragingWindowSlider.setLookAndFeel(slaf);
+    fftAveragingWindowSlider.setSliderStyle (Slider::LinearBar);
+    fftAveragingWindowSlider.addListener (this);
+    fftAveragingWindowSlider.setRange (1, 20, 1);
+    fftAveragingWindowSlider.setValue(getProcessor().fftAveragingWindow);
+    fftAveragingWindowSlider.setBounds (20, 270, 150, 20);
     
     addAndMakeVisible (inputSensitivitySlider);
     inputSensitivitySlider.setLookAndFeel(slaf);
@@ -141,7 +141,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     logarithmicFFTButton.setColour (Label::textColourId, Colours::white);
     logarithmicFFTButton.setLookAndFeel(slaf);
     logarithmicFFTButton.setButtonText("");
-    logarithmicFFTButton.setTooltip("Check this to reorganize the FFT in a logarithmic way, as well as normalize its values (the frequency band with the max intensity will have its intensity equal to 1). By checking this, the message will always contain 12 bands :\n11025 to 22050 Hz\n5512 to 11025 Hz\n2756 to 5512 Hz\n1378 to 2756 Hz\n689 to 1378 Hz\n344 to 689 Hz\n172 to 344 Hz\n86 to 172 Hz\n43 to 86 Hz\n22 to 43 Hz\n11 to 22 Hz\n0 to 11 Hz");
+    logarithmicFFTButton.setTooltip("Check this to reorganize the FFT in a logarithmic way, as well as normalize its values (the frequency band with the max intensity will have its intensity equal to 1). If unchecked, the message contains all 2048 bands. If checked, the message contains 12 bands :\n11025 to 22050 Hz\n5512 to 11025 Hz\n2756 to 5512 Hz\n1378 to 2756 Hz\n689 to 1378 Hz\n344 to 689 Hz\n172 to 344 Hz\n86 to 172 Hz\n43 to 86 Hz\n22 to 43 Hz\n11 to 22 Hz\n0 to 11 Hz");
     
     addAndMakeVisible (sendOSCButton);
     sendOSCButton.setLookAndFeel(slaf);
@@ -213,10 +213,10 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferLabel.setColour(Label::textColourId, Colours::white);
     averagingBufferLabel.setTooltip("Change this parameter to adjust the instant signal value's averaging window. Shorter values mean more precise signal values, and more messages sent");
     
-    fftBandNbLabel.attachToComponent (&fftBandNbSlider, false);
-    fftBandNbLabel.setFont(smallFont);
-    fftBandNbLabel.setColour(Label::textColourId, Colours::white);
-    fftBandNbLabel.setTooltip("Change this parameter to set the number of frequency bands in the FFT messages. Internally, the FFT is always calculated on 4096 samples, which means that 2048 bands are available, with a width equal to the DAW's sample rate / 4096 (so 10.7Hz for 44.1kHz sample rate). If you want less than 2048 bands, the plugin will perform an average on the total FFT.\nThis slider is only active if the requested FFT is linear (logarithmic FFT is unchecked)");
+    fftAveragingWindowLabel.attachToComponent (&fftAveragingWindowSlider, false);
+    fftAveragingWindowLabel.setFont(smallFont);
+    fftAveragingWindowLabel.setColour(Label::textColourId, Colours::white);
+    fftAveragingWindowLabel.setTooltip("Change this parameter to set the the resulting FFT's averaging window (n * 4096 samples). Lower values induce a more reactive FFT, higher values mean that transient shots will be more or less ignored");
     
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);
@@ -301,7 +301,7 @@ void SignalProcessorAudioProcessorEditor::timerCallback()
     //To be set later, to update any parameter !!!
     averagingBufferSlider.setValue (ourProcessor.averagingBufferSize, dontSendNotification);
     inputSensitivitySlider.setValue (ourProcessor.inputSensitivity, dontSendNotification);
-    fftBandNbSlider.setValue (ourProcessor.fftBandNb, dontSendNotification);
+    fftAveragingWindowSlider.setValue (ourProcessor.fftAveragingWindow, dontSendNotification);
     
     float newBeatIntensity = ourProcessor.beatIntensity;
     if (lastDisplayedBeatIntensity != newBeatIntensity) {
@@ -332,10 +332,10 @@ void SignalProcessorAudioProcessorEditor::sliderValueChanged (Slider* slider)
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::averageEnergyBufferSizeParam,
                                                   (int) beatDetectionWindowSlider.getValue());
     }
-    else if (slider == &fftBandNbSlider)
+    else if (slider == &fftAveragingWindowSlider)
     {
-        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftBandNbParam,
-                                                  (int) fftBandNbSlider.getValue());
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftAveragingWindowParam,
+                                                  (int) fftAveragingWindowSlider.getValue());
     }
 }
 

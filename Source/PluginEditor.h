@@ -49,8 +49,8 @@ private:
     SignalProcessorAudioProcessor& audioProcessorInstance;
     
     TooltipWindow tooltipWindow;        //Used to display tooltips
-    Label infoLabel, averagingBufferLabel, fftBandNbLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel;
-    Slider averagingBufferSlider, fftBandNbSlider, inputSensitivitySlider, beatDetectionWindowSlider;
+    Label infoLabel, averagingBufferLabel, fftAveragingWindowLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel;
+    Slider averagingBufferSlider, fftAveragingWindowSlider, inputSensitivitySlider, beatDetectionWindowSlider;
     ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, sendFFTButton, monoStereoButton, logarithmicFFTButton;
     ToggleButton sendOSCButton, sendBinaryUDPButton;
     Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, sendFFTButtonLabel, monoStereoButtonLabel, logarithmicFFTButtonLabel;
