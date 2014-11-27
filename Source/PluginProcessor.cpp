@@ -605,6 +605,7 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
             *oscOutputStream << osc::BeginBundleImmediate
             << osc::BeginMessage( "FFT" )
             << channel
+            << findSignalFrequency()
             << logFft.band1()
             << logFft.band2()
             << logFft.band3()
@@ -622,9 +623,38 @@ void SignalProcessorAudioProcessor::sendFFTMsg() {
             oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
         }
     }
+    
     // Linear FFT
     else {
-        std::cout << "Trying to send a linear FFT message, TBIL\n";
+        if (sendBinaryUDP) {
+            // Fill in the new data
+            linearFft.clear_data();
+            linearFft.set_signalid(channel);
+            linearFft.set_fundamentalfreq(findSignalFrequency());
+            for (int i=0; i<N/2; i++) {
+                linearFft.add_data(abs(*(Observed.realp + i)));
+            }
+            
+            // Serialize the data and send it
+            linearFft.SerializeToArray(dataArrayLinearFFT, linearFft.GetCachedSize());
+            udpClientFFT.send(dataArrayLinearFFT, linearFft.GetCachedSize());
+        }
+        
+        if (sendOSC) {
+            oscOutputStream->Clear();
+            *oscOutputStream << osc::BeginBundleImmediate
+            << osc::BeginMessage( "LinearFFT" )
+            << channel
+            << findSignalFrequency();
+            
+            // Put all the available data in the OSC message
+            for (int i=0; i<N/2; i++) {
+                *oscOutputStream << abs(*(Observed.realp + i));
+            }
+            
+            *oscOutputStream << osc::EndMessage
+            << osc::EndBundle;
+        }
     }
 }
 
