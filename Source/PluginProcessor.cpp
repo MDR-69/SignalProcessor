@@ -28,6 +28,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   oscTransmissionSocket( IpEndpointName( "127.0.0.1", portNumberOSC )),
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
+  udpClientSignalInstantVal("127.0.0.1", portNumberSignalInstantVal),
   udpClientImpulse("127.0.0.1", portNumberImpulse),
   udpClientFFT("127.0.0.1", portNumberFFT)
 {
@@ -59,11 +60,12 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     //Build the default Signal Messages, and preallocate the char* which will receive their serialized data
     defineDefaultSignalMessages();
     
-    dataArrayImpulse   = new char[impulse.ByteSize()];
-    dataArrayLevel     = new char[signal.ByteSize()];
-    dataArrayTimeInfo  = new char[timeInfo.ByteSize()];
-    dataArrayLogFFT    = new char[logFft.ByteSize()];
-    dataArrayLinearFFT = new char[linearFft.ByteSize()];
+    dataArrayImpulse        = new char[impulse.ByteSize()];
+    dataArrayLevel          = new char[signal.ByteSize()];
+    dataArrayInstantVal     = new char[signal.ByteSize()];
+    dataArrayTimeInfo       = new char[timeInfo.ByteSize()];
+    dataArrayLogFFT         = new char[logFft.ByteSize()];
+    dataArrayLinearFFT      = new char[linearFft.ByteSize()];
     
     lastPosInfo.resetToDefault();
 
@@ -74,6 +76,7 @@ SignalProcessorAudioProcessor::~SignalProcessorAudioProcessor()
     // Release all allocated memory
     delete [] dataArrayImpulse;
     delete [] dataArrayLevel;
+    delete [] dataArrayInstantVal;
     delete [] dataArrayTimeInfo;
     delete [] dataArrayLogFFT;
     delete [] dataArrayLinearFFT;
@@ -113,6 +116,7 @@ float SignalProcessorAudioProcessor::getParameter (int index)
         case inputSensitivityParam:         return inputSensitivity;
         case sendTimeInfoParam:             return sendTimeInfo;
         case sendSignalLevelParam:          return sendSignalLevel;
+        case sendSignalInstantValParam:     return sendSignalInstantVal;
         case sendImpulseParam:              return sendImpulse;
         case sendFFTParam:                  return sendFFT;
         case channelParam:                  return channel;
@@ -134,6 +138,7 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
         case inputSensitivityParam:         return defaultInputSensitivity;
         case sendTimeInfoParam:             return defaultSendTimeInfo;
         case sendSignalLevelParam:          return defaultSendSignalLevel;
+        case sendSignalInstantValParam:     return defaultSendSignalInstantVal;
         case sendImpulseParam:              return defaultSendImpulse;
         case sendFFTParam:                  return defaultsendFFT;
         case channelParam:                  return defaultChannel;
@@ -160,6 +165,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
         case inputSensitivityParam:         inputSensitivity        = newValue;  break;
         case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
         case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
+        case sendSignalInstantValParam:     sendSignalInstantVal    = newValue;  break;
         case sendImpulseParam:              sendImpulse             = newValue;  break;
         case sendFFTParam:                  sendFFT                 = newValue;  break;
         case channelParam:                  channel                 = newValue;  defineSignalMessagesChannel();  break;
@@ -181,6 +187,7 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
         case inputSensitivityParam:        return "Input Sensitivity";          break;
         case sendTimeInfoParam:            return "Send Time Info";             break;
         case sendSignalLevelParam:         return "Send Signal Level";          break;
+        case sendSignalInstantValParam:    return "Send Signal Instant Value";  break;
         case sendImpulseParam:             return "Send Impulses";              break;
         case sendFFTParam:                 return "Send FFT Analysis";          break;
         case channelParam:                 return "Channel Number";             break;
@@ -290,9 +297,9 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
     //////////////////////////////////////////////////////////////////
     // Audio processing takes place here !
 
-// A lot of optimization is to be done using vDSP functions ! For now, do it simple, then do it right
-//    Vector multiply with scalar
-//    vDSP_zvzsml
+    // A lot of optimization is to be done using vDSP functions ! For now, do it simple, then do it right
+    //    Vector multiply with scalar
+    //    vDSP_zvzsml
     
     //A checker : buffer.getRMS
     
@@ -304,11 +311,25 @@ void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
 
         //Only read one value out of nbOfSamplesToSkip, it's faster this way
         for (int i=0; i<buffer.getNumSamples(); i+=nbOfSamplesToSkip) {
-            //The objective is to get an average of the signal's amplitude -> use the absolute value
-            signalSum += std::abs(channelData[i]);
             
-            //Optimization, use Mean square of vector.
-            //extern void vDSP_measqv
+            // Signal average: The objective is to get an average of the signal's amplitude -> use the absolute value
+            signalSum += std::abs(channelData[i]);
+            // Note: Possible optimization to be done using the mean square of the vector.
+            // extern void vDSP_measqv
+            
+        }
+
+        // Instant signal value
+        if (sendSignalInstantVal == true) {
+            for (int i=0; i<buffer.getNumSamples(); i+=1) {
+                if (instantSigValNbOfSamplesSkipped >= instantSigValNbOfSamplesToSkip) {
+                    sendSignalInstantValMsg(channelData[i]);
+                    instantSigValNbOfSamplesSkipped = 0;
+                }
+                else {
+                    instantSigValNbOfSamplesSkipped += 1;
+                }
+            }
         }
     }
     
@@ -473,6 +494,9 @@ void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
     signal.set_signalid(channel);
     signal.set_signallevel(0.0);
     
+    instantVal.set_signalid(channel);
+    instantVal.set_signalinstantval(0.0);
+    
     impulse.set_signalid(channel);
     impulse.SerializeToArray(dataArrayImpulse, impulse.GetCachedSize());
     
@@ -505,6 +529,7 @@ void SignalProcessorAudioProcessor::defineDefaultSignalMessages() {
 void SignalProcessorAudioProcessor::defineSignalMessagesChannel() {
     
     signal.set_signalid(channel);
+    instantVal.set_signalid(channel);
     logFft.set_signalid(channel);
     linearFft.set_signalid(channel);
     
@@ -543,6 +568,24 @@ void SignalProcessorAudioProcessor::sendSignalLevelMsg() {
         << osc::BeginMessage( "SIGLVL" )
         << channel << "/"
         << denormalize(inputSensitivity * signalInstantEnergy) << osc::EndMessage
+        << osc::EndBundle;
+        oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
+    }
+}
+
+void SignalProcessorAudioProcessor::sendSignalInstantValMsg(float val) {
+    if (sendBinaryUDP) {
+        instantVal.set_signalinstantval(inputSensitivity * val);
+        instantVal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
+        udpClientSignalInstantVal.send(dataArrayInstantVal, signal.GetCachedSize());
+    }
+    if (sendOSC) {
+        //Example of an OSC signal level message : SIGINSTVAL1/0.23245
+        oscOutputStream->Clear();
+        *oscOutputStream << osc::BeginBundleImmediate
+        << osc::BeginMessage( "SIGINSTVAL" )
+        << channel << "/"
+        << denormalize(inputSensitivity * val) << osc::EndMessage
         << osc::EndBundle;
         oscTransmissionSocket.Send( oscOutputStream->Data(), oscOutputStream->Size() );
     }

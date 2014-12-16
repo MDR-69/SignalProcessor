@@ -51,9 +51,9 @@ private:
     TooltipWindow tooltipWindow;        //Used to display tooltips
     Label infoLabel, averagingBufferLabel, fftAveragingWindowLabel, inputSensitivityLabel, beatDetectionWindowLabel, channelLabel;
     Slider averagingBufferSlider, fftAveragingWindowSlider, inputSensitivitySlider, beatDetectionWindowSlider;
-    ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendImpulseButton, sendFFTButton, monoStereoButton, logarithmicFFTButton;
+    ToggleButton sendTimeInfoButton, sendSignalLevelButton, sendSignalInstantValButton, sendImpulseButton, sendFFTButton, monoStereoButton, logarithmicFFTButton;
     ToggleButton sendOSCButton, sendBinaryUDPButton;
-    Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendImpulseButtonLabel, sendFFTButtonLabel, monoStereoButtonLabel, logarithmicFFTButtonLabel;
+    Label sendTimeInfoButtonLabel, sendSignalLevelButtonLabel, sendSignalInstantValButtonLabel, sendImpulseButtonLabel, sendFFTButtonLabel, monoStereoButtonLabel, logarithmicFFTButtonLabel;
     Label sendOSCButtonLabel, sendBinaryUDPButtonLabel;
     ImageButton logoButton;
     ComboBox channelComboBox;

@@ -32,6 +32,7 @@ void protobuf_AssignDesc_SignalMessages_2eproto();
 void protobuf_ShutdownFile_SignalMessages_2eproto();
 
 class SignalLevel;
+class SignalInstantVal;
 class Impulse;
 class LinearFFT;
 class LogFFT;
@@ -128,6 +129,98 @@ class SignalLevel : public ::google_public::protobuf::Message {
 
   void InitAsDefaultInstance();
   static SignalLevel* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SignalInstantVal : public ::google_public::protobuf::Message {
+ public:
+  SignalInstantVal();
+  virtual ~SignalInstantVal();
+
+  SignalInstantVal(const SignalInstantVal& from);
+
+  inline SignalInstantVal& operator=(const SignalInstantVal& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const SignalInstantVal& default_instance();
+
+  void Swap(SignalInstantVal* other);
+
+  // implements Message ----------------------------------------------
+
+  SignalInstantVal* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const SignalInstantVal& from);
+  void MergeFrom(const SignalInstantVal& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 signalID = 1 [default = 1];
+  inline bool has_signalid() const;
+  inline void clear_signalid();
+  static const int kSignalIDFieldNumber = 1;
+  inline ::google_public::protobuf::int32 signalid() const;
+  inline void set_signalid(::google_public::protobuf::int32 value);
+
+  // required float signalInstantVal = 2 [default = 0];
+  inline bool has_signalinstantval() const;
+  inline void clear_signalinstantval();
+  static const int kSignalInstantValFieldNumber = 2;
+  inline float signalinstantval() const;
+  inline void set_signalinstantval(float value);
+
+  // @@protoc_insertion_point(class_scope:SignalInstantVal)
+ private:
+  inline void set_has_signalid();
+  inline void clear_has_signalid();
+  inline void set_has_signalinstantval();
+  inline void clear_has_signalinstantval();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google_public::protobuf::int32 signalid_;
+  float signalinstantval_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_SignalMessages_2eproto();
+  friend void protobuf_AssignDesc_SignalMessages_2eproto();
+  friend void protobuf_ShutdownFile_SignalMessages_2eproto();
+
+  void InitAsDefaultInstance();
+  static SignalInstantVal* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -680,6 +773,54 @@ inline float SignalLevel::signallevel() const {
 inline void SignalLevel::set_signallevel(float value) {
   set_has_signallevel();
   signallevel_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SignalInstantVal
+
+// required int32 signalID = 1 [default = 1];
+inline bool SignalInstantVal::has_signalid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SignalInstantVal::set_has_signalid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SignalInstantVal::clear_has_signalid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SignalInstantVal::clear_signalid() {
+  signalid_ = 1;
+  clear_has_signalid();
+}
+inline ::google_public::protobuf::int32 SignalInstantVal::signalid() const {
+  return signalid_;
+}
+inline void SignalInstantVal::set_signalid(::google_public::protobuf::int32 value) {
+  set_has_signalid();
+  signalid_ = value;
+}
+
+// required float signalInstantVal = 2 [default = 0];
+inline bool SignalInstantVal::has_signalinstantval() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SignalInstantVal::set_has_signalinstantval() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SignalInstantVal::clear_has_signalinstantval() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SignalInstantVal::clear_signalinstantval() {
+  signalinstantval_ = 0;
+  clear_has_signalinstantval();
+}
+inline float SignalInstantVal::signalinstantval() const {
+  return signalinstantval_;
+}
+inline void SignalInstantVal::set_signalinstantval(float value) {
+  set_has_signalinstantval();
+  signalinstantval_ = value;
 }
 
 // -------------------------------------------------------------------

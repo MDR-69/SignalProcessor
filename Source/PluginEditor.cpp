@@ -28,6 +28,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       beatDetectionWindowSlider ("beatDetectionWindow"),
       sendTimeInfoButton("Send TimeInfo"),
       sendSignalLevelButton("Send SignalLevel"),
+      sendSignalInstantValButton("Send SignalInstantVal"),
       sendImpulseButton("Send Impulse"),
       sendFFTButton("Send Signal FFT"),
       monoStereoButton ("Stereo Processing"),
@@ -36,6 +37,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       sendBinaryUDPButton("Send UDP Data"),
       sendTimeInfoButtonLabel ("", "Send Time Info"),
       sendSignalLevelButtonLabel ("", "Send Signal Level"),
+      sendSignalInstantValButtonLabel ("", "Send Signal Instant Value"),
       sendImpulseButtonLabel ("", "Send Impulse"),
       sendFFTButtonLabel ("", "Send Signal FFT "),
       monoStereoButtonLabel ("", "Stereo Processing"),
@@ -50,7 +52,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
 {
     
     // This is where our plugin's editor size is set.
-    setSize (500, 420);
+    setSize (500, 444);
     
     slaf = new SquareLookAndFeel();
     setupSquareLookAndFeelColours (*slaf);
@@ -106,12 +108,22 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendSignalLevelButton.setBounds (getWidth() - 50, 192, 18, 18);
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
     sendSignalLevelButton.setButtonText("");
-    sendSignalLevelButton.setTooltip("Check this to send periodically this track's instant signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages)");
+    sendSignalLevelButton.setTooltip("Check this to send periodically this track's averaged signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages)");
+    addAndMakeVisible (sendSignalLevelButton);
+    
+    sendSignalInstantValButton.setLookAndFeel(slaf);
+    sendSignalInstantValButton.addListener (this);
+    sendSignalInstantValButton.changeWidthToFitText();
+    sendSignalInstantValButton.setBounds (getWidth() - 50, 214, 18, 18);                //Val a changer
+    sendSignalInstantValButton.setColour (Label::textColourId, Colours::white);
+    sendSignalInstantValButton.setButtonText("");
+    sendSignalInstantValButton.setTooltip("Check this to send periodically this track's instant signal level. You can configure the frequency at which this plugin sends these messages by modifying the number of samples to skip");
+    
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.setLookAndFeel(slaf);
     sendImpulseButton.addListener (this);
     sendImpulseButton.changeWidthToFitText();
-    sendImpulseButton.setBounds (getWidth() - 50, 214, 18, 18);
+    sendImpulseButton.setBounds (getWidth() - 50, 236, 18, 18);
     sendImpulseButton.setColour (Label::textColourId, Colours::white);
     sendImpulseButton.setButtonText("");
     sendImpulseButton.setTooltip("Check this to send the beats detected by the plugin. Whenever a beat is detected, the red circle in the center of the GUI will flash");
@@ -120,7 +132,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendFFTButton.setLookAndFeel(slaf);
     sendFFTButton.addListener (this);
     sendFFTButton.changeWidthToFitText();
-    sendFFTButton.setBounds (getWidth() - 50, 236, 18, 18);
+    sendFFTButton.setBounds (getWidth() - 50, 258, 18, 18);
     sendFFTButton.setColour (Label::textColourId, Colours::white);
     sendFFTButton.setButtonText("");
     sendFFTButton.setTooltip("Check this to send a frequency analysis of the input source. Compared to the other analysis, this tends to be more expensive in terms of CPU resources, so only check this if you plan to use it");
@@ -128,7 +140,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     addAndMakeVisible (monoStereoButton);
     monoStereoButton.addListener (this);
     monoStereoButton.changeWidthToFitText();
-    monoStereoButton.setBounds (getWidth() - 50, 258, 18, 18);
+    monoStereoButton.setBounds (getWidth() - 50, 280, 18, 18);
     monoStereoButton.setColour (Label::textColourId, Colours::white);
     monoStereoButton.setLookAndFeel(slaf);
     monoStereoButton.setButtonText("");
@@ -137,7 +149,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     addAndMakeVisible (logarithmicFFTButton);
     logarithmicFFTButton.addListener (this);
     logarithmicFFTButton.changeWidthToFitText();
-    logarithmicFFTButton.setBounds (getWidth() - 50, 280, 18, 18);
+    logarithmicFFTButton.setBounds (getWidth() - 50, 302, 18, 18);
     logarithmicFFTButton.setColour (Label::textColourId, Colours::white);
     logarithmicFFTButton.setLookAndFeel(slaf);
     logarithmicFFTButton.setButtonText("");
@@ -147,7 +159,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendOSCButton.setLookAndFeel(slaf);
     sendOSCButton.addListener (this);
     sendOSCButton.changeWidthToFitText();
-    sendOSCButton.setBounds (getWidth() - 50, 330, 18, 18);
+    sendOSCButton.setBounds (getWidth() - 50, 352, 18, 18);
     sendOSCButton.setColour (Label::textColourId, Colours::white);
     sendOSCButton.setButtonText("");
     sendOSCButton.setTooltip("Check this to consider the input source as a stereo source for the signal level analysis. To use less resources, the default behaviour only checks the left input. Considering your source stereo is only useful if you have very agressive left/right panning effects");
@@ -156,14 +168,15 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendBinaryUDPButton.setLookAndFeel(slaf);
     sendBinaryUDPButton.addListener (this);
     sendBinaryUDPButton.changeWidthToFitText();
-    sendBinaryUDPButton.setBounds (getWidth() - 50, 352, 18, 18);
+    sendBinaryUDPButton.setBounds (getWidth() - 50, 374, 18, 18);
     sendBinaryUDPButton.setColour (Label::textColourId, Colours::white);
     sendBinaryUDPButton.setButtonText("");
-    sendBinaryUDPButton.setTooltip("Send data using raw binary UDP. This is the most effective way to use this plugin. The following ports are used by this plugin :\nSignal level: " + String(getProcessor().portNumberSignalLevel) + ". Impulse: " + String(getProcessor().portNumberImpulse) + ". TimeInfo: " + String(getProcessor().portNumberTimeInfo) + ". FFT Data: " + String(getProcessor().portNumberFFT));
+    sendBinaryUDPButton.setTooltip("Send data using raw binary UDP. This is the most effective way to use this plugin. The following ports are used by this plugin :\nSignal level: " + String(getProcessor().portNumberSignalLevel) + ". Signal instant value: " + String(getProcessor().portNumberSignalInstantVal) + ". Impulse: " + String(getProcessor().portNumberImpulse) + ". TimeInfo: " + String(getProcessor().portNumberTimeInfo) + ". FFT Data: " + String(getProcessor().portNumberFFT));
 
     
     sendTimeInfoButton.setToggleState(getProcessor().sendTimeInfo, dontSendNotification);
     sendSignalLevelButton.setToggleState(getProcessor().sendSignalLevel, dontSendNotification);
+    sendSignalInstantValButton.setToggleState(getProcessor().sendSignalInstantVal, dontSendNotification);
     sendImpulseButton.setToggleState(getProcessor().sendImpulse, dontSendNotification);
     sendFFTButton.setToggleState(getProcessor().sendFFT, dontSendNotification);
     monoStereoButton.setToggleState(getProcessor().monoStereo, dontSendNotification);
@@ -177,6 +190,9 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendSignalLevelButtonLabel.attachToComponent (&sendSignalLevelButton, true);
     sendSignalLevelButtonLabel.setFont(smallFont);
     sendSignalLevelButtonLabel.setColour(Label::textColourId, Colours::white);
+    sendSignalInstantValButtonLabel.attachToComponent (&sendSignalInstantValButton, true);
+    sendSignalInstantValButtonLabel.setFont(smallFont);
+    sendSignalInstantValButtonLabel.setColour(Label::textColourId, Colours::white);
     sendImpulseButtonLabel.attachToComponent (&sendImpulseButton, true);
     sendImpulseButtonLabel.setFont(smallFont);
     sendImpulseButtonLabel.setColour(Label::textColourId, Colours::white);
@@ -360,6 +376,11 @@ void SignalProcessorAudioProcessorEditor::buttonClicked (Button* button)
     else if (button == &sendSignalLevelButton)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendSignalLevelParam,
+                                                  button->getToggleState());
+    }
+    else if (button == &sendSignalInstantValButton)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::sendSignalInstantValParam,
                                                   button->getToggleState());
     }
     else if (button == &sendImpulseButton)

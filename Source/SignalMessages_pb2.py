@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='SignalMessages.proto',
   package='',
-  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"N\n\tLinearFFT\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1a\n\x0f\x66undamentalFreq\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x04\x64\x61ta\x18\x03 \x03(\x02\x42\x02\x10\x01\"\xed\x01\n\x06LogFFT\x12\x13\n\x08signalID\x18\x01 \x01(\x05:\x01\x31\x12\x17\n\x0f\x66undamentalFreq\x18\x02 \x01(\x02\x12\r\n\x05\x62\x61nd1\x18\x03 \x01(\x02\x12\r\n\x05\x62\x61nd2\x18\x04 \x01(\x02\x12\r\n\x05\x62\x61nd3\x18\x05 \x01(\x02\x12\r\n\x05\x62\x61nd4\x18\x06 \x01(\x02\x12\r\n\x05\x62\x61nd5\x18\x07 \x01(\x02\x12\r\n\x05\x62\x61nd6\x18\x08 \x01(\x02\x12\r\n\x05\x62\x61nd7\x18\t \x01(\x02\x12\r\n\x05\x62\x61nd8\x18\n \x01(\x02\x12\r\n\x05\x62\x61nd9\x18\x0b \x01(\x02\x12\x0e\n\x06\x62\x61nd10\x18\x0c \x01(\x02\x12\x0e\n\x06\x62\x61nd11\x18\r \x01(\x02\x12\x0e\n\x06\x62\x61nd12\x18\x0e \x01(\x02\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
+  serialized_pb='\n\x14SignalMessages.proto\":\n\x0bSignalLevel\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x16\n\x0bsignalLevel\x18\x02 \x02(\x02:\x01\x30\"D\n\x10SignalInstantVal\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1b\n\x10signalInstantVal\x18\x02 \x02(\x02:\x01\x30\"\x1e\n\x07Impulse\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\"N\n\tLinearFFT\x12\x13\n\x08signalID\x18\x01 \x02(\x05:\x01\x31\x12\x1a\n\x0f\x66undamentalFreq\x18\x02 \x02(\x02:\x01\x30\x12\x10\n\x04\x64\x61ta\x18\x03 \x03(\x02\x42\x02\x10\x01\"\xed\x01\n\x06LogFFT\x12\x13\n\x08signalID\x18\x01 \x01(\x05:\x01\x31\x12\x17\n\x0f\x66undamentalFreq\x18\x02 \x01(\x02\x12\r\n\x05\x62\x61nd1\x18\x03 \x01(\x02\x12\r\n\x05\x62\x61nd2\x18\x04 \x01(\x02\x12\r\n\x05\x62\x61nd3\x18\x05 \x01(\x02\x12\r\n\x05\x62\x61nd4\x18\x06 \x01(\x02\x12\r\n\x05\x62\x61nd5\x18\x07 \x01(\x02\x12\r\n\x05\x62\x61nd6\x18\x08 \x01(\x02\x12\r\n\x05\x62\x61nd7\x18\t \x01(\x02\x12\r\n\x05\x62\x61nd8\x18\n \x01(\x02\x12\r\n\x05\x62\x61nd9\x18\x0b \x01(\x02\x12\x0e\n\x06\x62\x61nd10\x18\x0c \x01(\x02\x12\x0e\n\x06\x62\x61nd11\x18\r \x01(\x02\x12\x0e\n\x06\x62\x61nd12\x18\x0e \x01(\x02\"K\n\x08TimeInfo\x12\x18\n\tisPlaying\x18\x01 \x02(\x08:\x05\x66\x61lse\x12\x10\n\x05tempo\x18\x02 \x02(\x02:\x01\x30\x12\x13\n\x08position\x18\x03 \x02(\x02:\x01\x30\x42\x10\x42\x0eSignalMessages')
 
 
 
@@ -53,6 +53,41 @@ _SIGNALLEVEL = _descriptor.Descriptor(
 )
 
 
+_SIGNALINSTANTVAL = _descriptor.Descriptor(
+  name='SignalInstantVal',
+  full_name='SignalInstantVal',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signalID', full_name='SignalInstantVal.signalID', index=0,
+      number=1, type=5, cpp_type=1, label=2,
+      has_default_value=True, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='signalInstantVal', full_name='SignalInstantVal.signalInstantVal', index=1,
+      number=2, type=2, cpp_type=6, label=2,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=84,
+  serialized_end=152,
+)
+
+
 _IMPULSE = _descriptor.Descriptor(
   name='Impulse',
   full_name='Impulse',
@@ -76,8 +111,8 @@ _IMPULSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=84,
-  serialized_end=114,
+  serialized_start=154,
+  serialized_end=184,
 )
 
 
@@ -118,8 +153,8 @@ _LINEARFFT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=116,
-  serialized_end=194,
+  serialized_start=186,
+  serialized_end=264,
 )
 
 
@@ -237,8 +272,8 @@ _LOGFFT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=197,
-  serialized_end=434,
+  serialized_start=267,
+  serialized_end=504,
 )
 
 
@@ -279,11 +314,12 @@ _TIMEINFO = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=436,
-  serialized_end=511,
+  serialized_start=506,
+  serialized_end=581,
 )
 
 DESCRIPTOR.message_types_by_name['SignalLevel'] = _SIGNALLEVEL
+DESCRIPTOR.message_types_by_name['SignalInstantVal'] = _SIGNALINSTANTVAL
 DESCRIPTOR.message_types_by_name['Impulse'] = _IMPULSE
 DESCRIPTOR.message_types_by_name['LinearFFT'] = _LINEARFFT
 DESCRIPTOR.message_types_by_name['LogFFT'] = _LOGFFT
@@ -294,6 +330,12 @@ class SignalLevel(_message.Message):
   DESCRIPTOR = _SIGNALLEVEL
 
   # @@protoc_insertion_point(class_scope:SignalLevel)
+
+class SignalInstantVal(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SIGNALINSTANTVAL
+
+  # @@protoc_insertion_point(class_scope:SignalInstantVal)
 
 class Impulse(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType

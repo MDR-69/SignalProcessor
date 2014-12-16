@@ -22,23 +22,19 @@ public final class SignalMessages {
     // required float signalLevel = 2 [default = 0];
     /**
      * <code>required float signalLevel = 2 [default = 0];</code>
-     *
-     * <pre>
-     *required int32 bufferSize = 3 [default=64];
-     * </pre>
      */
     boolean hasSignalLevel();
     /**
      * <code>required float signalLevel = 2 [default = 0];</code>
-     *
-     * <pre>
-     *required int32 bufferSize = 3 [default=64];
-     * </pre>
      */
     float getSignalLevel();
   }
   /**
    * Protobuf type {@code SignalLevel}
+   *
+   * <pre>
+   * Current signal average value
+   * </pre>
    */
   public static final class SignalLevel extends
       com.google.protobuf.GeneratedMessage
@@ -159,20 +155,12 @@ public final class SignalMessages {
     private float signalLevel_;
     /**
      * <code>required float signalLevel = 2 [default = 0];</code>
-     *
-     * <pre>
-     *required int32 bufferSize = 3 [default=64];
-     * </pre>
      */
     public boolean hasSignalLevel() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>required float signalLevel = 2 [default = 0];</code>
-     *
-     * <pre>
-     *required int32 bufferSize = 3 [default=64];
-     * </pre>
      */
     public float getSignalLevel() {
       return signalLevel_;
@@ -305,6 +293,10 @@ public final class SignalMessages {
     }
     /**
      * Protobuf type {@code SignalLevel}
+     *
+     * <pre>
+     * Current signal average value
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -475,30 +467,18 @@ public final class SignalMessages {
       private float signalLevel_ ;
       /**
        * <code>required float signalLevel = 2 [default = 0];</code>
-       *
-       * <pre>
-       *required int32 bufferSize = 3 [default=64];
-       * </pre>
        */
       public boolean hasSignalLevel() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required float signalLevel = 2 [default = 0];</code>
-       *
-       * <pre>
-       *required int32 bufferSize = 3 [default=64];
-       * </pre>
        */
       public float getSignalLevel() {
         return signalLevel_;
       }
       /**
        * <code>required float signalLevel = 2 [default = 0];</code>
-       *
-       * <pre>
-       *required int32 bufferSize = 3 [default=64];
-       * </pre>
        */
       public Builder setSignalLevel(float value) {
         bitField0_ |= 0x00000002;
@@ -508,10 +488,6 @@ public final class SignalMessages {
       }
       /**
        * <code>required float signalLevel = 2 [default = 0];</code>
-       *
-       * <pre>
-       *required int32 bufferSize = 3 [default=64];
-       * </pre>
        */
       public Builder clearSignalLevel() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -531,6 +507,507 @@ public final class SignalMessages {
     // @@protoc_insertion_point(class_scope:SignalLevel)
   }
 
+  public interface SignalInstantValOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int32 signalID = 1 [default = 1];
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    boolean hasSignalID();
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    int getSignalID();
+
+    // required float signalInstantVal = 2 [default = 0];
+    /**
+     * <code>required float signalInstantVal = 2 [default = 0];</code>
+     */
+    boolean hasSignalInstantVal();
+    /**
+     * <code>required float signalInstantVal = 2 [default = 0];</code>
+     */
+    float getSignalInstantVal();
+  }
+  /**
+   * Protobuf type {@code SignalInstantVal}
+   *
+   * <pre>
+   * Instantaneous signal value (not averaged)
+   * </pre>
+   */
+  public static final class SignalInstantVal extends
+      com.google.protobuf.GeneratedMessage
+      implements SignalInstantValOrBuilder {
+    // Use SignalInstantVal.newBuilder() to construct.
+    private SignalInstantVal(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SignalInstantVal(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SignalInstantVal defaultInstance;
+    public static SignalInstantVal getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SignalInstantVal getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SignalInstantVal(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              signalID_ = input.readInt32();
+              break;
+            }
+            case 21: {
+              bitField0_ |= 0x00000002;
+              signalInstantVal_ = input.readFloat();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return SignalMessages.internal_static_SignalInstantVal_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return SignalMessages.internal_static_SignalInstantVal_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              SignalMessages.SignalInstantVal.class, SignalMessages.SignalInstantVal.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SignalInstantVal> PARSER =
+        new com.google.protobuf.AbstractParser<SignalInstantVal>() {
+      public SignalInstantVal parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SignalInstantVal(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SignalInstantVal> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required int32 signalID = 1 [default = 1];
+    public static final int SIGNALID_FIELD_NUMBER = 1;
+    private int signalID_;
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    public boolean hasSignalID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 signalID = 1 [default = 1];</code>
+     */
+    public int getSignalID() {
+      return signalID_;
+    }
+
+    // required float signalInstantVal = 2 [default = 0];
+    public static final int SIGNALINSTANTVAL_FIELD_NUMBER = 2;
+    private float signalInstantVal_;
+    /**
+     * <code>required float signalInstantVal = 2 [default = 0];</code>
+     */
+    public boolean hasSignalInstantVal() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required float signalInstantVal = 2 [default = 0];</code>
+     */
+    public float getSignalInstantVal() {
+      return signalInstantVal_;
+    }
+
+    private void initFields() {
+      signalID_ = 1;
+      signalInstantVal_ = 0F;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSignalID()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSignalInstantVal()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, signalID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeFloat(2, signalInstantVal_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, signalID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, signalInstantVal_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static SignalMessages.SignalInstantVal parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.SignalInstantVal parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static SignalMessages.SignalInstantVal parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static SignalMessages.SignalInstantVal parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(SignalMessages.SignalInstantVal prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code SignalInstantVal}
+     *
+     * <pre>
+     * Instantaneous signal value (not averaged)
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements SignalMessages.SignalInstantValOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return SignalMessages.internal_static_SignalInstantVal_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return SignalMessages.internal_static_SignalInstantVal_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                SignalMessages.SignalInstantVal.class, SignalMessages.SignalInstantVal.Builder.class);
+      }
+
+      // Construct using SignalMessages.SignalInstantVal.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        signalID_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        signalInstantVal_ = 0F;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return SignalMessages.internal_static_SignalInstantVal_descriptor;
+      }
+
+      public SignalMessages.SignalInstantVal getDefaultInstanceForType() {
+        return SignalMessages.SignalInstantVal.getDefaultInstance();
+      }
+
+      public SignalMessages.SignalInstantVal build() {
+        SignalMessages.SignalInstantVal result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public SignalMessages.SignalInstantVal buildPartial() {
+        SignalMessages.SignalInstantVal result = new SignalMessages.SignalInstantVal(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.signalID_ = signalID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.signalInstantVal_ = signalInstantVal_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof SignalMessages.SignalInstantVal) {
+          return mergeFrom((SignalMessages.SignalInstantVal)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(SignalMessages.SignalInstantVal other) {
+        if (other == SignalMessages.SignalInstantVal.getDefaultInstance()) return this;
+        if (other.hasSignalID()) {
+          setSignalID(other.getSignalID());
+        }
+        if (other.hasSignalInstantVal()) {
+          setSignalInstantVal(other.getSignalInstantVal());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSignalID()) {
+          
+          return false;
+        }
+        if (!hasSignalInstantVal()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        SignalMessages.SignalInstantVal parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (SignalMessages.SignalInstantVal) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int32 signalID = 1 [default = 1];
+      private int signalID_ = 1;
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public boolean hasSignalID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public int getSignalID() {
+        return signalID_;
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public Builder setSignalID(int value) {
+        bitField0_ |= 0x00000001;
+        signalID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 signalID = 1 [default = 1];</code>
+       */
+      public Builder clearSignalID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        signalID_ = 1;
+        onChanged();
+        return this;
+      }
+
+      // required float signalInstantVal = 2 [default = 0];
+      private float signalInstantVal_ ;
+      /**
+       * <code>required float signalInstantVal = 2 [default = 0];</code>
+       */
+      public boolean hasSignalInstantVal() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required float signalInstantVal = 2 [default = 0];</code>
+       */
+      public float getSignalInstantVal() {
+        return signalInstantVal_;
+      }
+      /**
+       * <code>required float signalInstantVal = 2 [default = 0];</code>
+       */
+      public Builder setSignalInstantVal(float value) {
+        bitField0_ |= 0x00000002;
+        signalInstantVal_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required float signalInstantVal = 2 [default = 0];</code>
+       */
+      public Builder clearSignalInstantVal() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        signalInstantVal_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:SignalInstantVal)
+    }
+
+    static {
+      defaultInstance = new SignalInstantVal(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:SignalInstantVal)
+  }
+
   public interface ImpulseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -546,6 +1023,10 @@ public final class SignalMessages {
   }
   /**
    * Protobuf type {@code Impulse}
+   *
+   * <pre>
+   * Beat detection notification
+   * </pre>
    */
   public static final class Impulse extends
       com.google.protobuf.GeneratedMessage
@@ -771,6 +1252,10 @@ public final class SignalMessages {
     }
     /**
      * Protobuf type {@code Impulse}
+     *
+     * <pre>
+     * Beat detection notification
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -994,6 +1479,10 @@ public final class SignalMessages {
   }
   /**
    * Protobuf type {@code LinearFFT}
+   *
+   * <pre>
+   * Linear fast fourier transform
+   * </pre>
    */
   public static final class LinearFFT extends
       com.google.protobuf.GeneratedMessage
@@ -1339,6 +1828,10 @@ public final class SignalMessages {
     }
     /**
      * Protobuf type {@code LinearFFT}
+     *
+     * <pre>
+     * Linear fast fourier transform
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -1925,6 +2418,10 @@ public final class SignalMessages {
   }
   /**
    * Protobuf type {@code LogFFT}
+   *
+   * <pre>
+   * Log fast fourier transform, each band being one octave wide
+   * </pre>
    */
   public static final class LogFFT extends
       com.google.protobuf.GeneratedMessage
@@ -2627,6 +3124,10 @@ public final class SignalMessages {
     }
     /**
      * Protobuf type {@code LogFFT}
+     *
+     * <pre>
+     * Log fast fourier transform, each band being one octave wide
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -3584,6 +4085,10 @@ public final class SignalMessages {
   }
   /**
    * Protobuf type {@code TimeInfo}
+   *
+   * <pre>
+   * Transport data : tempo / BPM
+   * </pre>
    */
   public static final class TimeInfo extends
       com.google.protobuf.GeneratedMessage
@@ -3883,6 +4388,10 @@ public final class SignalMessages {
     }
     /**
      * Protobuf type {@code TimeInfo}
+     *
+     * <pre>
+     * Transport data : tempo / BPM
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -4161,6 +4670,11 @@ public final class SignalMessages {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_SignalLevel_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_SignalInstantVal_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_SignalInstantVal_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_Impulse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -4191,18 +4705,19 @@ public final class SignalMessages {
     java.lang.String[] descriptorData = {
       "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n" +
       "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:" +
-      "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLi" +
-      "nearFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamen" +
-      "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006L" +
-      "ogFFT\022\023\n\010signalID\030\001 \001(\005:\0011\022\027\n\017fundamenta" +
-      "lFreq\030\002 \001(\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001(" +
-      "\002\022\r\n\005band3\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5" +
-      "\030\007 \001(\002\022\r\n\005band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005" +
-      "band8\030\n \001(\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001",
-      "(\002\022\016\n\006band11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010Ti" +
-      "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp" +
-      "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa" +
-      "lMessages"
+      "\0010\"D\n\020SignalInstantVal\022\023\n\010signalID\030\001 \002(\005" +
+      ":\0011\022\033\n\020signalInstantVal\030\002 \002(\002:\0010\"\036\n\007Impu" +
+      "lse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLinearFFT\022\023\n" +
+      "\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamentalFreq\030\002 " +
+      "\002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006LogFFT\022\023\n\010s" +
+      "ignalID\030\001 \001(\005:\0011\022\027\n\017fundamentalFreq\030\002 \001(" +
+      "\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001(\002\022\r\n\005band3" +
+      "\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5\030\007 \001(\002\022\r\n\005",
+      "band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005band8\030\n \001(" +
+      "\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001(\002\022\016\n\006band" +
+      "11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010TimeInfo\022\030\n\t" +
+      "isPlaying\030\001 \002(\010:\005false\022\020\n\005tempo\030\002 \002(\002:\0010" +
+      "\022\023\n\010position\030\003 \002(\002:\0010B\020B\016SignalMessages"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4215,26 +4730,32 @@ public final class SignalMessages {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_SignalLevel_descriptor,
               new java.lang.String[] { "SignalID", "SignalLevel", });
-          internal_static_Impulse_descriptor =
+          internal_static_SignalInstantVal_descriptor =
             getDescriptor().getMessageTypes().get(1);
+          internal_static_SignalInstantVal_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_SignalInstantVal_descriptor,
+              new java.lang.String[] { "SignalID", "SignalInstantVal", });
+          internal_static_Impulse_descriptor =
+            getDescriptor().getMessageTypes().get(2);
           internal_static_Impulse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Impulse_descriptor,
               new java.lang.String[] { "SignalID", });
           internal_static_LinearFFT_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(3);
           internal_static_LinearFFT_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_LinearFFT_descriptor,
               new java.lang.String[] { "SignalID", "FundamentalFreq", "Data", });
           internal_static_LogFFT_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(4);
           internal_static_LogFFT_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_LogFFT_descriptor,
               new java.lang.String[] { "SignalID", "FundamentalFreq", "Band1", "Band2", "Band3", "Band4", "Band5", "Band6", "Band7", "Band8", "Band9", "Band10", "Band11", "Band12", });
           internal_static_TimeInfo_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(5);
           internal_static_TimeInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_TimeInfo_descriptor,

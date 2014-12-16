@@ -101,6 +101,7 @@ public:
     const float defaultfftAveragingWindow    = 8;
     const bool defaultSendTimeInfo           = false;
     const bool defaultSendSignalLevel        = true;
+    const bool defaultSendSignalInstantVal   = true;
     const bool defaultSendImpulse            = true;
     const bool defaultsendFFT                = false;
     const bool defaultMonoStereo             = false;
@@ -119,6 +120,7 @@ public:
         inputSensitivityParam,
         sendTimeInfoParam,
         sendSignalLevelParam,
+        sendSignalInstantValParam,
         sendImpulseParam,
         sendFFTParam,
         channelParam,
@@ -135,22 +137,26 @@ public:
     float fftAveragingWindow;              //Defined as float to be able to divide by its value
     float inputSensitivity;
     
-    bool sendBinaryUDP   = true;
-    bool sendOSC         = false;
+    bool sendBinaryUDP        = true;
+    bool sendOSC              = false;
     
-    bool sendTimeInfo    = true;
-    bool sendSignalLevel = true;
-    bool sendImpulse     = true;
-    bool sendFFT         = false;
-    bool monoStereo      = false;         //false -> mono
-    bool logarithmicFFT  = true;
+    bool sendTimeInfo         = true;
+    bool sendSignalLevel      = true;
+    bool sendSignalInstantVal = true;
+    bool sendImpulse          = true;
+    bool sendFFT              = false;
+    bool monoStereo           = false;         //false -> mono
+    bool logarithmicFFT       = true;
     int averageEnergyBufferSize;
     
     //==============================================================================
     // Variables used by the audio algorithm
-    
+    // Used by the signal average value
     int nbBufValProcessed = 0;
     float signalSum = 0;
+    // Used by the instant signal value
+    int instantSigValNbOfSamplesToSkip = 96;
+    int instantSigValNbOfSamplesSkipped = 0;
     // Used for beat detection
     float signalAverageEnergy = 0;
     float signalInstantEnergy = 0;
@@ -180,24 +186,27 @@ public:
     // Functions used to output the different available messages
     void sendImpulseMsg();
     void sendSignalLevelMsg();
+    void sendSignalInstantValMsg(float val);
     void sendTimeinfoMsg();
     void sendFFTMsg();
     
     //==============================================================================
     // Socket used to forward data to the Processing application, and the variables associated with it
-    const int portNumberSignalLevel = 7001;
-    const int portNumberImpulse     = 7002;
-    const int portNumberTimeInfo    = 7003;
-    const int portNumberFFT         = 7004;
-    const int nbOfSamplesToSkip     = 6;
-    const int timeInfoCycle         = 2048;         // Send the time info message every 2048 samples, that's about 50ms
-    const String udpIpAddress       = "127.0.0.1";
+    const int portNumberSignalLevel      = 7001;
+    const int portNumberSignalInstantVal = 7002;
+    const int portNumberImpulse          = 7003;
+    const int portNumberTimeInfo         = 7004;
+    const int portNumberFFT              = 7005;
+    const int nbOfSamplesToSkip          = 6;
+    const int timeInfoCycle              = 2048;         // Send the time info message every 2048 samples, that's about 50ms
+    const String udpIpAddress            = "127.0.0.1";
     
     //==============================================================================
     // OSC Functions
     osc::OutboundPacketStream* oscOutputStream;
     void sendOSC_TimeInfo();
     void sendOSC_SignalLevel();
+    void sendOSC_SignalInstantVal(float val);
     void sendOSC_Impulse();
     void sendOSC_FFT();
     
@@ -208,19 +217,22 @@ public:
     UdpTransmitSocket oscTransmissionSocket;
     
     // Messages used for OSC transmission
-    const char* fftOSCString          = "FFT";
-    const char* signalLevelOSCString  = "SIGLEVEL";
-    const char* impulseOSCString      = "IMPULSE";
-    const char* timeInfoOSCString     = "TIMEINFO";
+    const char* fftOSCString               = "FFT";
+    const char* signalLevelOSCString       = "SIGLEVEL";
+    const char* signalInstantValOSCString  = "SIGINSTVAL";
+    const char* impulseOSCString           = "IMPULSE";
+    const char* timeInfoOSCString          = "TIMEINFO";
     
     udp_client udpClientTimeInfo;
     udp_client udpClientSignalLevel;
+    udp_client udpClientSignalInstantVal;
     udp_client udpClientImpulse;
     udp_client udpClientFFT;
     
     char* dataArrayTimeInfo;
     char* dataArrayImpulse;
     char* dataArrayLevel;
+    char* dataArrayInstantVal;
     char* dataArrayLogFFT;
     char* dataArrayLinearFFT;
     
@@ -228,6 +240,7 @@ public:
     // Small optimisation : always use the same SignalMessages objects, it saves allocating a new one every time
     Impulse impulse;
     SignalLevel signal;
+    SignalInstantVal instantVal;
     TimeInfo timeInfo;
     LinearFFT linearFft;
     LogFFT logFft;

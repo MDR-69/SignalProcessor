@@ -21,6 +21,9 @@ namespace {
 const ::google_public::protobuf::Descriptor* SignalLevel_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   SignalLevel_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* SignalInstantVal_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  SignalInstantVal_reflection_ = NULL;
 const ::google_public::protobuf::Descriptor* Impulse_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   Impulse_reflection_ = NULL;
@@ -59,7 +62,23 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SignalLevel));
-  Impulse_descriptor_ = file->message_type(1);
+  SignalInstantVal_descriptor_ = file->message_type(1);
+  static const int SignalInstantVal_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SignalInstantVal, signalid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SignalInstantVal, signalinstantval_),
+  };
+  SignalInstantVal_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      SignalInstantVal_descriptor_,
+      SignalInstantVal::default_instance_,
+      SignalInstantVal_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SignalInstantVal, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SignalInstantVal, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(SignalInstantVal));
+  Impulse_descriptor_ = file->message_type(2);
   static const int Impulse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Impulse, signalid_),
   };
@@ -74,7 +93,7 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Impulse));
-  LinearFFT_descriptor_ = file->message_type(2);
+  LinearFFT_descriptor_ = file->message_type(3);
   static const int LinearFFT_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LinearFFT, signalid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LinearFFT, fundamentalfreq_),
@@ -91,7 +110,7 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(LinearFFT));
-  LogFFT_descriptor_ = file->message_type(3);
+  LogFFT_descriptor_ = file->message_type(4);
   static const int LogFFT_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogFFT, signalid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogFFT, fundamentalfreq_),
@@ -119,7 +138,7 @@ void protobuf_AssignDesc_SignalMessages_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(LogFFT));
-  TimeInfo_descriptor_ = file->message_type(4);
+  TimeInfo_descriptor_ = file->message_type(5);
   static const int TimeInfo_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, isplaying_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TimeInfo, tempo_),
@@ -151,6 +170,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SignalLevel_descriptor_, &SignalLevel::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SignalInstantVal_descriptor_, &SignalInstantVal::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Impulse_descriptor_, &Impulse::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LinearFFT_descriptor_, &LinearFFT::default_instance());
@@ -165,6 +186,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_SignalMessages_2eproto() {
   delete SignalLevel::default_instance_;
   delete SignalLevel_reflection_;
+  delete SignalInstantVal::default_instance_;
+  delete SignalInstantVal_reflection_;
   delete Impulse::default_instance_;
   delete Impulse_reflection_;
   delete LinearFFT::default_instance_;
@@ -184,26 +207,29 @@ void protobuf_AddDesc_SignalMessages_2eproto() {
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024SignalMessages.proto\":\n\013SignalLevel\022\023\n"
     "\010signalID\030\001 \002(\005:\0011\022\026\n\013signalLevel\030\002 \002(\002:"
-    "\0010\"\036\n\007Impulse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLi"
-    "nearFFT\022\023\n\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamen"
-    "talFreq\030\002 \002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006L"
-    "ogFFT\022\023\n\010signalID\030\001 \001(\005:\0011\022\027\n\017fundamenta"
-    "lFreq\030\002 \001(\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001("
-    "\002\022\r\n\005band3\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5"
-    "\030\007 \001(\002\022\r\n\005band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005"
-    "band8\030\n \001(\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001"
-    "(\002\022\016\n\006band11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010Ti"
-    "meInfo\022\030\n\tisPlaying\030\001 \002(\010:\005false\022\020\n\005temp"
-    "o\030\002 \002(\002:\0010\022\023\n\010position\030\003 \002(\002:\0010B\020B\016Signa"
-    "lMessages", 529);
+    "\0010\"D\n\020SignalInstantVal\022\023\n\010signalID\030\001 \002(\005"
+    ":\0011\022\033\n\020signalInstantVal\030\002 \002(\002:\0010\"\036\n\007Impu"
+    "lse\022\023\n\010signalID\030\001 \002(\005:\0011\"N\n\tLinearFFT\022\023\n"
+    "\010signalID\030\001 \002(\005:\0011\022\032\n\017fundamentalFreq\030\002 "
+    "\002(\002:\0010\022\020\n\004data\030\003 \003(\002B\002\020\001\"\355\001\n\006LogFFT\022\023\n\010s"
+    "ignalID\030\001 \001(\005:\0011\022\027\n\017fundamentalFreq\030\002 \001("
+    "\002\022\r\n\005band1\030\003 \001(\002\022\r\n\005band2\030\004 \001(\002\022\r\n\005band3"
+    "\030\005 \001(\002\022\r\n\005band4\030\006 \001(\002\022\r\n\005band5\030\007 \001(\002\022\r\n\005"
+    "band6\030\010 \001(\002\022\r\n\005band7\030\t \001(\002\022\r\n\005band8\030\n \001("
+    "\002\022\r\n\005band9\030\013 \001(\002\022\016\n\006band10\030\014 \001(\002\022\016\n\006band"
+    "11\030\r \001(\002\022\016\n\006band12\030\016 \001(\002\"K\n\010TimeInfo\022\030\n\t"
+    "isPlaying\030\001 \002(\010:\005false\022\020\n\005tempo\030\002 \002(\002:\0010"
+    "\022\023\n\010position\030\003 \002(\002:\0010B\020B\016SignalMessages", 599);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SignalMessages.proto", &protobuf_RegisterTypes);
   SignalLevel::default_instance_ = new SignalLevel();
+  SignalInstantVal::default_instance_ = new SignalInstantVal();
   Impulse::default_instance_ = new Impulse();
   LinearFFT::default_instance_ = new LinearFFT();
   LogFFT::default_instance_ = new LogFFT();
   TimeInfo::default_instance_ = new TimeInfo();
   SignalLevel::default_instance_->InitAsDefaultInstance();
+  SignalInstantVal::default_instance_->InitAsDefaultInstance();
   Impulse::default_instance_->InitAsDefaultInstance();
   LinearFFT::default_instance_->InitAsDefaultInstance();
   LogFFT::default_instance_->InitAsDefaultInstance();
@@ -461,6 +487,253 @@ void SignalLevel::Swap(SignalLevel* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = SignalLevel_descriptor_;
   metadata.reflection = SignalLevel_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SignalInstantVal::kSignalIDFieldNumber;
+const int SignalInstantVal::kSignalInstantValFieldNumber;
+#endif  // !_MSC_VER
+
+SignalInstantVal::SignalInstantVal()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void SignalInstantVal::InitAsDefaultInstance() {
+}
+
+SignalInstantVal::SignalInstantVal(const SignalInstantVal& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SignalInstantVal::SharedCtor() {
+  _cached_size_ = 0;
+  signalid_ = 1;
+  signalinstantval_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SignalInstantVal::~SignalInstantVal() {
+  SharedDtor();
+}
+
+void SignalInstantVal::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void SignalInstantVal::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* SignalInstantVal::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SignalInstantVal_descriptor_;
+}
+
+const SignalInstantVal& SignalInstantVal::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_SignalMessages_2eproto();
+  return *default_instance_;
+}
+
+SignalInstantVal* SignalInstantVal::default_instance_ = NULL;
+
+SignalInstantVal* SignalInstantVal::New() const {
+  return new SignalInstantVal;
+}
+
+void SignalInstantVal::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    signalid_ = 1;
+    signalinstantval_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SignalInstantVal::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 signalID = 1 [default = 1];
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int32, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &signalid_)));
+          set_has_signalid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(21)) goto parse_signalInstantVal;
+        break;
+      }
+
+      // required float signalInstantVal = 2 [default = 0];
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_signalInstantVal:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google_public::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &signalinstantval_)));
+          set_has_signalinstantval();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SignalInstantVal::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required int32 signalID = 1 [default = 1];
+  if (has_signalid()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt32(1, this->signalid(), output);
+  }
+
+  // required float signalInstantVal = 2 [default = 0];
+  if (has_signalinstantval()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteFloat(2, this->signalinstantval(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* SignalInstantVal::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required int32 signalID = 1 [default = 1];
+  if (has_signalid()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->signalid(), target);
+  }
+
+  // required float signalInstantVal = 2 [default = 0];
+  if (has_signalinstantval()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->signalinstantval(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SignalInstantVal::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 signalID = 1 [default = 1];
+    if (has_signalid()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int32Size(
+          this->signalid());
+    }
+
+    // required float signalInstantVal = 2 [default = 0];
+    if (has_signalinstantval()) {
+      total_size += 1 + 4;
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SignalInstantVal::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SignalInstantVal* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const SignalInstantVal*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SignalInstantVal::MergeFrom(const SignalInstantVal& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_signalid()) {
+      set_signalid(from.signalid());
+    }
+    if (from.has_signalinstantval()) {
+      set_signalinstantval(from.signalinstantval());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SignalInstantVal::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SignalInstantVal::CopyFrom(const SignalInstantVal& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SignalInstantVal::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+
+  return true;
+}
+
+void SignalInstantVal::Swap(SignalInstantVal* other) {
+  if (other != this) {
+    std::swap(signalid_, other->signalid_);
+    std::swap(signalinstantval_, other->signalinstantval_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata SignalInstantVal::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = SignalInstantVal_descriptor_;
+  metadata.reflection = SignalInstantVal_reflection_;
   return metadata;
 }
 

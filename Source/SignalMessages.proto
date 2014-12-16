@@ -2,22 +2,31 @@
 
 option java_outer_classname = "SignalMessages";
 
+// Current signal average value
 message SignalLevel {
   required int32 signalID = 1 [default=1];
   required float signalLevel = 2 [default=0];
-  //required int32 bufferSize = 3 [default=64];
 }
 
+// Instantaneous signal value (not averaged)
+message SignalInstantVal {
+  required int32 signalID = 1 [default=1];
+  required float signalInstantVal = 2 [default=0];
+}
+
+// Beat detection notification
 message Impulse {
   required int32 signalID = 1 [default=1];
 }
 
+// Linear fast fourier transform
 message LinearFFT {
   required int32 signalID = 1 [default=1];
   required float fundamentalFreq = 2 [default=0];   //Fundamental frequency detected in the FFT result
   repeated float data = 3 [packed=true];            //Array of floats, one for each signal band (up to 2048 bands)
 }
 
+// Log fast fourier transform, each band being one octave wide
 message LogFFT {
   optional int32 signalID = 1 [default=1];
   optional float fundamentalFreq = 2;               //Fundamental frequency detected in the FFT result
@@ -35,6 +44,7 @@ message LogFFT {
   optional float band12 = 14;                       //Energy in the 11025 to 22050 Hz band
 }
 
+// Transport data : tempo / BPM
 message TimeInfo {
   required bool isPlaying = 1 [default=false];
   required float tempo = 2 [default=0];
