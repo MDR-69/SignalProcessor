@@ -101,6 +101,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendTimeInfoButton.setColour (Label::textColourId, Colours::white);
     sendTimeInfoButton.setButtonText("");
     sendTimeInfoButton.setTooltip("Check this to send periodically the DAW's playback status, the BPM as well as the current position. These messages are approximately sent every 50 ms");
+    
     addAndMakeVisible (sendSignalLevelButton);
     sendSignalLevelButton.setLookAndFeel(slaf);
     sendSignalLevelButton.addListener (this);
@@ -109,8 +110,8 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
     sendSignalLevelButton.setButtonText("");
     sendSignalLevelButton.setTooltip("Check this to send periodically this track's averaged signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages)");
-    addAndMakeVisible (sendSignalLevelButton);
-    
+
+    addAndMakeVisible (sendSignalInstantValButton);
     sendSignalInstantValButton.setLookAndFeel(slaf);
     sendSignalInstantValButton.addListener (this);
     sendSignalInstantValButton.changeWidthToFitText();

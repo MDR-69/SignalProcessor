@@ -62,7 +62,7 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
     
     dataArrayImpulse        = new char[impulse.ByteSize()];
     dataArrayLevel          = new char[signal.ByteSize()];
-    dataArrayInstantVal     = new char[signal.ByteSize()];
+    dataArrayInstantVal     = new char[instantVal.ByteSize()];
     dataArrayTimeInfo       = new char[timeInfo.ByteSize()];
     dataArrayLogFFT         = new char[logFft.ByteSize()];
     dataArrayLinearFFT      = new char[linearFft.ByteSize()];
@@ -576,8 +576,8 @@ void SignalProcessorAudioProcessor::sendSignalLevelMsg() {
 void SignalProcessorAudioProcessor::sendSignalInstantValMsg(float val) {
     if (sendBinaryUDP) {
         instantVal.set_signalinstantval(inputSensitivity * val);
-        instantVal.SerializeToArray(dataArrayLevel, signal.GetCachedSize());
-        udpClientSignalInstantVal.send(dataArrayInstantVal, signal.GetCachedSize());
+        instantVal.SerializeToArray(dataArrayInstantVal, instantVal.GetCachedSize());
+        udpClientSignalInstantVal.send(dataArrayInstantVal, instantVal.GetCachedSize());
     }
     if (sendOSC) {
         //Example of an OSC signal level message : SIGINSTVAL1/0.23245
