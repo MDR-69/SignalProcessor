@@ -22,10 +22,14 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       inputSensitivityLabel ("", "Input Sensitivity:"),
       beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
+      instantSigValGainLabel ("", "Gain:"),
+      instantSigValNbOfSamplesToSkipLabel ("", "Samples To Skip:"),
       averagingBufferSlider ("averagingBuffer"),
       fftAveragingWindowSlider ("fftAveragingWindow"),
       inputSensitivitySlider ("inputSensitivity"),
       beatDetectionWindowSlider ("beatDetectionWindow"),
+      instantSigValGainSlider ("instantSigValGain"),
+      instantSigValNbOfSamplesToSkipSlider ("instantSigValNbOfSamplesToSkip"),
       sendTimeInfoButton("Send TimeInfo"),
       sendSignalLevelButton("Send SignalLevel"),
       sendSignalInstantValButton("Send SignalInstantVal"),
@@ -92,6 +96,22 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     beatDetectionWindowSlider.setRange (2.0, 16.0, 1);
     beatDetectionWindowSlider.setValue(getProcessor().averageEnergyBufferSize);
     beatDetectionWindowSlider.setBounds (20, 350, 150, 20);
+
+    addAndMakeVisible (instantSigValGainSlider);
+    instantSigValGainSlider.setLookAndFeel(slaf);
+    instantSigValGainSlider.setSliderStyle (Slider::LinearBar);
+    instantSigValGainSlider.addListener (this);
+    instantSigValGainSlider.setRange (1.0, 300.0, 0.5);
+    instantSigValGainSlider.setValue(getProcessor().instantSigValGain);
+    instantSigValGainSlider.setBounds (20, 390, 70, 20);
+    
+    addAndMakeVisible (instantSigValNbOfSamplesToSkipSlider);
+    instantSigValNbOfSamplesToSkipSlider.setLookAndFeel(slaf);
+    instantSigValNbOfSamplesToSkipSlider.setSliderStyle (Slider::LinearBar);
+    instantSigValNbOfSamplesToSkipSlider.addListener (this);
+    instantSigValNbOfSamplesToSkipSlider.setRange (32, 1024, 1);
+    instantSigValNbOfSamplesToSkipSlider.setValue(getProcessor().instantSigValNbOfSamplesToSkip);
+    instantSigValNbOfSamplesToSkipSlider.setBounds (95, 430, 70, 20);
     
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);
@@ -109,7 +129,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendSignalLevelButton.setBounds (getWidth() - 50, 192, 18, 18);
     sendSignalLevelButton.setColour (Label::textColourId, Colours::white);
     sendSignalLevelButton.setButtonText("");
-    sendSignalLevelButton.setTooltip("Check this to send periodically this track's averaged signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages)");
+    sendSignalLevelButton.setTooltip("Check this to send periodically this track's averaged signal level. You can configure the frequency at which this plugin sends these messages by modifying the averaging buffer value (shorter values mean more messages). The averaged signal can be used to determine a track's intensity/volume");
 
     addAndMakeVisible (sendSignalInstantValButton);
     sendSignalInstantValButton.setLookAndFeel(slaf);
@@ -118,7 +138,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     sendSignalInstantValButton.setBounds (getWidth() - 50, 214, 18, 18);                //Val a changer
     sendSignalInstantValButton.setColour (Label::textColourId, Colours::white);
     sendSignalInstantValButton.setButtonText("");
-    sendSignalInstantValButton.setTooltip("Check this to send periodically this track's instant signal level. You can configure the frequency at which this plugin sends these messages by modifying the number of samples to skip");
+    sendSignalInstantValButton.setTooltip("Check this to send periodically this track's instant signal level. You can configure the frequency at which this plugin sends these messages by modifying the number of samples to skip. The instant signal can be used to get a more precise waveform of the track. To get the signal's intensity, use the averaged signal");
     
     addAndMakeVisible (sendImpulseButton);
     sendImpulseButton.setLookAndFeel(slaf);
@@ -228,7 +248,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     averagingBufferLabel.attachToComponent (&averagingBufferSlider, false);
     averagingBufferLabel.setFont(smallFont);
     averagingBufferLabel.setColour(Label::textColourId, Colours::white);
-    averagingBufferLabel.setTooltip("Change this parameter to adjust the instant signal value's averaging window. Shorter values mean more precise signal values, and more messages sent");
+    averagingBufferLabel.setTooltip("Change this parameter to adjust the averaged signal value's averaging window. Shorter values mean more precise signal values, and more messages sent");
     
     fftAveragingWindowLabel.attachToComponent (&fftAveragingWindowSlider, false);
     fftAveragingWindowLabel.setFont(smallFont);
@@ -238,12 +258,23 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     inputSensitivityLabel.attachToComponent (&inputSensitivitySlider, false);
     inputSensitivityLabel.setFont(smallFont);
     inputSensitivityLabel.setColour(Label::textColourId, Colours::white);
-    inputSensitivityLabel.setTooltip("Change this parameter to adjust the instant signal's level. This is useful if you want to keep a track's volume low in your DAW, but the program consuming this data expects a normal signal");
+    inputSensitivityLabel.setTooltip("Change this parameter to adjust the averaged signal's level. This is useful if you want to keep a track's volume low in your DAW, but the program consuming this data expects a normal signal");
     
     beatDetectionWindowLabel.attachToComponent (&beatDetectionWindowSlider, false);
     beatDetectionWindowLabel.setFont(smallFont);
     beatDetectionWindowLabel.setColour(Label::textColourId, Colours::white);
     beatDetectionWindowLabel.setTooltip("Change this parameter to adjust the beat detection's window size. Lower values mean the analysis will be more reactive, but also more prone to false detections due to the sound's release. Tip : for highly rhythmic and precise sources, use low values (ex: short kicks, snares), whereas for sources with a long sustain (ex: bass, guitar), use higher values");
+
+    instantSigValGainLabel.attachToComponent (&instantSigValGainSlider, false);
+    instantSigValGainLabel.setFont(smallFont);
+    instantSigValGainLabel.setColour(Label::textColourId, Colours::white);
+    instantSigValGainLabel.setTooltip("Change this parameter to adjust the gain applied to the instant signal value, sent in the InstantSignal messages. This is completely independant from the averaged signal's parameters");
+    
+    instantSigValNbOfSamplesToSkipLabel.attachToComponent (&instantSigValNbOfSamplesToSkipSlider, false);
+    instantSigValNbOfSamplesToSkipLabel.setFont(smallFont);
+    instantSigValNbOfSamplesToSkipLabel.setColour(Label::textColourId, Colours::white);
+    instantSigValNbOfSamplesToSkipLabel.setTooltip("Change this parameter to adjust the number of samples to be skipped for the instant signal: only 1 out of n samples will be sent. This is enough to get the general shape of the waveform");
+    
     
     channelLabel.attachToComponent (&channelComboBox, false);
     channelLabel.setFont(smallFont);
@@ -353,6 +384,16 @@ void SignalProcessorAudioProcessorEditor::sliderValueChanged (Slider* slider)
     {
         getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::fftAveragingWindowParam,
                                                   (int) fftAveragingWindowSlider.getValue());
+    }
+    else if (slider == &instantSigValGainSlider)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::instValGainParam,
+                                                  (float) instantSigValGainSlider.getValue());
+    }
+    else if (slider == &instantSigValNbOfSamplesToSkipSlider)
+    {
+        getProcessor().setParameterNotifyingHost (SignalProcessorAudioProcessor::instValNbOfSamplesToSkipParam,
+                                                  (int) instantSigValNbOfSamplesToSkipSlider.getValue());
     }
 }
 

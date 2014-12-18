@@ -25,6 +25,8 @@ SignalProcessorAudioProcessor::SignalProcessorAudioProcessor()
   monoStereo(defaultMonoStereo),
   logarithmicFFT(defaultLogarithmicFFT),
   averageEnergyBufferSize(defaultAverageEnergyBufferSize),
+  instantSigValNbOfSamplesToSkip(defaultInstValNbOfSamplesToSkip),
+  instantSigValGain(defaultInstValGain),
   oscTransmissionSocket( IpEndpointName( "127.0.0.1", portNumberOSC )),
   udpClientTimeInfo("127.0.0.1", portNumberTimeInfo),
   udpClientSignalLevel("127.0.0.1", portNumberSignalLevel),
@@ -125,6 +127,8 @@ float SignalProcessorAudioProcessor::getParameter (int index)
         case averageEnergyBufferSizeParam:  return averageEnergyBufferSize;
         case sendOSCParam:                  return sendOSC;
         case sendBinaryUDPParam:            return sendBinaryUDP;
+        case instValGainParam:              return instantSigValGain;
+        case instValNbOfSamplesToSkipParam: return instantSigValNbOfSamplesSkipped;
         default:                            return 0.0f;
     }
 }
@@ -147,6 +151,8 @@ float SignalProcessorAudioProcessor::getParameterDefaultValue (int index)
         case averageEnergyBufferSizeParam:  return defaultAverageEnergyBufferSize;
         case sendOSCParam:                  return defaultSendOSC;
         case sendBinaryUDPParam:            return defaultSendBinaryUDP;
+        case instValGainParam:              return defaultInstValGain;
+        case instValNbOfSamplesToSkipParam: return defaultInstValNbOfSamplesToSkip;
         default:                            break;
     }
     
@@ -160,20 +166,22 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
     // UI-related, or anything at all that may block in any way!
     switch (index)
     {
-        case averagingBufferSizeParam:      averagingBufferSize     = newValue;  break;
-        case fftAveragingWindowParam:       fftAveragingWindow      = newValue;  break;
-        case inputSensitivityParam:         inputSensitivity        = newValue;  break;
-        case sendTimeInfoParam:             sendTimeInfo            = newValue;  break;
-        case sendSignalLevelParam:          sendSignalLevel         = newValue;  break;
-        case sendSignalInstantValParam:     sendSignalInstantVal    = newValue;  break;
-        case sendImpulseParam:              sendImpulse             = newValue;  break;
-        case sendFFTParam:                  sendFFT                 = newValue;  break;
-        case channelParam:                  channel                 = newValue;  defineSignalMessagesChannel();  break;
-        case monoStereoParam:               monoStereo              = newValue;  break;
-        case logarithmicFFTParam:           logarithmicFFT          = newValue;  break;
-        case averageEnergyBufferSizeParam:  averageEnergyBufferSize = newValue;  break;
-        case sendOSCParam:                  sendOSC                 = newValue;  break;
-        case sendBinaryUDPParam:            sendBinaryUDP           = newValue;  break;
+        case averagingBufferSizeParam:      averagingBufferSize             = newValue;  break;
+        case fftAveragingWindowParam:       fftAveragingWindow              = newValue;  break;
+        case inputSensitivityParam:         inputSensitivity                = newValue;  break;
+        case sendTimeInfoParam:             sendTimeInfo                    = newValue;  break;
+        case sendSignalLevelParam:          sendSignalLevel                 = newValue;  break;
+        case sendSignalInstantValParam:     sendSignalInstantVal            = newValue;  break;
+        case sendImpulseParam:              sendImpulse                     = newValue;  break;
+        case sendFFTParam:                  sendFFT                         = newValue;  break;
+        case channelParam:                  channel                         = newValue;  defineSignalMessagesChannel();  break;
+        case monoStereoParam:               monoStereo                      = newValue;  break;
+        case logarithmicFFTParam:           logarithmicFFT                  = newValue;  break;
+        case averageEnergyBufferSizeParam:  averageEnergyBufferSize         = newValue;  break;
+        case sendOSCParam:                  sendOSC                         = newValue;  break;
+        case sendBinaryUDPParam:            sendBinaryUDP                   = newValue;  break;
+        case instValGainParam:              instantSigValGain               = newValue;  break;
+        case instValNbOfSamplesToSkipParam: instantSigValNbOfSamplesSkipped = newValue;  break;
         default:                            break;
     }
 }
@@ -182,21 +190,23 @@ const String SignalProcessorAudioProcessor::getParameterName (int index)
 {
     switch (index)
     {
-        case averagingBufferSizeParam:     return "Averaging Buffer Size";      break;
-        case fftAveragingWindowParam:      return "FFT Averaging Window Size";  break;
-        case inputSensitivityParam:        return "Input Sensitivity";          break;
-        case sendTimeInfoParam:            return "Send Time Info";             break;
-        case sendSignalLevelParam:         return "Send Signal Level";          break;
-        case sendSignalInstantValParam:    return "Send Signal Instant Value";  break;
-        case sendImpulseParam:             return "Send Impulses";              break;
-        case sendFFTParam:                 return "Send FFT Analysis";          break;
-        case channelParam:                 return "Channel Number";             break;
-        case monoStereoParam:              return "Mono / Stereo";              break;
-        case logarithmicFFTParam:          return "Logarithmic FFT";            break;
-        case averageEnergyBufferSizeParam: return "Beat Detection Window";      break;
-        case sendOSCParam:                 return "Send Data Using OSC";        break;
-        case sendBinaryUDPParam:           return "Send Data Using UDP";        break;
-        default:                           break;
+        case averagingBufferSizeParam:      return "Averaging Buffer Size";                break;
+        case fftAveragingWindowParam:       return "FFT Averaging Window Size";            break;
+        case inputSensitivityParam:         return "Input Sensitivity";                    break;
+        case sendTimeInfoParam:             return "Send Time Info";                       break;
+        case sendSignalLevelParam:          return "Send Signal Level";                    break;
+        case sendSignalInstantValParam:     return "Send Signal Instant Value";            break;
+        case sendImpulseParam:              return "Send Impulses";                        break;
+        case sendFFTParam:                  return "Send FFT Analysis";                    break;
+        case channelParam:                  return "Channel Number";                       break;
+        case monoStereoParam:               return "Mono / Stereo";                        break;
+        case logarithmicFFTParam:           return "Logarithmic FFT";                      break;
+        case averageEnergyBufferSizeParam:  return "Beat Detection Window";                break;
+        case sendOSCParam:                  return "Send Data Using OSC";                  break;
+        case sendBinaryUDPParam:            return "Send Data Using UDP";                  break;
+        case instValGainParam:              return "Instant Signal Value Gain";            break;
+        case instValNbOfSamplesToSkipParam: return "Instant Signal Value Samples To Skip"; break;
+        default:                            break;
     }
     return String::empty;
 }
@@ -732,6 +742,8 @@ void SignalProcessorAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute ("averageEnergyBufferSize", averageEnergyBufferSize);
     xml.setAttribute ("sendOSC", sendOSC);
     xml.setAttribute ("sendBinaryUDP", sendBinaryUDP);
+    xml.setAttribute ("instantSigValGain", instantSigValGain);
+    xml.setAttribute ("instantSigValNbOfSamplesSkipped", instantSigValNbOfSamplesSkipped);
     
     // then use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);
@@ -764,6 +776,8 @@ void SignalProcessorAudioProcessor::setStateInformation (const void* data, int s
             averageEnergyBufferSize = xmlState->getIntAttribute  ("averageEnergyBufferSize", averageEnergyBufferSize);
             sendOSC                 = xmlState->getBoolAttribute ("sendOSC", sendOSC);
             sendBinaryUDP           = xmlState->getBoolAttribute ("sendBinaryUDP", sendBinaryUDP);
+            instantSigValGain       = (float) xmlState->getDoubleAttribute ("instantSigValGain", instantSigValGain);
+            instantSigValNbOfSamplesSkipped = (float) xmlState->getDoubleAttribute ("instantSigValNbOfSamplesSkipped", instantSigValNbOfSamplesSkipped);
         }
     }
     

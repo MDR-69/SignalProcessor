@@ -97,20 +97,22 @@ public:
     
     //==============================================================================
     // Default parameter values
-    const int defaultAveragingBufferSize     = 2048;
-    const float defaultfftAveragingWindow    = 8;
-    const bool defaultSendTimeInfo           = false;
-    const bool defaultSendSignalLevel        = true;
-    const bool defaultSendSignalInstantVal   = true;
-    const bool defaultSendImpulse            = true;
-    const bool defaultsendFFT                = false;
-    const bool defaultMonoStereo             = false;
-    const bool defaultLogarithmicFFT         = true;
-    const bool defaultSendBinaryUDP          = true;
-    const bool defaultSendOSC                = false;
-    const float defaultInputSensitivity      = 1.0;
-    const int defaultChannel                 = 1;
-    const int defaultAverageEnergyBufferSize = 8.0;
+    const int defaultAveragingBufferSize        = 2048;
+    const float defaultfftAveragingWindow       = 8;
+    const bool defaultSendTimeInfo              = false;
+    const bool defaultSendSignalLevel           = true;
+    const bool defaultSendSignalInstantVal      = true;
+    const bool defaultSendImpulse               = true;
+    const bool defaultsendFFT                   = false;
+    const bool defaultMonoStereo                = false;
+    const bool defaultLogarithmicFFT            = true;
+    const bool defaultSendBinaryUDP             = true;
+    const bool defaultSendOSC                   = false;
+    const float defaultInputSensitivity         = 1.0;
+    const float defaultInstValGain              = 1.0;
+    const float defaultInstValNbOfSamplesToSkip = 192;
+    const int defaultChannel                    = 1;
+    const int defaultAverageEnergyBufferSize    = 8.0;
     
     //==============================================================================
     enum Parameters
@@ -129,6 +131,8 @@ public:
         averageEnergyBufferSizeParam,
         sendOSCParam,
         sendBinaryUDPParam,
+        instValGainParam,
+        instValNbOfSamplesToSkipParam,
         totalNumParams
     };
     
@@ -155,7 +159,8 @@ public:
     int nbBufValProcessed = 0;
     float signalSum = 0;
     // Used by the instant signal value
-    int instantSigValNbOfSamplesToSkip = 96;
+    int instantSigValNbOfSamplesToSkip;
+    float instantSigValGain;
     int instantSigValNbOfSamplesSkipped = 0;
     // Used for beat detection
     float signalAverageEnergy = 0;
