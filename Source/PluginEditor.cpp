@@ -23,7 +23,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
       beatDetectionWindowLabel ("", "Beat Detection Window:"),
       channelLabel ("", "Channel Number:"),
       instantSigValGainLabel ("", "Gain:"),
-      instantSigValNbOfSamplesToSkipLabel ("", "Samples To Skip:"),
+      instantSigValNbOfSamplesToSkipLabel ("", "Smpls To Skip:"),
       averagingBufferSlider ("averagingBuffer"),
       fftAveragingWindowSlider ("fftAveragingWindow"),
       inputSensitivitySlider ("inputSensitivity"),
@@ -111,7 +111,7 @@ SignalProcessorAudioProcessorEditor::SignalProcessorAudioProcessorEditor (Signal
     instantSigValNbOfSamplesToSkipSlider.addListener (this);
     instantSigValNbOfSamplesToSkipSlider.setRange (32, 1024, 1);
     instantSigValNbOfSamplesToSkipSlider.setValue(getProcessor().instantSigValNbOfSamplesToSkip);
-    instantSigValNbOfSamplesToSkipSlider.setBounds (95, 430, 70, 20);
+    instantSigValNbOfSamplesToSkipSlider.setBounds (95, 390, 70, 20);
     
     addAndMakeVisible (sendTimeInfoButton);
     sendTimeInfoButton.setLookAndFeel(slaf);

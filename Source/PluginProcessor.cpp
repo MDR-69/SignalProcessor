@@ -181,7 +181,7 @@ void SignalProcessorAudioProcessor::setParameter (int index, float newValue)
         case sendOSCParam:                  sendOSC                         = newValue;  break;
         case sendBinaryUDPParam:            sendBinaryUDP                   = newValue;  break;
         case instValGainParam:              instantSigValGain               = newValue;  break;
-        case instValNbOfSamplesToSkipParam: instantSigValNbOfSamplesSkipped = newValue;  break;
+        case instValNbOfSamplesToSkipParam: instantSigValNbOfSamplesToSkip  = newValue;  break;
         default:                            break;
     }
 }
@@ -585,7 +585,7 @@ void SignalProcessorAudioProcessor::sendSignalLevelMsg() {
 
 void SignalProcessorAudioProcessor::sendSignalInstantValMsg(float val) {
     if (sendBinaryUDP) {
-        instantVal.set_signalinstantval(inputSensitivity * val);
+        instantVal.set_signalinstantval(instantSigValGain * val);
         instantVal.SerializeToArray(dataArrayInstantVal, instantVal.GetCachedSize());
         udpClientSignalInstantVal.send(dataArrayInstantVal, instantVal.GetCachedSize());
     }
