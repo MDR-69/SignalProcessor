@@ -304,14 +304,13 @@ void SignalProcessorAudioProcessor::releaseResources()
 
 void SignalProcessorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+
+    //////////////////////////////////////////////////////////////////
+    // MIDI processing takes place here !
+
+    
     //////////////////////////////////////////////////////////////////
     // Audio processing takes place here !
-
-    // A lot of optimization is to be done using vDSP functions ! For now, do it simple, then do it right
-    //    Vector multiply with scalar
-    //    vDSP_zvzsml
-    
-    //A checker : buffer.getRMS
     
     // If the signal is defined by the user as mono, no need to check the second channel
     int numberOfChannels = (monoStereo==false) ? 1 : getNumInputChannels();
