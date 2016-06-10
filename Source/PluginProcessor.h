@@ -203,7 +203,7 @@ public:
     const int portNumberTimeInfo         = 7004;
     const int portNumberFFT              = 7005;
     const int nbOfSamplesToSkip          = 6;
-    const int timeInfoCycle              = 2048;         // Send the time info message every 2048 samples, that's about 50ms
+    const int timeInfoCycle              = 1024;         // Send the time info message every 2048 samples, that's about 25ms
     const String udpIpAddress            = "127.0.0.1";
     
     //==============================================================================
